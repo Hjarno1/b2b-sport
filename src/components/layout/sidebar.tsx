@@ -8,9 +8,6 @@ import { useAuth } from '@/lib/context/auth-context';
 import { UserRole } from '@/lib/data/mock-data';
 import {
   LayoutDashboard,
-  Building2,
-  FileText,
-  ClipboardList,
   Users,
   Settings,
   UserCog,
