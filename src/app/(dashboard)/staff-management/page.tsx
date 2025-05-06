@@ -192,7 +192,7 @@ export default function StaffManagementPage() {
                         />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{member.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{member.name}</div>  
                       </div>
                     </div>
                   </td>

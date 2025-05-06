@@ -133,9 +133,7 @@ export function Sidebar({
 
   // Select navigation items based on user role
   let navItems: SidebarItem[] = [];
-  if (user?.role === UserRole.B2BSportAdmin) {
-    navItems = b2bAdminItems;
-  } else if (user?.role === UserRole.ClubAdmin) {
+  if (user?.role === UserRole.ClubAdmin) {
     navItems = clubAdminItems;
   } else if (user?.role === UserRole.ClubStaff) {
     navItems = clubStaffItems;
