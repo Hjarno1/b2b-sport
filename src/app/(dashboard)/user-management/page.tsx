@@ -77,8 +77,6 @@ export default function UserManagementPage() {
         return 'Add Club Admin';
       case UserRole.ClubStaff:
         return 'Add Club Staff';
-      case UserRole.B2BSportAdmin:
-        return 'Add B2B Admin';
       default:
         return 'Add User';
     }
@@ -124,16 +122,6 @@ export default function UserManagementPage() {
           >
             Club Staff
           </button>
-          <button
-            className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
-              activeTab === UserRole.B2BSportAdmin
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab(UserRole.B2BSportAdmin)}
-          >
-            B2B Admins
-          </button>
         </nav>
       </div>
 
@@ -150,7 +138,6 @@ export default function UserManagementPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        {activeTab !== UserRole.B2BSportAdmin && (
           <div className="relative">
             <select
               className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white"
@@ -168,7 +155,6 @@ export default function UserManagementPage() {
               <Building2 size={18} className="text-gray-600" />
             </div>
           </div>
-        )}
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -187,14 +173,12 @@ export default function UserManagementPage() {
               >
                 Email
               </th>
-              {activeTab !== UserRole.B2BSportAdmin && (
                 <th
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Club
                 </th>
-              )}
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -213,7 +197,7 @@ export default function UserManagementPage() {
             {filteredUsers.length === 0 ? (
               <tr>
                 <td
-                  colSpan={activeTab !== UserRole.B2BSportAdmin ? 5 : 4}
+                  colSpan={5}
                   className="px-6 py-4 text-center text-sm text-gray-500"
                 >
                   No users found matching your criteria
@@ -249,14 +233,12 @@ export default function UserManagementPage() {
                       {user.email}
                     </div>
                   </td>
-                  {activeTab !== UserRole.B2BSportAdmin && (
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       <div className="flex items-center">
                         <Building2 size={14} className="mr-1 text-gray-400" />
                         {getClubName(user.clubId)}
                       </div>
                     </td>
-                  )}
                   <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(user.status)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button className="text-indigo-600 hover:text-indigo-900 flex items-center ml-auto">
