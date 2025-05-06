@@ -29,40 +29,6 @@ interface SidebarItem {
   icon: React.ReactNode;
 }
 
-// B2B Admin can use business terminology - they understand the system
-const b2bAdminItems: SidebarItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    name: 'Club Management',
-    href: '/club-management',
-    icon: <Building2 className="h-5 w-5" />,
-  },
-  {
-    name: 'Agreement Templates',
-    href: '/agreement-templates',
-    icon: <FileText className="h-5 w-5" />,
-  },
-  {
-    name: 'Active Agreements',
-    href: '/active-agreements',
-    icon: <ClipboardList className="h-5 w-5" />,
-  },
-  {
-    name: 'User Management',
-    href: '/user-management',
-    icon: <Users className="h-5 w-5" />,
-  },
-  {
-    name: 'Settings',
-    href: '/settings',
-    icon: <Settings className="h-5 w-5" />,
-  },
-];
-
 // Club Admin uses more task-oriented language but still understands some business concepts
 const clubAdminItems: SidebarItem[] = [
   {
