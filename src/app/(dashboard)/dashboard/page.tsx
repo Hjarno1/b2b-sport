@@ -5,7 +5,6 @@ import { useAuth } from '@/lib/context/auth-context';
 import { UserRole } from '@/lib/data/mock-data';
 
 // Import the specific dashboard components for each role
-import B2BAdminDashboardContent from './b2b-admin-dashboard';
 import ClubAdminDashboardContent from './club-admin-dashboard';
 import ClubStaffDashboardContent from './club-staff-dashboard';
 
@@ -25,8 +24,6 @@ export default function DashboardPage() {
   switch (user?.role) {
     case UserRole.ClubAdmin:
       return <ClubAdminDashboardContent />;
-    case UserRole.B2BSportAdmin:
-      return <B2BAdminDashboardContent />;
     case UserRole.ClubStaff:
       return <ClubStaffDashboardContent />;
     default:

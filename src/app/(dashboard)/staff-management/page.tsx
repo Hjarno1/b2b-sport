@@ -193,7 +193,6 @@ export default function StaffManagementPage() {
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{member.name}</div>
-                        <div className="text-xs text-gray-500">{member.id}</div>
                       </div>
                     </div>
                   </td>
@@ -202,7 +201,7 @@ export default function StaffManagementPage() {
                       <Mail size={14} className="text-gray-400 mr-1" /> {member.email}
                     </div>
                     <div className="text-sm text-gray-500 flex items-center mt-1">
-                      <Phone size={14} className="text-gray-400 mr-1" /> +45 12 34 56 78
+                      <Phone size={14} className="text-gray-400 mr-1" /> {member.phone}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(member.status)}</td>

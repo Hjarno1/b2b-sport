@@ -48,7 +48,7 @@ export default function PlayerRosterPage() {
     dateOfBirth: '',
     email: '',
     phone: '',
-    position: PlayerPosition.Forward,
+    position: PlayerPosition.Markspiller,
     joinedDate: new Date().toISOString().split('T')[0],
     isActive: true,
   });
@@ -101,7 +101,7 @@ export default function PlayerRosterPage() {
       dateOfBirth: newPlayer.dateOfBirth || '',
       email: newPlayer.email,
       phone: newPlayer.phone,
-      position: newPlayer.position || PlayerPosition.Forward,
+      position: newPlayer.position || PlayerPosition.Markspiller,
       joinedDate: newPlayer.joinedDate || new Date().toISOString().split('T')[0],
       isActive: newPlayer.isActive || true,
       notes: newPlayer.notes,
@@ -114,7 +114,7 @@ export default function PlayerRosterPage() {
       dateOfBirth: '',
       email: '',
       phone: '',
-      position: PlayerPosition.Forward,
+      position: PlayerPosition.Markspiller,
       joinedDate: new Date().toISOString().split('T')[0],
       isActive: true,
     });
@@ -265,7 +265,7 @@ export default function PlayerRosterPage() {
                 Position <span className="text-red-500">*</span>
               </label>
               <select
-                value={newPlayer.position || PlayerPosition.Forward}
+                value={newPlayer.position || PlayerPosition.Markspiller}
                 onChange={(e) =>
                   setNewPlayer({ ...newPlayer, position: e.target.value as PlayerPosition })
                 }

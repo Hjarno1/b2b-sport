@@ -6,8 +6,8 @@ import { AuthProvider } from '@/lib/context/auth-context';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'B2B Sport Admin',
-  description: 'Administration portal for B2B Sport platform',
+  title: 'B2B Sport',
+  description: 'Platform for B2B Sport',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

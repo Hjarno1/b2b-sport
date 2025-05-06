@@ -9,7 +9,7 @@ import { useAuth } from '@/lib/context/auth-context';
 import Image from 'next/image';
 
 export default function LoginPage() {
-  const [role, setRole] = useState<UserRole>(UserRole.B2BSportAdmin);
+  const [role, setRole] = useState<UserRole>(UserRole.ClubAdmin);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -66,7 +66,6 @@ export default function LoginPage() {
                     onChange={(e) => setRole(e.target.value as UserRole)}
                     className="w-full text-gray-900 bg-white border border-gray-300 rounded-md py-2.5 pl-3 pr-10 appearance-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   >
-                    <option value={UserRole.B2BSportAdmin}>B2B Sport Admin</option>
                     <option value={UserRole.ClubAdmin}>Club Admin</option>
                     <option value={UserRole.ClubStaff}>Club Staff</option>
                   </select>
@@ -144,7 +143,7 @@ export default function LoginPage() {
             </form>
           </div>
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-500">B2B Sport Admin © {new Date().getFullYear()}</p>
+          <p className="text-sm text-gray-500">B2B Sport © {new Date().getFullYear()}</p>
           </div>
         </div>
       </div>
