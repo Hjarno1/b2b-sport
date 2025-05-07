@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { mockProducts, type Product } from '@/lib/data/mock-data';
 
 export default function ProductsPage() {
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [imageIndex, setImageIndex] = useState(0);
 
-  const openModal = (product: any) => {
+  const openModal = (product: Product) => {
     setSelectedProduct(product);
     setImageIndex(0);
   };

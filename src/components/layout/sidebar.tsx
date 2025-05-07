@@ -78,6 +78,11 @@ const clubStaffItems: SidebarItem[] = [
     icon: <Shirt className="h-5 w-5" />,
   },
   {
+    name: 'Products',
+    href: '/staff-products',
+    icon: <Users className="h-5 w-5" />,
+  },
+  {
     name: 'Teams Setup',
     href: '/teams-setup',
     icon: <Users className="h-5 w-5" />,
