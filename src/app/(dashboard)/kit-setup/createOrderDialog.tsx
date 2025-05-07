@@ -20,12 +20,20 @@ interface CreateOrderDialogProps {
   teams: TeamOption[];
 }
 
+interface PlayerKit {
+  jerseyNumber?: string;
+  jerseyName?: string;
+  shirtSize?: string;
+  shortsSize?: string;
+  additionalProducts?: number[];
+}
+
 export default function CreateOrderDialog({ open, onOpenChange, teams }: CreateOrderDialogProps) {
   const [agreementId] = useState(() => `agr-${Date.now()}`);
   const [teamId, setTeamId] = useState('');
   const [validUntil, setValidUntil] = useState('');
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
-  const [playerKitData, setPlayerKitData] = useState<Record<string, any>>({});
+  const [playerKitData, setPlayerKitData] = useState<Record<string, PlayerKit>>({});
 
   const teamPlayers = useMemo(
     () => mockPlayers.filter((p) => p.teamId === 'team-001'),
@@ -45,7 +53,11 @@ export default function CreateOrderDialog({ open, onOpenChange, teams }: CreateO
     );
   };
 
-  const updatePlayerKitField = (playerId: string, field: string, value: any) => {
+  const updatePlayerKitField = (
+    playerId: string,
+    field: keyof PlayerKit,
+    value: string | number | string[] | number[],
+  ) => {
     setPlayerKitData((prev) => ({
       ...prev,
       [playerId]: { ...prev[playerId], [field]: value },
