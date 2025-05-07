@@ -62,7 +62,7 @@ const mockTasks: Task[] = [
   {
     id: 'task-003',
     title: 'Opdater U15 Drenge',
-    teamName: "U15 Drenge",
+    teamName: 'U15 Drenge',
     agreementId: 'AGR-001243',
     dueDate: '1. Maj, 2025',
     status: 'overdue',
@@ -527,7 +527,7 @@ function TaskStatusBadge({ status }: { status: TaskStatus }) {
       );
     case 'in-progress':
       return (
-        <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+        <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
           <Gauge size={10} className="mr-1" /> In Progress
         </div>
       );

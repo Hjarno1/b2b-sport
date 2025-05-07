@@ -44,6 +44,11 @@ const clubAdminItems: SidebarItem[] = [
     icon: <ClipboardCheck className="h-5 w-5" />,
   },
   {
+    name: 'Products', // Changed from "Agreements" to "Kit Requests"
+    href: '/admin-products',
+    icon: <Shirt className="h-5 w-5" />,
+  },
+  {
     name: 'Orders',
     href: '/orders',
     icon: <ShoppingBag className="h-5 w-5" />,
@@ -63,7 +68,7 @@ const clubStaffItems: SidebarItem[] = [
     icon: <LayoutDashboard className="h-5 w-5" />,
   },
   {
-    name: 'Player Roster', // Changed from "Roster Management" to "Player Roster"
+    name: 'Player Management', // Changed from "Roster Management" to "Player Roster"
     href: '/player-roster',
     icon: <UserCircle className="h-5 w-5" />,
   },
@@ -71,6 +76,11 @@ const clubStaffItems: SidebarItem[] = [
     name: 'Kit Details',
     href: '/kit-setup',
     icon: <Shirt className="h-5 w-5" />,
+  },
+  {
+    name: 'Products',
+    href: '/staff-products',
+    icon: <ShoppingBag className="h-5 w-5" />,
   },
   {
     name: 'Teams Setup',
