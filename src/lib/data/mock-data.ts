@@ -241,6 +241,13 @@ export interface PlayerKitDetailsViewModel {
   playerMappings: PlayerMapping[];
 }
 
+export interface Product {
+  id: number;
+  name: string;
+  price: number;
+  images: string[];
+}
+
 // Mock Users
 export const mockUsers: User[] = [
   {
@@ -275,7 +282,7 @@ export const mockUsers: User[] = [
     status: UserStatus.Active,
     avatar: '/faces/martin-wolf-andersen.jpg',
     lastLogin: 'May 1, 2025, 6:15 PM',
-  }
+  },
 ];
 
 // Mock Clubs
@@ -314,10 +321,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-003',
-    name: "U8 og U9 Drenge",
+    name: 'U8 og U9 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -338,10 +345,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-006',
-    name: "U11 Drenge",
+    name: 'U11 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -354,10 +361,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-008',
-    name: "U13 Drenge",
+    name: 'U13 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -370,10 +377,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-010',
-    name: "U15 Drenge",
+    name: 'U15 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -386,10 +393,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-012',
-    name: "U17 Drenge",
+    name: 'U17 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -402,10 +409,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-014',
-    name: "U19 Drenge",
+    name: 'U19 Drenge',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -418,10 +425,10 @@ export const mockTeams: Team[] = [
   },
   {
     id: 'team-016',
-    name: "3. division herrer",
+    name: '3. division herrer',
     clubId: 'club-001',
     playerCount: 14,
-    type: "Drenge hold",
+    type: 'Drenge hold',
     createdAt: 'Feb 01, 2025',
   },
   {
@@ -832,125 +839,125 @@ export const mockTasks: Task[] = [
 ];
 
 export const mockTeamViewModels: TeamViewModel[] = [
-    {
-      id: 'team-001',
-      name: 'Lykkeliga Ribe Blues',
-      playerCount: 10,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-002',
-      name: 'U6 og U7 Drenge / Piger',
-      playerCount: 12,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-003',
-      name: 'U8 og U9 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-004',
-      name: 'U8 og U9 Piger',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-005',
-      name: 'U11 Piger',
-      playerCount: 15,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-006',
-      name: 'U11 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-007',
-      name: 'U13 Piger',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-008',
-      name: 'U13 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-009',
-      name: 'U15 Piger',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-010',
-      name: 'U15 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-011',
-      name: 'Serie 3 Damer',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-012',
-      name: 'U17 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-013',
-      name: 'U17 Piger',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-014',
-      name: 'U19 Drenge',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-015',
-      name: 'U19 Piger',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-016',
-      name: '3. Division Herrer',
-      playerCount: 14,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    },
-    {
-      id: 'team-017',
-      name: 'Herresenior (Serie 1)',
-      playerCount: 18,
-      kitRequestCount: 0,
-      pendingCount: 0,
-    }  
+  {
+    id: 'team-001',
+    name: 'Lykkeliga Ribe Blues',
+    playerCount: 10,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-002',
+    name: 'U6 og U7 Drenge / Piger',
+    playerCount: 12,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-003',
+    name: 'U8 og U9 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-004',
+    name: 'U8 og U9 Piger',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-005',
+    name: 'U11 Piger',
+    playerCount: 15,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-006',
+    name: 'U11 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-007',
+    name: 'U13 Piger',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-008',
+    name: 'U13 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-009',
+    name: 'U15 Piger',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-010',
+    name: 'U15 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-011',
+    name: 'Serie 3 Damer',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-012',
+    name: 'U17 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-013',
+    name: 'U17 Piger',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-014',
+    name: 'U19 Drenge',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-015',
+    name: 'U19 Piger',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-016',
+    name: '3. Division Herrer',
+    playerCount: 14,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
+  {
+    id: 'team-017',
+    name: 'Herresenior (Serie 1)',
+    playerCount: 18,
+    kitRequestCount: 0,
+    pendingCount: 0,
+  },
 ];
 
 export const mockKitRequests: KitRequestViewModel[] = [
@@ -968,7 +975,7 @@ export const mockKitRequests: KitRequestViewModel[] = [
   {
     id: 'AGR-001246',
     name: 'U19 Piger Spillertrøjer 2025/26',
-    teamName: "U19 Piger",
+    teamName: 'U19 Piger',
     status: AgreementStatus.Active,
     dueDate: '20. April, 2025',
     progress: 100,
@@ -1011,8 +1018,8 @@ export const mockOrderViewModels: OrderViewModel[] = [
     agreementId: 'AGR-001242',
     clubId: 'club-001',
     teamId: 'team-001',
-    teamName: "Lykkeliga Ribe Blues",
-    kitName: "Lykkeliga Ribe Blues Spillertrøjer 2024/25",
+    teamName: 'Lykkeliga Ribe Blues',
+    kitName: 'Lykkeliga Ribe Blues Spillertrøjer 2024/25',
     createdAt: 'Mar 25, 2024',
     updatedAt: 'Apr 10, 2024',
     status: OrderStatus.Delivered,
@@ -1079,7 +1086,54 @@ export const mockKitDetailRoster: {
     isActive: true,
     image: '/faces/elma-madsen.jpg',
   },
+];
 
+// Mock Product Data
+export const mockProducts: Product[] = [
+  {
+    id: 1,
+    name: 'Handball Shirt',
+    price: 180,
+    images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
+  },
+  {
+    id: 2,
+    name: 'Handball Shorts',
+    price: 90,
+    images: ['rhk-spillershorts-front.jpg', 'rhk-spillershorts-bagside.jpg'],
+  },
+  {
+    id: 3,
+    name: 'Hummel Evolution AR Handball Energizer Gr 1',
+    price: 100,
+    images: ['handball-1.jpg'],
+  },
+  {
+    id: 4,
+    name: 'Hummel Evolution AR Handball Energizer Gr 2',
+    price: 100,
+    images: ['handball-2.jpg'],
+  },
+  {
+    id: 5,
+    name: 'Supreme Sportstape 8-pack (3,8 cm. x 13,7 m.)',
+    price: 125,
+    images: ['sportstape-1.webp'],
+  },
+  {
+    id: 6,
+    name: 'Strappal sportstape 24-pack (4 cm. x 10 m.)',
+    price: 200,
+    images: ['sportstape-2.webp'],
+  },
+  {
+    id: 7,
+    name: 'Strappal sportstape 36-pack (2,5 cm. x 10 m.)',
+    price: 250,
+    images: ['sportstape-3.webp'],
+  },
+  { id: 8, name: 'SELECT Teamgear Harpiks 100 ML', price: 50, images: ['resin-2.webp'] },
+  { id: 9, name: 'SELECT Teamgear Harpiks 500 ML', price: 200, images: ['resin-1.webp'] },
 ];
 
 // Helper functions
