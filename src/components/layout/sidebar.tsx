@@ -46,7 +46,7 @@ const clubAdminItems: SidebarItem[] = [
   {
     name: 'Products', // Changed from "Agreements" to "Kit Requests"
     href: '/admin-products',
-    icon: <ClipboardCheck className="h-5 w-5" />,
+    icon: <Shirt className="h-5 w-5" />,
   },
   {
     name: 'Orders',
@@ -80,7 +80,7 @@ const clubStaffItems: SidebarItem[] = [
   {
     name: 'Products',
     href: '/staff-products',
-    icon: <Users className="h-5 w-5" />,
+    icon: <ShoppingBag className="h-5 w-5" />,
   },
   {
     name: 'Teams Setup',

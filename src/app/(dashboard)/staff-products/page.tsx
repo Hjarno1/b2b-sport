@@ -11,7 +11,22 @@ export default function StaffProductsPage() {
     setSelectedProduct(product);
     setImageIndex(0);
   };
+
   const closeModal = () => setSelectedProduct(null);
+
+  const nextImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!selectedProduct || selectedProduct.images.length === 0) return;
+    setImageIndex((prev) => (prev + 1) % selectedProduct.images.length);
+  };
+
+  const prevImage = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!selectedProduct || selectedProduct.images.length === 0) return;
+    setImageIndex(
+      (prev) => (prev - 1 + selectedProduct.images.length) % selectedProduct.images.length,
+    );
+  };
 
   return (
     <div className="p-4">
@@ -63,7 +78,32 @@ export default function StaffProductsPage() {
               height={600}
               className="object-contain mx-auto max-h-[80vh]"
             />
-            {/* include your modal navigation arrows and close button here */}
+            {selectedProduct.images.length > 1 && (
+              <>
+                <div className="absolute top-1/2 left-4 transform -translate-y-1/2">
+                  <button
+                    onClick={(e) => prevImage(e)}
+                    className="text-black text-3xl bg-white bg-opacity-80 px-2 rounded-full"
+                  >
+                    &#8249;
+                  </button>
+                </div>
+                <div className="absolute top-1/2 right-4 transform -translate-y-1/2">
+                  <button
+                    onClick={(e) => nextImage(e)}
+                    className="text-black text-3xl bg-white bg-opacity-80 px-2 rounded-full"
+                  >
+                    &#8250;
+                  </button>
+                </div>
+              </>
+            )}
+            <button
+              className="absolute top-2 right-2 text-white bg-black rounded-full px-3 py-1"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
           </div>
         </div>
       )}
