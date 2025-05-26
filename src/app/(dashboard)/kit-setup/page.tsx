@@ -16,7 +16,6 @@ import {
 import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, AgreementStatus } from '@/lib/data/mock-data';
-import { getClubTeams } from '@/lib/data/mock-data';
 
 // Kit Request data structure
 interface KitRequest {
@@ -36,9 +35,6 @@ export default function KitSetupPage() {
   const [kitRequests, setKitRequests] = useState<KitRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [openCreateOrder, setOpenCreateOrder] = useState(false);
-  const teams = user?.clubId ? getClubTeams(user.clubId) : [];
-
   // Fetch kit requests on mount or user change
   useEffect(() => {
     async function fetchRequests() {
