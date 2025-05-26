@@ -246,6 +246,8 @@ export interface Product {
   name: string;
   price: number;
   images: string[];
+  sizes?: string[];
+  customizable: boolean;
 }
 
 // Mock Users
@@ -1095,45 +1097,66 @@ export const mockProducts: Product[] = [
     name: 'Handball Shirt',
     price: 180,
     images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    customizable: true,
   },
   {
     id: 2,
     name: 'Handball Shorts',
     price: 90,
     images: ['rhk-spillershorts-front.jpg', 'rhk-spillershorts-bagside.jpg'],
+    sizes: ['XS', 'S', 'M', 'L', 'XL'],
+    customizable: true,
   },
   {
     id: 3,
     name: 'Hummel Evolution AR Handball Energizer Gr 1',
     price: 100,
     images: ['handball-1.jpg'],
+    customizable: false,
   },
   {
     id: 4,
     name: 'Hummel Evolution AR Handball Energizer Gr 2',
     price: 100,
     images: ['handball-2.jpg'],
+    customizable: false,
   },
   {
     id: 5,
     name: 'Supreme Sportstape 8-pack (3,8 cm. x 13,7 m.)',
     price: 125,
     images: ['sportstape-1.webp'],
+    customizable: false,
   },
   {
     id: 6,
     name: 'Strappal sportstape 24-pack (4 cm. x 10 m.)',
     price: 200,
     images: ['sportstape-2.webp'],
+    customizable: false,
   },
   {
     id: 7,
     name: 'Strappal sportstape 36-pack (2,5 cm. x 10 m.)',
     price: 250,
     images: ['sportstape-3.webp'],
+    customizable: false,
   },
-  { id: 8, name: 'SELECT Teamgear Harpiks 100 ML', price: 50, images: ['resin-2.webp'] },
-  { id: 9, name: 'SELECT Teamgear Harpiks 500 ML', price: 200, images: ['resin-1.webp'] },
+  {
+    id: 8,
+    name: 'SELECT Teamgear Harpiks 100 ML',
+    price: 50,
+    images: ['resin-2.webp'],
+    customizable: false,
+  },
+  {
+    id: 9,
+    name: 'SELECT Teamgear Harpiks 500 ML',
+    price: 200,
+    images: ['resin-1.webp'],
+    customizable: false,
+  },
 ];
 
 // Helper functions
