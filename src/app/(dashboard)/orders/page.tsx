@@ -27,7 +27,6 @@ export default function CreateOrderPage() {
 
     const requiresSize = product.sizes && product.sizes.length > 0;
     const requiresQuantity = !!selection?.quantity;
-    const itemTotals = shoppingList.map((item) => item.price * item.quantity);
 
     if ((requiresSize && !selection?.size) || !requiresQuantity) {
       return;
