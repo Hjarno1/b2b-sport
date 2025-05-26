@@ -16,8 +16,6 @@ import {
 import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, AgreementStatus } from '@/lib/data/mock-data';
-import CreateOrderDialog from './createOrderDialog';
-import { getClubTeams } from '@/lib/data/mock-data';
 
 // Kit Request data structure
 interface KitRequest {
@@ -37,9 +35,6 @@ export default function KitSetupPage() {
   const [kitRequests, setKitRequests] = useState<KitRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [openCreateOrder, setOpenCreateOrder] = useState(false);
-  const teams = user?.clubId ? getClubTeams(user.clubId) : [];
-
   // Fetch kit requests on mount or user change
   useEffect(() => {
     async function fetchRequests() {
@@ -132,19 +127,13 @@ export default function KitSetupPage() {
           <p className="text-gray-500 text-sm mt-1">
             Complete kit details for players in {clubName}
           </p>
-          <button
-            onClick={() => setOpenCreateOrder(true)}
+          <Link
+            href="/orders"
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
           >
             <Shirt size={16} />
             Create Order
-          </button>
-
-          <CreateOrderDialog
-            open={openCreateOrder}
-            onOpenChange={setOpenCreateOrder}
-            teams={teams /* already fetched in page */}
-          />
+          </Link>
         </div>
       </div>
 
