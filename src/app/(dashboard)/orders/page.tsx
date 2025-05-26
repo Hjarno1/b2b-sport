@@ -52,7 +52,11 @@ export default function CreateOrderPage() {
     setShoppingList((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const updateSelection = (productId: number, field: keyof ShoppingItem, value: any) => {
+  const updateSelection = (
+    productId: number,
+    field: keyof ShoppingItem,
+    value: string | number,
+  ) => {
     setSelectedOptions((prev) => ({
       ...prev,
       [productId]: { ...prev[productId], [field]: value },
@@ -64,7 +68,7 @@ export default function CreateOrderPage() {
     alert('Order submitted to console (mock)!');
   };
 
-  const updateShoppingItem = (index: number, field: keyof ShoppingItem, value: any) => {
+  const updateShoppingItem = (index: number, field: keyof ShoppingItem, value: string | number) => {
     setShoppingList((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
