@@ -1094,7 +1094,7 @@ export const mockKitDetailRoster: {
 export const mockProducts: Product[] = [
   {
     id: 1,
-    name: 'Handball Shirt',
+    name: 'Hjemmebane Spillertrøje',
     price: 180,
     images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
@@ -1102,7 +1102,7 @@ export const mockProducts: Product[] = [
   },
   {
     id: 2,
-    name: 'Handball Shorts',
+    name: 'Hjemmebane Spillershorts',
     price: 90,
     images: ['rhk-spillershorts-front.jpg', 'rhk-spillershorts-bagside.jpg'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],

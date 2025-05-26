@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { mockProducts, type Product } from '@/lib/data/mock-data';
+import Link from 'next/link';
+import { Shirt } from 'lucide-react';
 
 export default function ProductsPage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -36,6 +38,13 @@ export default function ProductsPage() {
           <option>2024/2025</option>
           <option>2023/2024</option>
         </select>
+        <Link
+          href="/order-create-admin"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+        >
+          <Shirt size={16} />
+          Ny Bestilling
+        </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {mockProducts.map((product) => (

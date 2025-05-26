@@ -127,13 +127,6 @@ export default function KitSetupPage() {
           <p className="text-gray-500 text-sm mt-1">
             Complete kit details for players in {clubName}
           </p>
-          <Link
-            href="/orders"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
-          >
-            <Shirt size={16} />
-            Create Order
-          </Link>
         </div>
       </div>
 
