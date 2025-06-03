@@ -60,7 +60,7 @@ export default function CreateOrderPage() {
 
   const handleValidateOrder = () => {
     localStorage.setItem('orderList', JSON.stringify(orderList));
-    router.push('/validate-order-staff');
+    router.push('/validate-order-admin');
   };
 
   const updateItem = (index: number, field: keyof OrderItem, value: string | number) => {
