@@ -43,13 +43,12 @@ export default function ValidateOrderPage() {
       return {
         id: item.id,
         name: item.name,
+        price: productInfo?.price || 0,
         images: productInfo?.images || [],
-        sizes: [item.size],
+        sizes: productInfo?.sizes || [],
         customizable: !!item.numbers?.length,
-        size: [item.size],
         quantity: item.quantity,
         numbers: (item.numbers || []).map(Number),
-        price: (productInfo?.price ?? 0) * item.quantity,
       };
     });
 
