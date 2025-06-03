@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 
 interface OrderItem {
   id: number;
   name: string;
   size: string;
   quantity: number;
-  number?: string;
+  numbers?: string[];
   price: number;
 }
 
@@ -31,11 +32,54 @@ export default function ValidateOrderPage() {
   }, []);
 
   const handleSendOrder = () => {
+    const formatDate = (isoDate: string) =>
+      new Date(isoDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+
+    const products: OrderProducts[] = orderList.map((item) => {
+      const productInfo = mockProducts.find((p) => p.id === item.id);
+      return {
+        id: item.id,
+        name: item.name,
+        images: productInfo?.images || [],
+        sizes: [item.size],
+        customizable: !!item.numbers?.length,
+        size: [item.size],
+        quantity: item.quantity,
+        numbers: (item.numbers || []).map(Number),
+        price: item.price * item.quantity,
+      };
+    });
+
+    const totalPrice = products.reduce((sum, p) => sum + p.price, 0);
+
+    const newOrder: Order = {
+      id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+      agreementId: 'demo-agreement-id',
+      clubId: 'club-001',
+      teamId: 'team-003',
+      createdAt: formatDate(new Date().toISOString()),
+      updatedAt: formatDate(new Date().toISOString()),
+      status: OrderStatus.Pending,
+      items: products.reduce((sum, p) => sum + p.quantity, 0),
+      playerCount: products.reduce((sum, p) => sum + p.numbers.length, 0),
+      progress: 0,
+      total: totalPrice,
+      products,
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
+    localStorage.setItem('submittedOrders', JSON.stringify([...existingOrders, newOrder]));
+
     setSubmitted(true);
     localStorage.removeItem('orderList');
+
     console.log(
       'Order sent:',
-      orderList,
+      newOrder,
       addressMode === 'custom' ? customAddress : 'Default address',
     );
   };
@@ -46,7 +90,7 @@ export default function ValidateOrderPage() {
     return (
       <div className="p-6 max-w-2xl mx-auto text-center">
         <h1 className="text-2xl font-bold mb-4">Thank you for your order request!</h1>
-        <p className="text-lg">You will recieve a order confirmation within the next 48 hours.</p>
+        <p className="text-lg">You will receive an order confirmation within the next 48 hours.</p>
       </div>
     );
   }
@@ -121,7 +165,9 @@ export default function ValidateOrderPage() {
               <p className="font-medium">{item.name}</p>
               <p className="text-sm">Size: {item.size}</p>
               <p className="text-sm">Quantity: {item.quantity}</p>
-              {item.number && <p className="text-sm">Player Number: {item.number}</p>}
+              {item.numbers && item.numbers.length > 0 && (
+                <p className="text-sm">Player Numbers: {item.numbers.join(', ')}</p>
+              )}
               <p className="text-sm">Price: {item.price} DKK</p>
               <p className="text-sm font-semibold">Subtotal: {item.price * item.quantity} DKK</p>
             </li>

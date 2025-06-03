@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 
 interface OrderItem {
   id: number;
   name: string;
   size: string;
   quantity: number;
-  number?: string;
+  numbers?: string[];
 }
 
 export default function ValidateOrderPage() {
@@ -30,11 +31,51 @@ export default function ValidateOrderPage() {
   }, []);
 
   const handleSendOrder = () => {
+    const formatDate = (isoDate: string) =>
+      new Date(isoDate).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+
+    const products: OrderProducts[] = orderList.map((item) => {
+      const productInfo = mockProducts.find((p) => p.id === item.id);
+      return {
+        id: item.id,
+        name: item.name,
+        price: productInfo?.price || 0,
+        images: productInfo?.images || [],
+        sizes: productInfo?.sizes || [],
+        customizable: !!item.numbers?.length,
+        quantity: item.quantity,
+        numbers: (item.numbers || []).map(Number),
+      };
+    });
+
+    const newOrder: Order = {
+      id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+      agreementId: 'demo-agreement-id',
+      clubId: 'club-001',
+      teamId: 'team-003',
+      createdAt: formatDate(new Date().toISOString()),
+      updatedAt: formatDate(new Date().toISOString()),
+      status: OrderStatus.Pending,
+      items: products.reduce((sum, p) => sum + p.quantity, 0),
+      playerCount: products.reduce((sum, p) => sum + p.numbers.length, 0),
+      progress: 0,
+      total: products.reduce((sum, p) => sum + p.price * p.quantity, 0),
+      products,
+    };
+
+    // Optionally store in a list of submitted orders
+    const existingOrders = JSON.parse(localStorage.getItem('submittedOrders') || '[]');
+    localStorage.setItem('submittedOrders', JSON.stringify([...existingOrders, newOrder]));
+
     setSubmitted(true);
     localStorage.removeItem('orderList');
     console.log(
       'Order sent:',
-      orderList,
+      newOrder,
       addressMode === 'custom' ? customAddress : 'Default address',
     );
   };
@@ -120,7 +161,9 @@ export default function ValidateOrderPage() {
               <p className="font-medium">{item.name}</p>
               <p className="text-sm">Size: {item.size}</p>
               <p className="text-sm">Quantity: {item.quantity}</p>
-              {item.number && <p className="text-sm">Player Number: {item.number}</p>}
+              {item.numbers && item.numbers.length > 0 && (
+                <p className="text-sm">Player Numbers: {item.numbers.join(', ')}</p>
+              )}
             </li>
           ))}
         </ul>
