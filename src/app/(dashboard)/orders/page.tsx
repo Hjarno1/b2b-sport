@@ -15,26 +15,19 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { useAuth } from '@/lib/context/auth-context';
-import { getClubById, mockOrders } from '@/lib/data/mock-data';
+import { getClubById, mockOrders, Order } from '@/lib/data/mock-data';
+import OrderDetailsModal from '@/app/components/orders/orderDetailsModal';
 
 // Order status type definition
 type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Canceled';
 
 // Order interface
-interface Order {
-  id: string;
-  agreementId: string;
-  clubId: string;
-  createdAt: string;
-  status: OrderStatus;
-  completedBy?: string;
-  items?: number; // Added for demo purposes
-  total?: number; // Added for demo purposes
-}
 
 export default function OrdersPage() {
   const { user } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
@@ -44,13 +37,16 @@ export default function OrdersPage() {
       try {
         // In a real app, we would fetch from an API
         // For demo, we'll use the mock data and filter it
-        let data = [...mockOrders];
+        const stored = localStorage.getItem('submittedOrders');
+        const submittedOrders: Order[] = stored ? JSON.parse(stored) : [];
+
+        let data = [...mockOrders, ...submittedOrders];
 
         // Add some demo data
         data = data.map((order) => ({
           ...order,
-          items: Math.floor(Math.random() * 20) + 1, // 1-20 items
-          total: Math.floor(Math.random() * 10000) + 500, // 500-10500 DKK
+          // items: Math.floor(Math.random() * 20) + 1, // 1-20 items
+          // total: Math.floor(Math.random() * 10000) + 500, // 500-10500 DKK
         }));
 
         // Filter for current club admin
@@ -68,6 +64,18 @@ export default function OrdersPage() {
 
     fetchOrders();
   }, [user]);
+
+  // order modal
+  const openModal = (order: Order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
+  // order modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null);
+  };
 
   // Filter orders
   const filteredOrders = orders.filter((order) => {
@@ -295,7 +303,10 @@ export default function OrdersPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{statusConfig.badge}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button className="text-primary hover:text-primary/80 transition-colors">
+                      <button
+                        className="text-primary hover:text-primary/80 transition-colors"
+                        onClick={() => openModal(order)}
+                      >
                         <Eye size={16} />
                       </button>
                     </td>
@@ -305,6 +316,9 @@ export default function OrdersPage() {
             </tbody>
           </table>
         </div>
+      )}
+      {selectedOrder && (
+        <OrderDetailsModal order={selectedOrder} isOpen={isModalOpen} onClose={closeModal} />
       )}
     </div>
   );

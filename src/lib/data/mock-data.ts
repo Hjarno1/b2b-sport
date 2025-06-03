@@ -161,6 +161,8 @@ export interface Order {
   trackingNumber?: string;
   playerCount: number;
   progress: number;
+  total: number;
+  products?: OrderProducts[];
 }
 
 export interface Activity {
@@ -248,6 +250,17 @@ export interface Product {
   images: string[];
   sizes?: string[];
   customizable: boolean;
+}
+
+export interface OrderProducts {
+  id: number;
+  name: string;
+  price: number;
+  images: string[];
+  sizes?: string[];
+  customizable: boolean;
+  quantity: number;
+  numbers: number[];
 }
 
 // Mock Users
@@ -689,6 +702,30 @@ export const mockPlayerMappings: PlayerMapping[] = [
   },
 ];
 
+// Mock Order Products
+export const mockOrderProducts: OrderProducts[] = [
+  {
+    id: 1,
+    name: 'Hjemmebane Spillertrøje',
+    price: 180,
+    images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
+    sizes: ['XS', 'S'],
+    customizable: true,
+    quantity: 2,
+    numbers: [4, 6],
+  },
+  {
+    id: 2,
+    name: 'Hjemmebane Spillertrøje',
+    price: 180,
+    images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
+    sizes: ['M'],
+    customizable: true,
+    quantity: 3,
+    numbers: [10, 11, 12],
+  },
+];
+
 // Mock Orders
 export const mockOrders: Order[] = [
   {
@@ -703,6 +740,11 @@ export const mockOrders: Order[] = [
     estimatedDelivery: 'Apr 26, 2025',
     playerCount: 2,
     progress: 40,
+    total: 2150,
+    products: [
+      mockOrderProducts.find((product) => product.id == 1)!,
+      mockOrderProducts.find((product) => product.id == 2)!,
+    ],
   },
   {
     id: 'ORD-2457',
@@ -717,6 +759,11 @@ export const mockOrders: Order[] = [
     trackingNumber: 'TRK123456789',
     playerCount: 12,
     progress: 75,
+    total: 13450,
+    products: [
+      mockOrderProducts.find((product) => product.id == 1)!,
+      mockOrderProducts.find((product) => product.id == 2)!,
+    ],
   },
   {
     id: 'ORD-2456',
@@ -730,9 +777,32 @@ export const mockOrders: Order[] = [
     completedBy: 'user-003',
     playerCount: 14,
     progress: 100,
+    total: 22340,
+    products: [
+      mockOrderProducts.find((product) => product.id == 1)!,
+      mockOrderProducts.find((product) => product.id == 2)!,
+    ],
+  },
+  {
+    id: 'ORD-2458',
+    agreementId: 'AGR-001244',
+    clubId: 'club-001',
+    teamId: 'team-004',
+    createdAt: 'Apr 14, 2025',
+    updatedAt: 'Apr 15, 2025',
+    status: OrderStatus.Processing,
+    items: 2,
+    estimatedDelivery: 'Apr 20, 2025',
+    trackingNumber: 'TRK123456789',
+    playerCount: 12,
+    progress: 75,
+    total: 13450,
+    products: [
+      mockOrderProducts.find((product) => product.id == 1)!,
+      mockOrderProducts.find((product) => product.id == 2)!,
+    ],
   },
 ];
-
 // Mock Activities
 export const mockActivities: Activity[] = [
   {

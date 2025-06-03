@@ -43,7 +43,7 @@ export default function ProductsPage() {
           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
         >
           <Shirt size={16} />
-          Ny Bestilling
+          Create Order Request
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
