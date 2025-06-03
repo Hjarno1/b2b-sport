@@ -31,7 +31,7 @@ export default function CreateOrderPage() {
   const handleAddToCart = (product: Product) => {
     const selection = selectedOptions[product.id];
     const requiresSize = Array.isArray(product.sizes) && product.sizes.length > 0;
-    const quantity = selection?.quantity || 1;
+    const quantity = selection?.quantity ?? 1;
     const numbers = product.customizable ? tempNumbers : undefined;
 
     if ((requiresSize && !selection?.size) || !quantity) return;
@@ -39,7 +39,7 @@ export default function CreateOrderPage() {
     const newItem: OrderItem = {
       ...product,
       quantity,
-      size: selection?.size || '',
+      size: selection?.size ?? '',
       numbers,
     };
 
@@ -60,35 +60,38 @@ export default function CreateOrderPage() {
 
   const handleValidateOrder = () => {
     localStorage.setItem('orderList', JSON.stringify(orderList));
-    router.push('/validate-order-admin');
+    router.push('/validate-order-staff');
   };
 
   const updateItem = (index: number, field: keyof OrderItem, value: string | number) => {
     setOrderList((prev) => {
       const updated = [...prev];
+      const item = { ...updated[index] };
 
       if (field === 'quantity') {
-        const quantity = Number(value);
-        if (!Number.isNaN(quantity) && quantity > 0) {
-          updated[index].quantity = quantity;
+        const parsed = typeof value === 'string' ? parseInt(value, 10) : value;
 
-          if (updated[index].customizable) {
-            const prevNumbers = updated[index].numbers || [];
-            if (quantity > prevNumbers.length) {
-              updated[index].numbers = [
-                ...prevNumbers,
-                ...new Array(quantity - prevNumbers.length).fill(''),
-              ];
-            } else {
-              updated[index].numbers = prevNumbers.slice(0, quantity);
-            }
+        if (!Number.isNaN(parsed) && parsed > 0) {
+          item.quantity = parsed;
+
+          if (item.customizable) {
+            const current = item.numbers || [];
+            item.numbers =
+              parsed > current.length
+                ? [...current, ...new Array(parsed - current.length).fill('')]
+                : current.slice(0, parsed);
           }
         }
 
+        updated[index] = item;
         return updated;
       }
 
-      (updated[index] as any)[field] = value;
+      if (field === 'size') {
+        item.size = String(value);
+        updated[index] = item;
+      }
+
       return updated;
     });
   };
@@ -96,9 +99,14 @@ export default function CreateOrderPage() {
   const updatePlayerNumber = (itemIndex: number, numIndex: number, value: string) => {
     setOrderList((prev) => {
       const updated = [...prev];
-      if (updated[itemIndex].numbers) {
-        updated[itemIndex].numbers![numIndex] = value;
+      const item = { ...updated[itemIndex] };
+
+      if (item.numbers) {
+        item.numbers = [...item.numbers];
+        item.numbers[numIndex] = value;
+        updated[itemIndex] = item;
       }
+
       return updated;
     });
   };
@@ -108,10 +116,36 @@ export default function CreateOrderPage() {
     if (ref) ref.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const totalPrice = orderList.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-6">
+    <div className="flex flex-col md:flex-row-reverse gap-6 p-6">
+      <aside className="w-full md:w-1/3 lg:w-1/4 bg-gray-50 p-4 border-l border-gray-200">
+        <h2 className="text-lg font-semibold mb-4">Order Overview</h2>
+        <ul className="space-y-4">
+          {orderList.map((item, index) => (
+            <li
+              key={index}
+              className="p-2 bg-white rounded shadow-sm flex justify-between items-center"
+            >
+              <div>
+                <p className="font-medium">{item.name}</p>
+                <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
+                {item.numbers && item.numbers.length > 0 && (
+                  <p className="text-sm text-gray-600">Numbers: {item.numbers.join(', ')}</p>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Trash2
+                  className="text-red-500 cursor-pointer"
+                  onClick={() => handleRemoveFromCart(index)}
+                />
+                <Pencil className="cursor-pointer" onClick={() => scrollToItem(index)} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
       <main className="flex-1 space-y-6">
         <h1 className="text-2xl font-bold">Create Order Request</h1>
 
@@ -124,9 +158,8 @@ export default function CreateOrderPage() {
                 className="w-full h-40 object-cover rounded"
               />
               <h2 className="font-semibold">{product.name}</h2>
-              <p>Price: {product.price} DKK</p>
 
-              {product.sizes && product.sizes.length > 0 && (
+              {Array.isArray(product.sizes) && product.sizes.length > 0 && (
                 <select
                   className="w-full p-2 border rounded"
                   value={selectedOptions[product.id]?.size || ''}
@@ -145,7 +178,7 @@ export default function CreateOrderPage() {
                 type="number"
                 placeholder="Quantity"
                 className="w-full p-2 border rounded"
-                value={selectedOptions[product.id]?.quantity || ''}
+                value={selectedOptions[product.id]?.quantity ?? ''}
                 onChange={(e) => updateSelection(product.id, 'quantity', parseInt(e.target.value))}
               />
 
@@ -159,7 +192,7 @@ export default function CreateOrderPage() {
                     Array.isArray(product.sizes) &&
                     product.sizes.length > 0
                   ) {
-                    const currentSize = selectedOptions[product.id]?.size || '';
+                    const currentSize = selectedOptions[product.id]?.size ?? '';
                     setSelectedOptions((prev) => ({
                       ...prev,
                       [product.id]: { ...prev[product.id], size: currentSize, quantity },
@@ -194,12 +227,12 @@ export default function CreateOrderPage() {
                     <input
                       type="number"
                       className="w-8 p-1 border rounded text-center"
-                      value={item.quantity ?? ''}
+                      value={item.quantity || ''}
                       onChange={(e) => updateItem(index, 'quantity', e.target.value)}
                       min={1}
                     />
                     x <span className="font-semibold">{item.name}</span>
-                    {item.size && (
+                    {Array.isArray(item.sizes) && item.sizes.length > 0 && item.size && (
                       <>
                         in size
                         <select
@@ -207,7 +240,7 @@ export default function CreateOrderPage() {
                           value={item.size}
                           onChange={(e) => updateItem(index, 'size', e.target.value)}
                         >
-                          {item.sizes?.map((size) => (
+                          {item.sizes.map((size) => (
                             <option key={size} value={size}>
                               {size}
                             </option>
@@ -228,20 +261,14 @@ export default function CreateOrderPage() {
                           />
                         </span>
                       ))}
-                    <span className="ml-auto font-semibold">
-                      = {item.price * item.quantity} DKK
-                    </span>
                   </div>
                   <Trash2
                     className="text-red-500 cursor-pointer"
                     onClick={() => handleRemoveFromCart(index)}
                   />
-                  <Pencil className="cursor-pointer" onClick={() => scrollToItem(index)} />
                 </li>
               ))}
             </ul>
-
-            <div className="mt-4 text-right text-lg font-semibold">Total: {totalPrice} DKK</div>
 
             <div className="text-right">
               <button
@@ -254,28 +281,6 @@ export default function CreateOrderPage() {
           </div>
         )}
       </main>
-
-      <aside className="w-full md:w-1/3 lg:w-1/4 bg-gray-50 p-4 border-l border-gray-200">
-        <h2 className="text-lg font-semibold mb-4">Order Overview</h2>
-        <ul className="space-y-4">
-          {orderList.map((item, index) => (
-            <li
-              key={index}
-              className="p-2 bg-white rounded shadow-sm flex justify-between items-center"
-            >
-              <div>
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
-                {item.numbers && item.numbers.length > 0 && (
-                  <p className="text-sm text-gray-600">Numbers: {item.numbers.join(', ')}</p>
-                )}
-              </div>
-              <div className="text-sm font-semibold">{item.price * item.quantity} DKK</div>
-            </li>
-          ))}
-        </ul>
-      </aside>
 
       {activeModalProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
