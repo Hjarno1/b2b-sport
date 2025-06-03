@@ -45,26 +45,26 @@ export default function ValidateOrderPage() {
   if (submitted) {
     return (
       <div className="p-6 max-w-2xl mx-auto text-center">
-        <h1 className="text-2xl font-bold mb-4">Tak for din bestillingsanmodning</h1>
-        <p className="text-lg">Den er modtaget, og vi vender tilbage inden for 2-3 hverdage.</p>
+        <h1 className="text-2xl font-bold mb-4">Thank you for your order request!</h1>
+        <p className="text-lg">You will recieve a order confirmation within the next 48 hours.</p>
       </div>
     );
   }
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Bekræft din ordre</h1>
+      <h1 className="text-2xl font-bold">Confirm order request</h1>
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Vælg leveringsadresse</h2>
+        <h2 className="text-lg font-semibold">Select delivery address</h2>
 
         <select
           className="p-2 border rounded w-full"
           value={addressMode}
           onChange={(e) => setAddressMode(e.target.value as 'default' | 'custom')}
         >
-          <option value="default">Standardadresse</option>
-          <option value="custom">Anden adresse</option>
+          <option value="default">Standard address</option>
+          <option value="custom">Alternative address</option>
         </select>
 
         {addressMode === 'default' ? (
@@ -83,28 +83,28 @@ export default function ValidateOrderPage() {
             />
             <input
               type="text"
-              placeholder="Navn på modtager"
+              placeholder="Name of recipient"
               className="w-full p-2 border rounded"
               value={customAddress.recipient}
               onChange={(e) => setCustomAddress({ ...customAddress, recipient: e.target.value })}
             />
             <input
               type="text"
-              placeholder="Vejnavn og nummer"
+              placeholder="Road name and number"
               className="w-full p-2 border rounded"
               value={customAddress.street}
               onChange={(e) => setCustomAddress({ ...customAddress, street: e.target.value })}
             />
             <input
               type="text"
-              placeholder="Postnummer"
+              placeholder="Zip code"
               className="w-full p-2 border rounded"
               value={customAddress.zip}
               onChange={(e) => setCustomAddress({ ...customAddress, zip: e.target.value })}
             />
             <input
               type="text"
-              placeholder="By"
+              placeholder="City"
               className="w-full p-2 border rounded"
               value={customAddress.city}
               onChange={(e) => setCustomAddress({ ...customAddress, city: e.target.value })}
@@ -114,15 +114,15 @@ export default function ValidateOrderPage() {
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Din ordre</h2>
+        <h2 className="text-lg font-semibold">Your order</h2>
         <ul className="space-y-2">
           {orderList.map((item, index) => (
             <li key={index} className="p-3 border rounded bg-gray-100">
               <p className="font-medium">{item.name}</p>
-              <p className="text-sm">Størrelse: {item.size}</p>
-              <p className="text-sm">Antal: {item.quantity}</p>
-              {item.number && <p className="text-sm">Nummer: {item.number}</p>}
-              <p className="text-sm">Pris: {item.price} DKK</p>
+              <p className="text-sm">Size: {item.size}</p>
+              <p className="text-sm">Quantity: {item.quantity}</p>
+              {item.number && <p className="text-sm">Player Number: {item.number}</p>}
+              <p className="text-sm">Price: {item.price} DKK</p>
               <p className="text-sm font-semibold">Subtotal: {item.price * item.quantity} DKK</p>
             </li>
           ))}
@@ -132,7 +132,7 @@ export default function ValidateOrderPage() {
 
       <div className="text-right">
         <button onClick={handleSendOrder} className="bg-green-600 text-white px-4 py-2 rounded">
-          Send bestillingsanmodning
+          Send Order Request
         </button>
       </div>
     </div>
