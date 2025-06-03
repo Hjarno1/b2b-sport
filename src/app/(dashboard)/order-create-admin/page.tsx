@@ -66,29 +66,26 @@ export default function CreateOrderPage() {
   const updateItem = (index: number, field: keyof OrderItem, value: string | number) => {
     setOrderList((prev) => {
       const updated = [...prev];
+      const item = { ...updated[index] };
 
       if (field === 'quantity') {
-        const quantity = Number(value);
+        const quantity = typeof value === 'string' ? parseInt(value, 10) : value;
         if (!Number.isNaN(quantity) && quantity > 0) {
-          updated[index].quantity = quantity;
+          item.quantity = quantity;
 
-          if (updated[index].customizable) {
-            const prevNumbers = updated[index].numbers || [];
-            if (quantity > prevNumbers.length) {
-              updated[index].numbers = [
-                ...prevNumbers,
-                ...new Array(quantity - prevNumbers.length).fill(''),
-              ];
-            } else {
-              updated[index].numbers = prevNumbers.slice(0, quantity);
-            }
+          if (item.customizable) {
+            const currentNumbers = item.numbers || [];
+            item.numbers =
+              quantity > currentNumbers.length
+                ? [...currentNumbers, ...new Array(quantity - currentNumbers.length).fill('')]
+                : currentNumbers.slice(0, quantity);
           }
         }
-
-        return updated;
+      } else if (field === 'size') {
+        item.size = String(value);
       }
 
-      (updated[index] as any)[field] = value;
+      updated[index] = item;
       return updated;
     });
   };
