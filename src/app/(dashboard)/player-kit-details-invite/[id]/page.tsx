@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { PlayerData, PlayerField } from '@/lib/data/mock-data';
+import { PlayerData } from '@/lib/data/mock-data';
 
 export default function InvitePage() {
   const params = useParams();
