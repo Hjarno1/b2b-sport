@@ -1,10 +1,31 @@
 // src/components/layout/header.tsx
 'use client';
 
+import { useState, useEffect } from 'react'; // Add this at the top
 import { useAuth } from '@/lib/context/auth-context';
 import { Bell, HelpCircle, Search } from 'lucide-react';
+import NotificationInformation from '@/app/components/shared/notificationInformation';
 
 export function Header({ isCollapsed = false }: { isCollapsed?: boolean }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hasNotifications, setHasNotifications] = useState(false);
+
+  useEffect(() => {
+  const stored = localStorage.getItem('submittedOrders');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        setHasNotifications(true);
+      } else {
+        setHasNotifications(false);
+      }
+    } catch {
+      setHasNotifications(false);
+    }
+  }
+}, []);
+
   const { user } = useAuth();
   console.log(user?.avatar);
   return (
@@ -27,10 +48,18 @@ export function Header({ isCollapsed = false }: { isCollapsed?: boolean }) {
       </div>
 
       <div className="flex items-center space-x-4">
-        <button className="p-2 rounded-full hover:bg-gray-100 relative">
-          <Bell size={20} className="text-gray-500" />
-          <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-        </button>
+        <div className="relative">
+          <button
+            className="p-2 rounded-full hover:bg-gray-100 relative"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+            <Bell size={20} className="text-gray-500" />
+            {hasNotifications && (
+              <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            )}
+          </button>
+          <NotificationInformation isOpen={dropdownOpen} />
+        </div>
 
         <button className="p-2 rounded-full hover:bg-gray-100">
           <HelpCircle size={20} className="text-gray-500" />

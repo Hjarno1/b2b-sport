@@ -7,6 +7,7 @@ import { UserRole } from '@/lib/data/mock-data';
 // Import the specific dashboard components for each role
 import ClubAdminDashboardContent from './club-admin-dashboard';
 import ClubStaffDashboardContent from './club-staff-dashboard';
+import ClubStaffFinanceDashboardContent from './club-finance-dashboard';
 
 // Main Dashboard component that renders the appropriate dashboard based on user role
 export default function DashboardPage() {
@@ -26,6 +27,8 @@ export default function DashboardPage() {
       return <ClubAdminDashboardContent />;
     case UserRole.ClubStaff:
       return <ClubStaffDashboardContent />;
+    case UserRole.ClubFinance:
+      return <ClubStaffFinanceDashboardContent />;
     default:
       return (
         <div className="bg-white rounded-lg shadow-sm p-8 text-center">

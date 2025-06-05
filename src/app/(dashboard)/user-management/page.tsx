@@ -77,6 +77,8 @@ export default function UserManagementPage() {
         return 'Add Club Admin';
       case UserRole.ClubStaff:
         return 'Add Club Staff';
+      case UserRole.ClubFinance:
+        return 'Add Club Finance';
       default:
         return 'Add User';
     }
@@ -122,6 +124,16 @@ export default function UserManagementPage() {
           >
             Club Staff
           </button>
+          <button
+            className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
+              activeTab === UserRole.ClubFinance
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+            onClick={() => setActiveTab(UserRole.ClubFinance)}
+          >
+            Club Finance
+          </button>
         </nav>
       </div>
 
@@ -138,23 +150,23 @@ export default function UserManagementPage() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-          <div className="relative">
-            <select
-              className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white"
-              value={clubFilter}
-              onChange={(e) => setClubFilter(e.target.value)}
-            >
-              <option value="All">All Clubs</option>
-              {mockClubs.map((club) => (
-                <option key={club.id} value={club.id}>
-                  {club.name}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-              <Building2 size={18} className="text-gray-600" />
-            </div>
+        <div className="relative">
+          <select
+            className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white"
+            value={clubFilter}
+            onChange={(e) => setClubFilter(e.target.value)}
+          >
+            <option value="All">All Clubs</option>
+            {mockClubs.map((club) => (
+              <option key={club.id} value={club.id}>
+                {club.name}
+              </option>
+            ))}
+          </select>
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <Building2 size={18} className="text-gray-600" />
           </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -173,12 +185,12 @@ export default function UserManagementPage() {
               >
                 Email
               </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Club
-                </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Club
+              </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -196,10 +208,7 @@ export default function UserManagementPage() {
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredUsers.length === 0 ? (
               <tr>
-                <td
-                  colSpan={5}
-                  className="px-6 py-4 text-center text-sm text-gray-500"
-                >
+                <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
                   No users found matching your criteria
                 </td>
               </tr>
@@ -233,12 +242,12 @@ export default function UserManagementPage() {
                       {user.email}
                     </div>
                   </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div className="flex items-center">
-                        <Building2 size={14} className="mr-1 text-gray-400" />
-                        {getClubName(user.clubId)}
-                      </div>
-                    </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex items-center">
+                      <Building2 size={14} className="mr-1 text-gray-400" />
+                      {getClubName(user.clubId)}
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(user.status)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button className="text-indigo-600 hover:text-indigo-900 flex items-center ml-auto">

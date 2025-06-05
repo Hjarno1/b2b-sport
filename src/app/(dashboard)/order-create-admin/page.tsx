@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil, FilePlus } from 'lucide-react';
 import { mockProducts } from '@/lib/data/mock-data';
+import ManualRequestModal from '@/app/components/manual-request/manualRequestModal';
 
 interface Product {
   id: number;
@@ -21,12 +22,27 @@ interface OrderItem extends Product {
 }
 
 export default function CreateOrderPage() {
+  const [modalOpen, setModalOpen] = useState(false);
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [selectedOptions, setSelectedOptions] = useState<Record<number, Partial<OrderItem>>>({});
   const [activeModalProduct, setActiveModalProduct] = useState<Product | null>(null);
   const [tempNumbers, setTempNumbers] = useState<string[]>([]);
   const itemRefs = useRef<Record<number, HTMLLIElement | null>>({});
   const router = useRouter();
+
+  useEffect(() => {
+    const storedOrder = localStorage.getItem('orderList');
+    if (storedOrder) {
+      try {
+        const parsed: OrderItem[] = JSON.parse(storedOrder);
+        setOrderList(parsed);
+        localStorage.removeItem('orderList');
+      } catch {
+        console.warn('Invalid orderList data in localStorage');
+        localStorage.removeItem('orderList');
+      }
+    }
+  }, []);
 
   const handleAddToCart = (product: Product) => {
     const selection = selectedOptions[product.id];
@@ -66,26 +82,29 @@ export default function CreateOrderPage() {
   const updateItem = (index: number, field: keyof OrderItem, value: string | number) => {
     setOrderList((prev) => {
       const updated = [...prev];
-      const item = { ...updated[index] };
 
       if (field === 'quantity') {
-        const quantity = typeof value === 'string' ? parseInt(value, 10) : value;
+        const quantity = Number(value);
         if (!Number.isNaN(quantity) && quantity > 0) {
-          item.quantity = quantity;
+          updated[index].quantity = quantity;
 
-          if (item.customizable) {
-            const currentNumbers = item.numbers || [];
-            item.numbers =
-              quantity > currentNumbers.length
-                ? [...currentNumbers, ...new Array(quantity - currentNumbers.length).fill('')]
-                : currentNumbers.slice(0, quantity);
+          if (updated[index].customizable) {
+            const prevNumbers = updated[index].numbers || [];
+            if (quantity > prevNumbers.length) {
+              updated[index].numbers = [
+                ...prevNumbers,
+                ...new Array(quantity - prevNumbers.length).fill(''),
+              ];
+            } else {
+              updated[index].numbers = prevNumbers.slice(0, quantity);
+            }
           }
         }
-      } else if (field === 'size') {
-        item.size = String(value);
+
+        return updated;
       }
 
-      updated[index] = item;
+      (updated[index] as any)[field] = value;
       return updated;
     });
   };
@@ -112,14 +131,27 @@ export default function CreateOrderPage() {
       <main className="flex-1 space-y-6">
         <h1 className="text-2xl font-bold">Create Order Request</h1>
 
+        <div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+          >
+            <FilePlus size={16} />
+            Create Manual Order
+          </button>
+
+          <ManualRequestModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mockProducts.map((product) => (
             <div key={product.id} className="border p-4 rounded-xl shadow space-y-3">
-              <img
-                src={`/products/${product.images[0]}`}
-                alt={product.name}
-                className="w-full h-40 object-cover rounded"
-              />
+               <img
+                  src={`/products/${product.images[0]}`}
+                  alt={product.name}
+                  className="w-full h-40 object-cover rounded cursor-pointer"
+                  onClick={() => router.push(`/product-details/${product.id}`)}
+                />
               <h2 className="font-semibold">{product.name}</h2>
               <p>Price: {product.price} DKK</p>
 
@@ -258,17 +290,27 @@ export default function CreateOrderPage() {
           {orderList.map((item, index) => (
             <li
               key={index}
-              className="p-2 bg-white rounded shadow-sm flex justify-between items-center"
+              className="p-2 bg-white rounded shadow-sm flex justify-between items-start gap-2"
             >
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">{item.name}</p>
                 <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                 {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
                 {item.numbers && item.numbers.length > 0 && (
                   <p className="text-sm text-gray-600">Numbers: {item.numbers.join(', ')}</p>
                 )}
+                <p className="text-sm font-semibold">{item.price * item.quantity} DKK</p>
               </div>
-              <div className="text-sm font-semibold">{item.price * item.quantity} DKK</div>
+              <div className="flex flex-col gap-2">
+                <Trash2
+                  className="text-red-500 cursor-pointer"
+                  onClick={() => handleRemoveFromCart(index)}
+                />
+                <Pencil
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => scrollToItem(index)}
+                />
+              </div>
             </li>
           ))}
         </ul>

@@ -61,12 +61,15 @@ export default function OrderDetailsModal({
               {order.products.map((product, index) => (
                 <li key={index} className="px-4 py-3 bg-gray-50 hover:bg-gray-100 transition">
                   <p className="font-medium text-gray-800">{product.name}</p>
-                  <p className="text-sm text-gray-600">Price: ${product.price}</p>
+                  <p className="text-sm text-gray-600">Price: {product.price} DKK</p>
                   {product.quantity && (
                     <p className="text-sm text-gray-600">Quantity: {product.quantity}</p>
                   )}
                   {product.sizes && product.sizes.length > 0 && (
                     <p className="text-sm text-gray-600">Sizes: {product.sizes.join(', ')}</p>
+                  )}
+                  {product.sizes && product.sizes.length > 0 && (
+                    <p className="text-sm text-gray-600">Player Numbers: {product.playerNumbers.join(', ')}</p>
                   )}
                 </li>
               ))}
@@ -76,6 +79,17 @@ export default function OrderDetailsModal({
 
         {/* 🎯 Conditional Action Buttons */}
         {order.status === OrderStatus.Delivered && (
+          <a
+            href={`/pdf/${order.orderInvoice}`}
+            download
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
+          >
+            <span className="text-xl">📄</span>
+            <span>Download Invoice</span>
+          </a>
+        )}
+
+        {/* {order.status === OrderStatus.Delivered && (
           <button
             onClick={() => alert('Downloading Invoice... 🧾')}
             className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-green-600 hover:to-green-800 transition"
@@ -83,9 +97,20 @@ export default function OrderDetailsModal({
             <span className="text-xl">📄</span>
             <span>Download Invoice</span>
           </button>
-        )}
+        )} */}
 
         {order.status === OrderStatus.Processing && (
+          <a
+            href={`/pdf/${order.orderConfirmation}`}
+            download
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
+          >
+            <span className="text-xl">📑</span>
+            <span>Download Order Confirmation</span>
+          </a>
+        )}
+
+        {/* {order.status === OrderStatus.Processing && (
           <button
             onClick={() => alert('Downloading Order Confirmation... 📬')}
             className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
@@ -93,7 +118,7 @@ export default function OrderDetailsModal({
             <span className="text-xl">📑</span>
             <span>Download Order Confirmation</span>
           </button>
-        )}
+        )} */}
 
 
         <button

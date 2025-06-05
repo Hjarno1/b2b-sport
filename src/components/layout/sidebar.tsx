@@ -26,6 +26,28 @@ interface SidebarItem {
   icon: React.ReactNode;
 }
 
+const clubFinanceItems: SidebarItem[] = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    icon: <LayoutDashboard className="h-5 w-5" />,
+  },
+  {
+    name: 'Club Agreements', // Changed from "Agreements" to "Kit Requests"
+    href: '/club-agreements',
+    icon: <ClipboardCheck className="h-5 w-5" />,
+  },
+  {
+    name: 'Invoices',
+    href: '/invoices',
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+  {
+    name: 'Settings',
+    href: '/settings',
+    icon: <Settings className="h-5 w-5" />,
+  },
+];
 // Club Admin uses more task-oriented language but still understands some business concepts
 const clubAdminItems: SidebarItem[] = [
   {
@@ -45,7 +67,7 @@ const clubAdminItems: SidebarItem[] = [
   },
   {
     name: 'Products', // Changed from "Agreements" to "Kit Requests"
-    href: '/admin-products',
+    href: '/order-create-admin',
     icon: <Shirt className="h-5 w-5" />,
   },
   {
@@ -79,7 +101,7 @@ const clubStaffItems: SidebarItem[] = [
   },
   {
     name: 'Products',
-    href: '/staff-products',
+    href: '/order-create-staff',
     icon: <ShoppingBag className="h-5 w-5" />,
   },
   {
@@ -110,6 +132,8 @@ export function Sidebar({
     navItems = clubAdminItems;
   } else if (user?.role === UserRole.ClubStaff) {
     navItems = clubStaffItems;
+  } else if (user?.role === UserRole.ClubFinance) {
+    navItems = clubFinanceItems;
   }
 
   return (

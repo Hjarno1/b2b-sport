@@ -20,6 +20,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, AgreementStatus } from '@/lib/data/mock-data';
+import { v4 as uuidv4 } from 'uuid';
 
 // Player from roster
 interface Player {
@@ -134,6 +135,27 @@ export default function PlayerKitDetailsPage() {
   const filteredRoster = roster.filter(
     (player) => player.name.toLowerCase().includes(searchTerm.toLowerCase()) && player.isActive,
   );
+
+  const handleInvitePlayer = (playerId: string) => {
+    const token = uuidv4();
+
+    const playerData = {
+      playerId,
+      fields: agreementDetails?.fields,
+      agreementId: agreementDetails?.id,
+    };
+
+    // Save it to localStorage (or send to backend)
+    const invites = JSON.parse(localStorage.getItem('playerInvites') || '{}');
+    invites[token] = playerData;
+    localStorage.setItem('playerInvites', JSON.stringify(invites));
+
+    const inviteUrl = `${window.location.origin}/player-kit-details-invite/${token}`;
+    navigator.clipboard.writeText(inviteUrl);
+
+    alert(`📨 Invite link copied to clipboard:\n${inviteUrl}`);
+  };
+
 
   // Function to check if a player mapping is complete
   const isPlayerMappingComplete = (
@@ -625,8 +647,19 @@ export default function PlayerKitDetailsPage() {
                                 )}
                               </div>
                             ))}
+                              {/* 🚀 Invite Player Button */}
+                              <div className="md:col-span-2 flex justify-end mt-4">
+                                <button
+                                  onClick={() => handleInvitePlayer(playerId)} // 🔁 replace with your handler
+                                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition"
+                                >
+                                  ✉️ Invite Player
+                                </button>
+                              </div>
                           </div>
                         )}
+
+
                       </div>
                     );
                   })}

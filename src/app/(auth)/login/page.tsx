@@ -68,6 +68,7 @@ export default function LoginPage() {
                   >
                     <option value={UserRole.ClubAdmin}>Club Admin</option>
                     <option value={UserRole.ClubStaff}>Club Staff</option>
+                    <option value={UserRole.ClubFinance}>Club Finance</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <svg
@@ -143,7 +144,7 @@ export default function LoginPage() {
             </form>
           </div>
           <div className="text-center mt-6">
-          <p className="text-sm text-gray-500">B2B Sport © {new Date().getFullYear()}</p>
+            <p className="text-sm text-gray-500">B2B Sport © {new Date().getFullYear()}</p>
           </div>
         </div>
       </div>

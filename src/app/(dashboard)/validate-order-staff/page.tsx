@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 
 interface OrderItem {
@@ -12,6 +13,7 @@ interface OrderItem {
 }
 
 export default function ValidateOrderPage() {
+  const router = useRouter();
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [addressMode, setAddressMode] = useState<'default' | 'custom'>('default');
   const [submitted, setSubmitted] = useState(false);
@@ -48,7 +50,7 @@ export default function ValidateOrderPage() {
         sizes: productInfo?.sizes || [],
         customizable: !!item.numbers?.length,
         quantity: item.quantity,
-        numbers: (item.numbers || []).map(Number),
+        playerNumbers: (item.numbers || []).map(Number),
       };
     });
 
@@ -61,7 +63,7 @@ export default function ValidateOrderPage() {
       updatedAt: formatDate(new Date().toISOString()),
       status: OrderStatus.Pending,
       items: products.reduce((sum, p) => sum + p.quantity, 0),
-      playerCount: products.reduce((sum, p) => sum + p.numbers.length, 0),
+      playerCount: products.reduce((sum, p) => sum + p.playerNumbers.length, 0),
       progress: 0,
       total: products.reduce((sum, p) => sum + p.price * p.quantity, 0),
       products,
@@ -169,9 +171,17 @@ export default function ValidateOrderPage() {
         </ul>
       </div>
 
-      {/* Submit Button */}
-      <div className="text-right">
-        <button onClick={handleSendOrder} className="bg-green-600 text-white px-4 py-2 rounded">
+      <div className="flex justify-between">
+        <button
+          onClick={() => router.back()}
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSendOrder}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
           Send Order Request
         </button>
       </div>

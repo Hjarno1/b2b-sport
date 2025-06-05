@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 
 interface OrderItem {
@@ -13,6 +14,7 @@ interface OrderItem {
 }
 
 export default function ValidateOrderPage() {
+  const router = useRouter();
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [addressMode, setAddressMode] = useState<'default' | 'custom'>('default');
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +51,7 @@ export default function ValidateOrderPage() {
         customizable: !!item.numbers?.length,
         size: [item.size],
         quantity: item.quantity,
-        numbers: (item.numbers || []).map(Number),
+        playerNumbers: (item.numbers || []).map(Number),
         price: item.price * item.quantity,
       };
     });
@@ -65,7 +67,7 @@ export default function ValidateOrderPage() {
       updatedAt: formatDate(new Date().toISOString()),
       status: OrderStatus.Pending,
       items: products.reduce((sum, p) => sum + p.quantity, 0),
-      playerCount: products.reduce((sum, p) => sum + p.numbers.length, 0),
+      playerCount: products.reduce((sum, p) => sum + p.playerNumbers.length, 0),
       progress: 0,
       total: totalPrice,
       products,
@@ -75,7 +77,7 @@ export default function ValidateOrderPage() {
     localStorage.setItem('submittedOrders', JSON.stringify([...existingOrders, newOrder]));
 
     setSubmitted(true);
-    localStorage.removeItem('orderList');
+    localStorage.removeItem('orderList'); // ✅ clear only on submit
 
     console.log(
       'Order sent:',
@@ -114,7 +116,7 @@ export default function ValidateOrderPage() {
         {addressMode === 'default' ? (
           <div className="bg-gray-100 p-4 rounded space-y-1">
             <p className="font-medium">Ribe Fritidscenter</p>
-            <p>Klaus Sundtoft</p>
+            <p>Gitte Langmach Jacobsen</p>
             <p>Sportsvej 8</p>
             <p>6760 Ribe</p>
           </div>
@@ -176,8 +178,17 @@ export default function ValidateOrderPage() {
         <div className="text-right text-lg font-bold mt-4">Total: {totalPrice} DKK</div>
       </div>
 
-      <div className="text-right">
-        <button onClick={handleSendOrder} className="bg-green-600 text-white px-4 py-2 rounded">
+      <div className="flex justify-between">
+        <button
+          onClick={() => router.back()}
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSendOrder}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
           Send Order Request
         </button>
       </div>

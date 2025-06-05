@@ -4,6 +4,7 @@
 export enum UserRole {
   ClubAdmin = 'Club Admin',
   ClubStaff = 'Club Staff',
+  ClubFinance = 'Club Finance',
 }
 
 // Agreement Status
@@ -135,6 +136,7 @@ export interface Agreement {
   completionPercentage: number;
   approvedBy?: string;
   approvedDate?: string;
+  file: string;
 }
 
 export interface PlayerMapping {
@@ -163,6 +165,8 @@ export interface Order {
   progress: number;
   total: number;
   products?: OrderProducts[];
+  orderConfirmation?: string;
+  orderInvoice?: string;
 }
 
 export interface Activity {
@@ -250,6 +254,7 @@ export interface Product {
   images: string[];
   sizes?: string[];
   customizable: boolean;
+  description?: string;
 }
 
 export interface OrderProducts {
@@ -260,7 +265,13 @@ export interface OrderProducts {
   sizes?: string[];
   customizable: boolean;
   quantity: number;
-  numbers: number[];
+  playerNumbers: number[];
+}
+
+export interface OrderItem extends Product {
+  quantity: number;
+  size?: string;
+  numbers?: string[];
 }
 
 // Mock Users
@@ -278,13 +289,13 @@ export const mockUsers: User[] = [
   },
   {
     id: 'user-002',
-    name: 'Klaus Sundtoft',
-    email: 'klsu@rhk.dk',
-    phone: '+45 21 72 76 97',
+    name: 'Gitte Langmach Jacobsen',
+    email: 'glj@langmachribe.dk',
+    phone: '+45 23 31 84 82',
     role: UserRole.ClubAdmin,
     clubId: 'club-001',
     status: UserStatus.Active,
-    avatar: '/faces/klaus-sundtoft.jpg',
+    avatar: '/faces/gitte-jacobsen.jpg',
     lastLogin: 'April 16, 2025, 9:15 AM',
   },
   {
@@ -296,6 +307,17 @@ export const mockUsers: User[] = [
     clubId: 'club-001',
     status: UserStatus.Active,
     avatar: '/faces/martin-wolf-andersen.jpg',
+    lastLogin: 'May 1, 2025, 6:15 PM',
+  },
+  {
+    id: 'user-004',
+    name: 'Finance Ribe HK',
+    email: 'finance@rhk.dk',
+    phone: '+45 30 12 34 56',
+    role: UserRole.ClubFinance,
+    clubId: 'club-001',
+    status: UserStatus.Active,
+    avatar: '/clubs/ribehk.jpg',
     lastLogin: 'May 1, 2025, 6:15 PM',
   },
 ];
@@ -312,7 +334,7 @@ export const mockClubs: Club[] = [
     status: ClubStatus.Active,
     abbreviation: 'RHK',
     color: '#4a86e8',
-    logo: '/clubs/ribehk.png',
+    logo: '/clubs/ribehk.jpg',
   },
 ];
 
@@ -601,6 +623,7 @@ export const mockAgreements: Agreement[] = [
     completionPercentage: 50,
     approvedBy: 'user-003',
     approvedDate: '4. Maj, 2025',
+    file: 'Samhandelsaftale_B2B_Sport_TEST_EXAMPLE.pdf',
   },
   {
     id: 'AGR-001246',
@@ -615,6 +638,22 @@ export const mockAgreements: Agreement[] = [
     priority: 'Low',
     dueDate: '25. Juni, 2025',
     completionPercentage: 0,
+    file: 'Samhandelsaftale_B2B_Sport_TEST_EXAMPLE.pdf',
+  },
+  {
+    id: 'AGR-00100',
+    name: 'Trade Agreement',
+    clubId: 'club-001',
+    teamId: '',
+    templateId: 'template-002',
+    status: AgreementStatus.Active,
+    createdAt: '1. Maj, 2025',
+    updatedAt: '4. Maj, 2025',
+    validUntil: '29. April, 2025',
+    priority: 'Normal',
+    dueDate: '29. April, 2025',
+    completionPercentage: 0,
+    file: 'Samhandelsaftale_B2B_Sport_TEST_EXAMPLE.pdf',
   },
 ];
 
@@ -712,17 +751,17 @@ export const mockOrderProducts: OrderProducts[] = [
     sizes: ['XS', 'S'],
     customizable: true,
     quantity: 2,
-    numbers: [4, 6],
+    playerNumbers: [4, 6],
   },
   {
     id: 2,
     name: 'Hjemmebane Spillertrøje',
-    price: 180,
+    price: 270,
     images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
     sizes: ['M'],
     customizable: true,
     quantity: 3,
-    numbers: [10, 11, 12],
+    playerNumbers: [10, 11, 12],
   },
 ];
 
@@ -745,6 +784,8 @@ export const mockOrders: Order[] = [
       mockOrderProducts.find((product) => product.id == 1)!,
       mockOrderProducts.find((product) => product.id == 2)!,
     ],
+    orderConfirmation: 'Order_confirmation_73861_TEST_EXAMPLE.pdf',
+    orderInvoice: 'Invoice_10700_TEST_EXAMPLE.pdf',
   },
   {
     id: 'ORD-2457',
@@ -764,6 +805,8 @@ export const mockOrders: Order[] = [
       mockOrderProducts.find((product) => product.id == 1)!,
       mockOrderProducts.find((product) => product.id == 2)!,
     ],
+    orderConfirmation: 'Order_confirmation_73861_TEST_EXAMPLE.pdf',
+    orderInvoice: 'Invoice_10700_TEST_EXAMPLE.pdf',
   },
   {
     id: 'ORD-2456',
@@ -782,16 +825,18 @@ export const mockOrders: Order[] = [
       mockOrderProducts.find((product) => product.id == 1)!,
       mockOrderProducts.find((product) => product.id == 2)!,
     ],
+    orderConfirmation: 'Order_confirmation_73861_TEST_EXAMPLE.pdf',
+    orderInvoice: 'Invoice_10700_TEST_EXAMPLE.pdf',
   },
   {
-    id: 'ORD-2458',
+    id: 'ORD-2459',
     agreementId: 'AGR-001244',
     clubId: 'club-001',
     teamId: 'team-004',
     createdAt: 'Apr 14, 2025',
     updatedAt: 'Apr 15, 2025',
     status: OrderStatus.Processing,
-    items: 2,
+    items: 5,
     estimatedDelivery: 'Apr 20, 2025',
     trackingNumber: 'TRK123456789',
     playerCount: 12,
@@ -801,8 +846,43 @@ export const mockOrders: Order[] = [
       mockOrderProducts.find((product) => product.id == 1)!,
       mockOrderProducts.find((product) => product.id == 2)!,
     ],
+    orderConfirmation: 'Order_confirmation_73861_TEST_EXAMPLE.pdf',
+    orderInvoice: 'Invoice_10700_TEST_EXAMPLE.pdf',
   },
 ];
+
+export interface Invoice {
+  id: string;
+  date: string;
+  amount: string;
+  status: 'Paid' | 'Unpaid' | 'Overdue';
+  fileUrl: string;
+}
+
+export const mockInvoices: Invoice[] = [
+  {
+    id: 'INV-001',
+    date: '01/12-2024',
+    amount: 'DKK 1,200.00',
+    status: 'Paid',
+    fileUrl: 'Invoice_10700_TEST_EXAMPLE.pdf',
+  },
+  {
+    id: 'INV-002',
+    date: '01/06-2025',
+    amount: 'DKK 950.00',
+    status: 'Overdue',
+    fileUrl: 'Invoice_10700_TEST_EXAMPLE.pdf',
+  },
+  {
+    id: 'INV-003',
+    date: '01/08-2025',
+    amount: 'DKK 2,300.00',
+    status: 'Unpaid',
+    fileUrl: 'Invoice_10700_TEST_EXAMPLE.pdf',
+  },
+];
+
 // Mock Activities
 export const mockActivities: Activity[] = [
   {
@@ -1169,14 +1249,18 @@ export const mockProducts: Product[] = [
     images: ['rhk-spillertrøje-front.jpg', 'rhk-spillertrøje-bagside.jpg'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     customizable: true,
+    description:
+      'Gør dig klar til kamp med vores officielle hjemmebane spillertrøje – skabt til både præstation og passion. Trøjen er lavet i et let og åndbart materiale, der sikrer optimal komfort, uanset om du er på banen eller på tilskuerpladserne. Det klassiske design kombinerer holdets farver med moderne detaljer, og der er mulighed for personliggørelse med navn og nummer. Perfekt pasform og høj kvalitet gør denne trøje til et must-have for enhver ægte fan. Vis din støtte med stil – både til træning, kamp og hverdag.',
   },
   {
     id: 2,
     name: 'Hjemmebane Spillershorts',
     price: 90,
-    images: ['rhk-spillershorts-front.jpg', 'rhk-spillershorts-bagside.jpg'],
+    images: ['rhk-spillershorts-front.jpg'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     customizable: true,
+    description:
+      'Vores hjemmebane spillershorts er designet til maksimal bevægelsesfrihed og komfort. Fremstillet i letvægtsmateriale, der sikrer god åndbarhed og hurtig tørretid. Shortsene matcher trøjen perfekt og kan tilpasses med navn og nummer, så du kan spille med stil og personlighed.',
   },
   {
     id: 3,
@@ -1184,6 +1268,8 @@ export const mockProducts: Product[] = [
     price: 100,
     images: ['handball-1.jpg'],
     customizable: false,
+    description:
+      'Den officielle Hummel Evolution AR håndbold Energizer i størrelse 1 – perfekt til træning og kamp. Bolden er lavet af slidstærkt materiale med godt greb, der sikrer præcision og kontrol i spillet. En pålidelig bold til håndboldspillere på alle niveauer.',
   },
   {
     id: 4,
@@ -1191,6 +1277,8 @@ export const mockProducts: Product[] = [
     price: 100,
     images: ['handball-2.jpg'],
     customizable: false,
+    description:
+      'Den officielle Hummel Evolution AR håndbold Energizer i størrelse 2 – designet til optimal ydeevne og holdbarhed. Med et greb, der sikrer sikker boldkontrol, er denne bold ideel til spillere, der ønsker kvalitet i hver aflevering og skud.',
   },
   {
     id: 5,
@@ -1198,6 +1286,8 @@ export const mockProducts: Product[] = [
     price: 125,
     images: ['sportstape-1.webp'],
     customizable: false,
+    description:
+      'Supreme sportstape i 8-pak, ideel til støtte og beskyttelse under træning og kamp. Tapen har stærk vedhæftning og fleksibilitet, som giver sikker støtte uden at hæmme bevægelsen. Et must-have til seriøse atleter.',
   },
   {
     id: 6,
@@ -1205,6 +1295,8 @@ export const mockProducts: Product[] = [
     price: 200,
     images: ['sportstape-2.webp'],
     customizable: false,
+    description:
+      'Strappal sportstape i 24-pak med 4 cm bredde – perfekt til professionel brug. Tapen er åndbar, slidstærk og sikrer god støtte til led og muskler. Velegnet til forebyggelse og behandling af skader.',
   },
   {
     id: 7,
@@ -1212,6 +1304,8 @@ export const mockProducts: Product[] = [
     price: 250,
     images: ['sportstape-3.webp'],
     customizable: false,
+    description:
+      'Strappal sportstape i 36-pak med smal bredde på 2,5 cm, ideel til præcis taping og støtte. Tapen er stærk, fleksibel og åndbar, hvilket gør den perfekt til brug under alle typer sport.',
   },
   {
     id: 8,
@@ -1219,6 +1313,8 @@ export const mockProducts: Product[] = [
     price: 50,
     images: ['resin-2.webp'],
     customizable: false,
+    description:
+      'SELECT Teamgear harpiks i 100 ml – forbedrer grebet på bolden og sikrer optimal kontrol under spillet. Let at påføre og klæbrig nok til at holde bolden sikkert i hånden, uden at den bliver klistret.',
   },
   {
     id: 9,
@@ -1226,6 +1322,8 @@ export const mockProducts: Product[] = [
     price: 200,
     images: ['resin-1.webp'],
     customizable: false,
+    description:
+      'SELECT Teamgear harpiks i stor 500 ml flaske – perfekt til holdet eller den ivrige spiller, der har brug for langvarigt greb. Effektiv, nem at bruge og med en behagelig konsistens, der ikke klumper.',
   },
 ];
 
@@ -1264,6 +1362,11 @@ export function getPlayerById(id: string): Player | undefined {
 // Helper function to get order by ID
 export function getOrderById(id: string): Order | undefined {
   return mockOrders.find((order) => order.id === id);
+}
+
+// Helper function to get club finance
+export function getClubFinance(clubId: string): User | undefined {
+  return mockUsers.find((user) => user.clubId === clubId && user.role === UserRole.ClubFinance);
 }
 
 // Helper function to get club admin

@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { mockProducts, type Product } from '@/lib/data/mock-data';
 import Link from 'next/link';
-import { Shirt } from 'lucide-react';
+import { Shirt, FilePlus } from 'lucide-react';
+import ManualRequestModal from '@/app/components/manual-request/manualRequestModal';
 
 export default function ProductsPage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [imageIndex, setImageIndex] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = (product: Product) => {
     setSelectedProduct(product);
@@ -38,6 +40,17 @@ export default function ProductsPage() {
           <option>2024/2025</option>
           <option>2023/2024</option>
         </select>
+        <div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+          >
+            <FilePlus size={16} />
+            Create Manual Order
+          </button>
+
+          <ManualRequestModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </div>
         <Link
           href="/order-create-admin"
           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"

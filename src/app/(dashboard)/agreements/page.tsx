@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { Agreement, AgreementStatus, getClubById } from '@/lib/data/mock-data';
 import { useAuth } from '@/lib/context/auth-context';
+import PdfPreviewModal from '@/app/components/shared/PdfPreviewModal';
+
 
 export default function AgreementsPage() {
   const { user } = useAuth();
@@ -24,6 +26,8 @@ export default function AgreementsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<AgreementStatus | 'All'>('All');
+  const [pdfModalOpen, setPdfModalOpen] = useState(false);
+  const [selectedPdfUrl, setSelectedPdfUrl] = useState('');
 
   useEffect(() => {
     const fetchAgreements = async () => {
@@ -226,10 +230,20 @@ export default function AgreementsPage() {
                   </div>
 
                   <div className="flex gap-2">
-                    <button className="text-gray-600 hover:text-gray-900 transition-colors">
+                    <a
+                      href={`/pdf/${agreement.file}`}
+                      download
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
                       <Download size={16} />
-                    </button>
-                    <button className="text-primary hover:text-primary/80 transition-colors">
+                    </a>
+                    <button
+                      onClick={() => {
+                        setSelectedPdfUrl(`/pdf/${agreement.file}`);
+                        setPdfModalOpen(true);
+                      }}
+                      className="text-primary hover:text-primary/80 transition-colors"
+                    >
                       <Eye size={16} />
                     </button>
                   </div>
@@ -239,6 +253,11 @@ export default function AgreementsPage() {
           })}
         </div>
       )}
+      <PdfPreviewModal
+        isOpen={pdfModalOpen}
+        onClose={() => setPdfModalOpen(false)}
+        fileUrl={selectedPdfUrl}
+      />
     </div>
   );
 }
