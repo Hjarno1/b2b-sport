@@ -14,7 +14,6 @@ const PlayerNumberModal: React.FC<Props> = ({
   setTempNumbers,
   onCancel,
   onConfirm,
-  activeProduct,
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">

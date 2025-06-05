@@ -88,7 +88,7 @@ export default function CreateOrderPage() {
       if (field === 'quantity') {
         if (value === '') {
           // Allow temporary empty state
-          updated[index].quantity = '' as any;
+          updated[index].quantity = '' as unknown as number;
           return updated;
         }
 
@@ -112,7 +112,10 @@ export default function CreateOrderPage() {
         return updated;
       }
 
-      (updated[index] as any)[field] = value;
+      updated[index] = {
+        ...updated[index],
+        [field]: value,
+      };
       return updated;
     });
   };
@@ -179,12 +182,12 @@ export default function CreateOrderPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mockProducts.map((product) => (
             <div key={product.id} className="border p-4 rounded-xl shadow space-y-3">
-               <img
-                  src={`/products/${product.images[0]}`}
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded cursor-pointer"
-                  onClick={() => router.push(`/product-details/${product.id}`)}
-                />
+              <img
+                src={`/products/${product.images[0]}`}
+                alt={product.name}
+                className="w-full h-40 object-cover rounded cursor-pointer"
+                onClick={() => router.push(`/product-details/${product.id}`)}
+              />
               <h2 className="font-semibold">{product.name}</h2>
 
               {Array.isArray(product.sizes) && product.sizes.length > 0 && (
