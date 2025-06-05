@@ -1,13 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/lib/context/auth-context';
 import { Download, Calendar, Search, Eye } from 'lucide-react';
 import { Invoice, mockInvoices } from '@/lib/data/mock-data';
 import PdfPreviewModal from '@/app/components/shared/PdfPreviewModal';
 
 export default function InvoicesPage() {
-  const { user } = useAuth();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
@@ -20,11 +18,6 @@ export default function InvoicesPage() {
   const filtered = invoices.filter((inv) =>
     inv.id.toLowerCase().includes(searchTerm.toLowerCase()),
   );
-
-  const openPdf = (url: string) => {
-    setSelectedPdfUrl(url);
-    setPdfModalOpen(true);
-  };
 
   return (
     <div>
