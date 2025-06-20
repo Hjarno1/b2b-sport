@@ -20,7 +20,6 @@ import {
   Clock,
   Languages,
   Check,
-  Settings as SettingsIcon,
 } from 'lucide-react';
 
 export default function SettingsPage() {

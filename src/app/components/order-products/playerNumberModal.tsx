@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Product } from '@/lib/data/mock-data';
 
 interface Props {
   tempNumbers: string[];

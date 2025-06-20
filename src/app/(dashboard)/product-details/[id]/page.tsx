@@ -10,7 +10,6 @@ export default function ProductPage() {
   const { t } = useTranslation('product');
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
-  const [selectedSize, setSelectedSize] = useState<string>('');
 
   useEffect(() => {
     const found = mockProducts.find((p) => p.id === Number(id));
