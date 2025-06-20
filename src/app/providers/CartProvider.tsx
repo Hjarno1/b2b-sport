@@ -24,7 +24,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
     case 'ADD':
       return { items: [...state.items, action.payload] };
     case 'REMOVE':
-      return { items: state.items.filter((i) => i.id !== action.payload.id) };
+      return { items: state.items.filter((i) => i.id !== action.payload) };
     case 'UPDATE_QTY':
       return {
         items: state.items.map((i) =>
@@ -61,7 +61,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [state.items]);
 
   const add = (item: CartItem) => dispatch({ type: 'ADD', payload: item });
-  const remove = (id: number) => dispatch({ type: 'REMOVE', payload: { id } });
+  const remove = (id: number) => dispatch({ type: 'REMOVE', payload: id });
   const updateQty = (id: number, quantity: number) =>
     dispatch({ type: 'UPDATE_QTY', payload: { id, quantity } });
   const clear = () => dispatch({ type: 'CLEAR' });

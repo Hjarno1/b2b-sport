@@ -10,7 +10,6 @@ import PdfPreviewModal from '@/app/components/shared/PdfPreviewModal';
 
 export default function InvoicesPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [pdfModalOpen, setPdfModalOpen] = useState(false);
