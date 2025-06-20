@@ -5,14 +5,18 @@ import { useState, useEffect } from 'react'; // Add this at the top
 import { useAuth } from '@/lib/context/auth-context';
 import { Bell, HelpCircle, Search } from 'lucide-react';
 import NotificationInformation from '@/app/components/shared/notificationInformation';
+<<<<<<< HEAD
 import { UserRole } from '@/lib/data/mock-data';
 import { ShoppingCart as CartIcon } from 'lucide-react';
 import { ShoppingCart } from '@/app/components/cart/ShoppingCart';
 import { useTranslation } from 'react-i18next';
+=======
+>>>>>>> main
 
 export function Header({ isCollapsed = false }: { isCollapsed?: boolean }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(false);
+<<<<<<< HEAD
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { t } = useTranslation('orderOverview');
 
@@ -31,6 +35,24 @@ export function Header({ isCollapsed = false }: { isCollapsed?: boolean }) {
       }
     }
   }, []);
+=======
+
+  useEffect(() => {
+  const stored = localStorage.getItem('submittedOrders');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        setHasNotifications(true);
+      } else {
+        setHasNotifications(false);
+      }
+    } catch {
+      setHasNotifications(false);
+    }
+  }
+}, []);
+>>>>>>> main
 
   const { user } = useAuth();
   const showCart = user?.role === UserRole.ClubAdmin || user?.role === UserRole.ClubStaff;

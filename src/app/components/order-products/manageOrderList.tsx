@@ -1,8 +1,13 @@
 'use client';
 
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { Trash2, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+=======
+import React from 'react';
+import { Trash2, Pencil } from 'lucide-react';
+>>>>>>> main
 import type { OrderItem } from '@/lib/data/mock-data';
 
 interface Props {
@@ -20,6 +25,7 @@ const ManageOrderList: React.FC<Props> = ({
   scrollToItem,
   handleRemoveFromCart,
 }) => {
+<<<<<<< HEAD
   const { t } = useTranslation('manageOrder');
   const [modalItemIndex, setModalItemIndex] = useState<number | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<Record<string, number>>({});
@@ -48,11 +54,17 @@ const ManageOrderList: React.FC<Props> = ({
     setModalItemIndex(null);
   };
 
+=======
+>>>>>>> main
   const totalPrice = orderList.reduce((sum, item) => sum + item.price * (item.quantity || 0), 0);
 
   return (
     <>
+<<<<<<< HEAD
       <h2 className="text-xl font-semibold mt-10">{t('manage_order.title')}</h2>
+=======
+      <h2 className="text-xl font-semibold mt-10">Manage Order</h2>
+>>>>>>> main
       <ul className="space-y-2">
         {orderList.map((item, index) => (
           <li
@@ -64,6 +76,7 @@ const ManageOrderList: React.FC<Props> = ({
                 type="number"
                 value={item.quantity ?? ''}
                 onChange={(e) => updateItem(index, 'quantity', e.target.value)}
+<<<<<<< HEAD
                 className="w-12 p-1 border rounded text-center"
                 min={1}
               />
@@ -73,6 +86,32 @@ const ManageOrderList: React.FC<Props> = ({
                 item.numbers?.map((num, i) => (
                   <span key={i} className="flex items-center gap-1">
                     {i === 0 && <span>{t('manage_order.withPlayerNumber')}</span>}
+=======
+                className="w-8 p-1 border rounded text-center"
+                min={1}
+              />
+              x <span className="font-semibold">{item.name}</span>
+              {item.size && (
+                <>
+                  in size
+                  <select
+                    className="p-1 border rounded"
+                    value={item.size}
+                    onChange={(e) => updateItem(index, 'size', e.target.value)}
+                  >
+                    {item.sizes?.map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+              {item.customizable &&
+                item.numbers?.map((num, i) => (
+                  <span key={i} className="flex items-center gap-1">
+                    {i === 0 && <span>with player number</span>}
+>>>>>>> main
                     <input
                       type="text"
                       value={num}
@@ -81,6 +120,7 @@ const ManageOrderList: React.FC<Props> = ({
                     />
                   </span>
                 ))}
+<<<<<<< HEAD
               {item.sizes && (
                 <button
                   className="ml-2 px-2 py-1 bg-blue-500 text-white text-xs rounded"
@@ -89,6 +129,8 @@ const ManageOrderList: React.FC<Props> = ({
                   {t('manage_order.selectSizes')}
                 </button>
               )}
+=======
+>>>>>>> main
               <span className="ml-auto font-semibold">
                 = {item.price * (item.quantity || 0)} DKK
               </span>
@@ -106,6 +148,7 @@ const ManageOrderList: React.FC<Props> = ({
           </li>
         ))}
       </ul>
+<<<<<<< HEAD
 
       <div className="text-right text-lg font-semibold mt-4">
         {t('manage_order.total')}: {totalPrice} DKK
@@ -142,6 +185,9 @@ const ManageOrderList: React.FC<Props> = ({
           </div>
         </div>
       )}
+=======
+      <div className="text-right text-lg font-semibold mt-4">Total: {totalPrice} DKK</div>
+>>>>>>> main
     </>
   );
 };

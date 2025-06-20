@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Pencil, FilePlus } from 'lucide-react';
@@ -8,11 +9,34 @@ import { useCart } from '@/app/providers/CartProvider';
 import ManualRequestModal from '@/app/components/manual-request/manualRequestModal';
 import ManageOrderList from '@/app/components/order-products/manageOrderList';
 import { useTranslation } from 'react-i18next';
+=======
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Trash2, Pencil, FilePlus } from 'lucide-react';
+import { mockProducts } from '@/lib/data/mock-data';
+import ManualRequestModal from '@/app/components/manual-request/manualRequestModal';
+>>>>>>> main
 
 // Simple incremental counter for unique cart item IDs
 let nextLineItemId = 1;
 
+<<<<<<< HEAD
 export default function OrderCreateAdminPage() {
+=======
+interface OrderItem extends Product {
+  quantity: number;
+  size?: string;
+  numbers?: string[];
+}
+
+export default function CreateOrderPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [orderList, setOrderList] = useState<OrderItem[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<Record<number, Partial<OrderItem>>>({});
+  const [activeModalProduct, setActiveModalProduct] = useState<Product | null>(null);
+  const [tempNumbers, setTempNumbers] = useState<string[]>([]);
+  const itemRefs = useRef<Record<number, HTMLLIElement | null>>({});
+>>>>>>> main
   const router = useRouter();
   const {
     state: { items: orderList },
@@ -21,6 +45,7 @@ export default function OrderCreateAdminPage() {
     updateQty,
   } = useCart();
 
+<<<<<<< HEAD
   const [selectedOptions, setSelectedOptions] = useState<Record<number, Partial<OrderItem>>>({});
   const itemRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,6 +55,27 @@ export default function OrderCreateAdminPage() {
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [tempSizeCounts, setTempSizeCounts] = useState<Record<string, number>>({});
   const [tempNumbers, setTempNumbers] = useState<Record<string, string[]>>({});
+=======
+  useEffect(() => {
+    const storedOrder = localStorage.getItem('orderList');
+    if (storedOrder) {
+      try {
+        const parsed: OrderItem[] = JSON.parse(storedOrder);
+        setOrderList(parsed);
+        localStorage.removeItem('orderList');
+      } catch {
+        console.warn('Invalid orderList data in localStorage');
+        localStorage.removeItem('orderList');
+      }
+    }
+  }, []);
+
+  const handleAddToCart = (product: Product) => {
+    const selection = selectedOptions[product.id];
+    const requiresSize = Array.isArray(product.sizes) && product.sizes.length > 0;
+    const quantity = selection?.quantity || 1;
+    const numbers = product.customizable ? tempNumbers : undefined;
+>>>>>>> main
 
   const updateSelection = <K extends keyof OrderItem>(
     productId: number,
@@ -135,6 +181,49 @@ export default function OrderCreateAdminPage() {
     router.push('/validate-order-admin');
   };
 
+<<<<<<< HEAD
+=======
+  const updateItem = (index: number, field: keyof OrderItem, value: string | number) => {
+    setOrderList((prev) => {
+      const updated = [...prev];
+
+      if (field === 'quantity') {
+        const quantity = Number(value);
+        if (!Number.isNaN(quantity) && quantity > 0) {
+          updated[index].quantity = quantity;
+
+          if (updated[index].customizable) {
+            const prevNumbers = updated[index].numbers || [];
+            if (quantity > prevNumbers.length) {
+              updated[index].numbers = [
+                ...prevNumbers,
+                ...new Array(quantity - prevNumbers.length).fill(''),
+              ];
+            } else {
+              updated[index].numbers = prevNumbers.slice(0, quantity);
+            }
+          }
+        }
+
+        return updated;
+      }
+
+      (updated[index] = { ...updated[index], [field]: value }) as OrderItem;
+      return updated;
+    });
+  };
+
+  const updatePlayerNumber = (itemIndex: number, numIndex: number, value: string) => {
+    setOrderList((prev) => {
+      const updated = [...prev];
+      if (updated[itemIndex].numbers) {
+        updated[itemIndex].numbers![numIndex] = value;
+      }
+      return updated;
+    });
+  };
+
+>>>>>>> main
   const scrollToItem = (index: number) => {
     const ref = itemRefs.current[index];
     if (ref) ref.scrollIntoView({ behavior: 'smooth' });
@@ -156,13 +245,33 @@ export default function OrderCreateAdminPage() {
         </button>
         <ManualRequestModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
 
+<<<<<<< HEAD
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+=======
+        <div>
+          <button
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition"
+          >
+            <FilePlus size={16} />
+            Create Manual Order
+          </button>
+
+          <ManualRequestModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+>>>>>>> main
           {mockProducts.map((product) => (
             <div key={product.id} className="border p-4 rounded-lg space-y-2">
               <img
                 src={`/products/${product.images[0]}`}
                 alt={product.name}
+<<<<<<< HEAD
                 className="w-full h-48 object-cover rounded cursor-pointer"
+=======
+                className="w-full h-40 object-cover rounded cursor-pointer"
+>>>>>>> main
                 onClick={() => router.push(`/product-details/${product.id}`)}
               />
               <h2 className="font-semibold text-lg">{product.name}</h2>
@@ -222,14 +331,20 @@ export default function OrderCreateAdminPage() {
         <ul className="space-y-4">
           {orderList.map((item, idx) => (
             <li
+<<<<<<< HEAD
               key={item.id}
               className="p-2 bg-white rounded shadow-sm flex justify-between items-center"
               ref={(el) => {
                 itemRefs.current[idx] = el;
               }}
+=======
+              key={index}
+              className="p-2 bg-white rounded shadow-sm flex justify-between items-start gap-2"
+>>>>>>> main
             >
-              <div>
+              <div className="flex-1">
                 <p className="font-medium">{item.name}</p>
+<<<<<<< HEAD
                 <p className="text-sm text-gray-600">
                   {item.size} × {item.quantity}
                 </p>
@@ -243,6 +358,24 @@ export default function OrderCreateAdminPage() {
                   onClick={() => handleRemoveFromCart(idx)}
                 />
                 <Pencil className="cursor-pointer" onClick={() => scrollToItem(idx)} />
+=======
+                <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
+                {item.size && <p className="text-sm text-gray-600">Size: {item.size}</p>}
+                {item.numbers && item.numbers.length > 0 && (
+                  <p className="text-sm text-gray-600">Numbers: {item.numbers.join(', ')}</p>
+                )}
+                <p className="text-sm font-semibold">{item.price * item.quantity} DKK</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Trash2
+                  className="text-red-500 cursor-pointer"
+                  onClick={() => handleRemoveFromCart(index)}
+                />
+                <Pencil
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => scrollToItem(index)}
+                />
+>>>>>>> main
               </div>
             </li>
           ))}

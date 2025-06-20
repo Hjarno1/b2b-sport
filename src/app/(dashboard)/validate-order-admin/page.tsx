@@ -3,7 +3,10 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+<<<<<<< HEAD
 import { useTranslation } from 'react-i18next';
+=======
+>>>>>>> main
 import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 import { useCart } from '@/app/providers/CartProvider';
 
@@ -17,8 +20,11 @@ interface OrderItem {
 }
 
 export default function ValidateOrderPage() {
+<<<<<<< HEAD
   const { clear: clearCart } = useCart();
   const { t } = useTranslation('validate_order');
+=======
+>>>>>>> main
   const router = useRouter();
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [addressMode, setAddressMode] = useState<'default' | 'custom'>('default');
@@ -80,9 +86,19 @@ export default function ValidateOrderPage() {
     localStorage.setItem('submittedOrders', JSON.stringify([...existing, newOrder]));
 
     setSubmitted(true);
+<<<<<<< HEAD
     localStorage.removeItem('orderList');
     localStorage.removeItem('cart');
     setOrderList([]);
+=======
+    localStorage.removeItem('orderList'); // ✅ clear only on submit
+
+    console.log(
+      'Order sent:',
+      newOrder,
+      addressMode === 'custom' ? customAddress : 'Default address',
+    );
+>>>>>>> main
   };
 
   const totalPrice = orderList.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -115,10 +131,17 @@ export default function ValidateOrderPage() {
 
         {addressMode === 'default' ? (
           <div className="bg-gray-100 p-4 rounded space-y-1">
+<<<<<<< HEAD
             <p className="font-medium">{t('validate_order.delivery.defaultName')}</p>
             <p>{t('validate_order.delivery.defaultContact')}</p>
             <p>{t('validate_order.delivery.defaultStreet')}</p>
             <p>{t('validate_order.delivery.defaultCity')}</p>
+=======
+            <p className="font-medium">Ribe Fritidscenter</p>
+            <p>Gitte Langmach Jacobsen</p>
+            <p>Sportsvej 8</p>
+            <p>6760 Ribe</p>
+>>>>>>> main
           </div>
         ) : (
           <div className="space-y-3">
@@ -191,11 +214,25 @@ export default function ValidateOrderPage() {
       </section>
 
       <div className="flex justify-between">
+<<<<<<< HEAD
         <button onClick={() => router.back()} className="btn-secondary">
           {t('validate_order.buttons.back')}
         </button>
         <button onClick={handleSendOrder} className="btn-primary">
           {t('validate_order.buttons.send')}
+=======
+        <button
+          onClick={() => router.back()}
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Back
+        </button>
+        <button
+          onClick={handleSendOrder}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Send Order Request
+>>>>>>> main
         </button>
       </div>
     </div>

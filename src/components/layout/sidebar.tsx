@@ -26,6 +26,99 @@ interface SidebarItem {
   icon: React.ReactNode;
 }
 
+<<<<<<< HEAD
+=======
+const clubFinanceItems: SidebarItem[] = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    icon: <LayoutDashboard className="h-5 w-5" />,
+  },
+  {
+    name: 'Club Agreements', // Changed from "Agreements" to "Kit Requests"
+    href: '/club-agreements',
+    icon: <ClipboardCheck className="h-5 w-5" />,
+  },
+  {
+    name: 'Invoices',
+    href: '/invoices',
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+  {
+    name: 'Settings',
+    href: '/settings',
+    icon: <Settings className="h-5 w-5" />,
+  },
+];
+// Club Admin uses more task-oriented language but still understands some business concepts
+const clubAdminItems: SidebarItem[] = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    icon: <LayoutDashboard className="h-5 w-5" />,
+  },
+  {
+    name: 'Staff Management',
+    href: '/staff-management',
+    icon: <UserCog className="h-5 w-5" />,
+  },
+  {
+    name: 'Agreements', // Changed from "Agreements" to "Kit Requests"
+    href: '/agreements',
+    icon: <ClipboardCheck className="h-5 w-5" />,
+  },
+  {
+    name: 'Products', // Changed from "Agreements" to "Kit Requests"
+    href: '/order-create-admin',
+    icon: <Shirt className="h-5 w-5" />,
+  },
+  {
+    name: 'Orders',
+    href: '/orders',
+    icon: <ShoppingBag className="h-5 w-5" />,
+  },
+  {
+    name: 'Settings',
+    href: '/settings',
+    icon: <Settings className="h-5 w-5" />,
+  },
+];
+
+// Club Staff uses completely user-friendly language focused on their actual tasks
+const clubStaffItems: SidebarItem[] = [
+  {
+    name: 'Dashboard',
+    href: '/dashboard',
+    icon: <LayoutDashboard className="h-5 w-5" />,
+  },
+  {
+    name: 'Player Management', // Changed from "Roster Management" to "Player Roster"
+    href: '/player-roster',
+    icon: <UserCircle className="h-5 w-5" />,
+  },
+  {
+    name: 'Kit Details',
+    href: '/kit-setup',
+    icon: <Shirt className="h-5 w-5" />,
+  },
+  {
+    name: 'Products',
+    href: '/order-create-staff',
+    icon: <ShoppingBag className="h-5 w-5" />,
+  },
+  {
+    name: 'Teams Setup',
+    href: '/teams-setup',
+    icon: <Users className="h-5 w-5" />,
+  },
+  {
+    name: 'Order Tracking', // Changed from "Order Status" to "Order Tracking"
+    href: '/order-tracking',
+    icon: <ShoppingCart className="h-5 w-5" />,
+  },
+];
+
+>>>>>>> main
 export function Sidebar({
   isCollapsed = false,
   toggle,

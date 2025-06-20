@@ -20,7 +20,10 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, AgreementStatus } from '@/lib/data/mock-data';
 import { v4 as uuidv4 } from 'uuid';
+<<<<<<< HEAD
 import { useTranslation } from 'react-i18next';
+=======
+>>>>>>> main
 
 // Player from roster
 interface Player {
@@ -132,20 +135,37 @@ export default function PlayerKitDetailsPage() {
 
   const handleInvitePlayer = (playerId: string) => {
     const token = uuidv4();
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
     const playerData = {
       playerId,
       fields: agreementDetails?.fields,
       agreementId: agreementDetails?.id,
     };
+<<<<<<< HEAD
+=======
+
+    // Save it to localStorage (or send to backend)
+>>>>>>> main
     const invites = JSON.parse(localStorage.getItem('playerInvites') || '{}');
     invites[token] = playerData;
     localStorage.setItem('playerInvites', JSON.stringify(invites));
 
     const inviteUrl = `${window.location.origin}/player-kit-details-invite/${token}`;
     navigator.clipboard.writeText(inviteUrl);
+<<<<<<< HEAD
     alert(t('invite_alert', { url: inviteUrl }));
   };
 
+=======
+
+    alert(`📨 Invite link copied to clipboard:\n${inviteUrl}`);
+  };
+
+
+>>>>>>> main
   // Function to check if a player mapping is complete
   const isPlayerMappingComplete = (
     mapping: PlayerMapping,
@@ -568,6 +588,7 @@ export default function PlayerKitDetailsPage() {
                                 )}
                               </div>
                             ))}
+<<<<<<< HEAD
                             {/* 🚀 Invite Player Button */}
                             <div className="md:col-span-2 flex justify-end mt-4">
                               <button
@@ -577,8 +598,21 @@ export default function PlayerKitDetailsPage() {
                                 ✉️ {t('player_kit_details.buttons.invite')}
                               </button>
                             </div>
+=======
+                              {/* 🚀 Invite Player Button */}
+                              <div className="md:col-span-2 flex justify-end mt-4">
+                                <button
+                                  onClick={() => handleInvitePlayer(playerId)} // 🔁 replace with your handler
+                                  className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition"
+                                >
+                                  ✉️ Invite Player
+                                </button>
+                              </div>
+>>>>>>> main
                           </div>
                         )}
+
+
                       </div>
                     );
                   })}

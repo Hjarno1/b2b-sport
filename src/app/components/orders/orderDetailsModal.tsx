@@ -56,9 +56,13 @@ export default function OrderDetailsModal({ order, isOpen, onClose }: OrderDetai
               {order.products.map((product, index) => (
                 <li key={index} className="px-4 py-3 bg-gray-50 hover:bg-gray-100 transition">
                   <p className="font-medium text-gray-800">{product.name}</p>
+<<<<<<< HEAD
                   <p className="text-sm text-gray-600">
                     {t('order_details.price', { price: product.price })}
                   </p>
+=======
+                  <p className="text-sm text-gray-600">Price: {product.price} DKK</p>
+>>>>>>> main
                   {product.quantity && (
                     <p className="text-sm text-gray-600">
                       {t('order_details.quantity', { count: product.quantity })}
@@ -74,6 +78,9 @@ export default function OrderDetailsModal({ order, isOpen, onClose }: OrderDetai
                       {t('order_details.playerNumbers', { list: product.playerNumbers.join(', ') })}
                     </p>
                   )}
+                  {product.sizes && product.sizes.length > 0 && (
+                    <p className="text-sm text-gray-600">Player Numbers: {product.playerNumbers.join(', ')}</p>
+                  )}
                 </li>
               ))}
             </ul>
@@ -86,21 +93,59 @@ export default function OrderDetailsModal({ order, isOpen, onClose }: OrderDetai
             href={`/pdf/${order.orderInvoice}`}
             download
             className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
+<<<<<<< HEAD
           >
             <span className="text-xl">📄</span>
             <span>{t('order_details.downloadInvoice')}</span>
           </a>
         )}
+=======
+          >
+            <span className="text-xl">📄</span>
+            <span>Download Invoice</span>
+          </a>
+        )}
+
+        {/* {order.status === OrderStatus.Delivered && (
+          <button
+            onClick={() => alert('Downloading Invoice... 🧾')}
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-green-600 hover:to-green-800 transition"
+          >
+            <span className="text-xl">📄</span>
+            <span>Download Invoice</span>
+          </button>
+        )} */}
+
+>>>>>>> main
         {order.status === OrderStatus.Processing && (
           <a
             href={`/pdf/${order.orderConfirmation}`}
             download
+<<<<<<< HEAD
             className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
           >
             <span className="text-xl">📑</span>
             <span>{t('order_details.downloadConfirmation')}</span>
           </a>
         )}
+=======
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
+          >
+            <span className="text-xl">📑</span>
+            <span>Download Order Confirmation</span>
+          </a>
+        )}
+
+        {/* {order.status === OrderStatus.Processing && (
+          <button
+            onClick={() => alert('Downloading Order Confirmation... 📬')}
+            className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-xl shadow-lg hover:from-blue-600 hover:to-blue-800 transition"
+          >
+            <span className="text-xl">📑</span>
+            <span>Download Order Confirmation</span>
+          </button>
+        )} */}
+>>>>>>> main
 
         <button
           onClick={onClose}

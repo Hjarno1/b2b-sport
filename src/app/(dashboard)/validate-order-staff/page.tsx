@@ -1,9 +1,14 @@
 // src/app/validate-order-staff/page.tsx
 'use client';
 
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+=======
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+>>>>>>> main
 import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 import { useCart } from '@/app/providers/CartProvider';
 
@@ -15,9 +20,13 @@ interface OrderItem {
   numbers?: string[];
 }
 
+<<<<<<< HEAD
 export default function ValidateOrderStaffPage() {
   const { clear: clearCart } = useCart();
   const { t } = useTranslation('validate_order');
+=======
+export default function ValidateOrderPage() {
+>>>>>>> main
   const router = useRouter();
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
   const [addressMode, setAddressMode] = useState<'default' | 'custom'>('default');
@@ -59,7 +68,10 @@ export default function ValidateOrderStaffPage() {
         size: [item.size],
         quantity: item.quantity,
         playerNumbers: (item.numbers || []).map(Number),
+<<<<<<< HEAD
         price: info?.price || 0,
+=======
+>>>>>>> main
       };
     });
 
@@ -188,13 +200,21 @@ export default function ValidateOrderStaffPage() {
           onClick={() => router.back()}
           className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
         >
+<<<<<<< HEAD
           {t('validate_order.buttons.back')}
+=======
+          Back
+>>>>>>> main
         </button>
         <button
           onClick={handleSendOrder}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
+<<<<<<< HEAD
           {t('validate_order.buttons.send')}
+=======
+          Send Order Request
+>>>>>>> main
         </button>
       </div>
     </div>
