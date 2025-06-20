@@ -1,4 +1,3 @@
-// src/app/(dashboard)/orders/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -14,17 +13,17 @@ import {
   Calendar,
   ArrowUpRight,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, mockOrders, Order } from '@/lib/data/mock-data';
 import OrderDetailsModal from '@/app/components/orders/orderDetailsModal';
 
-// Order status type definition
 type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Canceled';
 
-// Order interface
-
 export default function OrdersPage() {
+  const { t } = useTranslation('orders');
   const { user } = useAuth();
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,164 +32,139 @@ export default function OrdersPage() {
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'All'>('All');
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    async function fetchOrders() {
       try {
-        // In a real app, we would fetch from an API
-        // For demo, we'll use the mock data and filter it
         const stored = localStorage.getItem('submittedOrders');
         const submittedOrders: Order[] = stored ? JSON.parse(stored) : [];
-
         let data = [...mockOrders, ...submittedOrders];
 
-        // Add some demo data
-        data = data.map((order) => ({
-          ...order,
-          // items: Math.floor(Math.random() * 20) + 1, // 1-20 items
-          // total: Math.floor(Math.random() * 10000) + 500, // 500-10500 DKK
-        }));
-
-        // Filter for current club admin
-        if (user && user.clubId) {
-          data = data.filter((order) => order.clubId === user.clubId);
+        if (user?.clubId) {
+          data = data.filter((o) => o.clubId === user.clubId);
         }
 
         setOrders(data);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
+      } catch (e) {
+        console.error(e);
       } finally {
         setIsLoading(false);
       }
-    };
-
+    }
     fetchOrders();
   }, [user]);
 
-  // order modal
   const openModal = (order: Order) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
   };
-
-  // order modal
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
   };
 
-  // Filter orders
   const filteredOrders = orders.filter((order) => {
     const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || order.status === statusFilter;
-
     return matchesSearch && matchesStatus;
   });
 
   const getStatusConfig = (status: OrderStatus) => {
-    switch (status) {
-      case 'Pending':
-        return {
-          badge: (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-              <ShoppingBag size={12} className="mr-1" /> Pending
-            </span>
-          ),
-          icon: <ShoppingBag size={20} className="text-yellow-500" />,
-        };
-      case 'Processing':
-        return {
-          badge: (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-              <ArrowUpRight size={12} className="mr-1" /> Processing
-            </span>
-          ),
-          icon: <ArrowUpRight size={20} className="text-blue-500" />,
-        };
-      case 'Shipped':
-        return {
-          badge: (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-              <TruckIcon size={12} className="mr-1" /> Shipped
-            </span>
-          ),
-          icon: <TruckIcon size={20} className="text-indigo-500" />,
-        };
-      case 'Delivered':
-        return {
-          badge: (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              <CheckCircle2 size={12} className="mr-1" /> Delivered
-            </span>
-          ),
-          icon: <CheckCircle2 size={20} className="text-green-500" />,
-        };
-      case 'Canceled':
-        return {
-          badge: (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-              <XCircle size={12} className="mr-1" /> Canceled
-            </span>
-          ),
-          icon: <XCircle size={20} className="text-gray-500" />,
-        };
-      default:
-        return {
-          badge: null,
-          icon: null,
-        };
-    }
+    const common = {
+      Pending: {
+        badgeIcon: <ShoppingBag size={12} className="mr-1" />,
+        icon: <ShoppingBag size={20} className="text-yellow-500" />,
+      },
+      Processing: {
+        badgeIcon: <ArrowUpRight size={12} className="mr-1" />,
+        icon: <ArrowUpRight size={20} className="text-blue-500" />,
+      },
+      Shipped: {
+        badgeIcon: <TruckIcon size={12} className="mr-1" />,
+        icon: <TruckIcon size={20} className="text-indigo-500" />,
+      },
+      Delivered: {
+        badgeIcon: <CheckCircle2 size={12} className="mr-1" />,
+        icon: <CheckCircle2 size={20} className="text-green-500" />,
+      },
+      Canceled: {
+        badgeIcon: <XCircle size={12} className="mr-1" />,
+        icon: <XCircle size={20} className="text-gray-500" />,
+      },
+    }[status];
+
+    const colors = {
+      Pending: 'bg-yellow-100 text-yellow-800',
+      Processing: 'bg-blue-100 text-blue-800',
+      Shipped: 'bg-indigo-100 text-indigo-800',
+      Delivered: 'bg-green-100 text-green-800',
+      Canceled: 'bg-gray-100 text-gray-800',
+    }[status];
+
+    return {
+      badge: (
+        <span
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors}`}
+        >
+          {common.badgeIcon} {t(`orders.filter.${status.toLowerCase()}`)}
+        </span>
+      ),
+      icon: common.icon,
+    };
   };
 
-  const clubName = user?.clubId ? getClubById(user.clubId)?.name : 'Your Club';
+  const clubName = user?.clubId ? getClubById(user.clubId)?.name : '';
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary" />
       </div>
     );
   }
 
   return (
     <div>
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Orders</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your orders for {clubName}</p>
+          <h1 className="text-2xl font-semibold text-gray-800">{t('orders.title')}</h1>
+          <p className="text-gray-500 text-sm mt-1">{t('orders.subtitle', { club: clubName })}</p>
         </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <StatsCard
-          title="Total Orders"
-          value={orders.length.toString()}
-          description="All time"
-          icon={<ShoppingBag className="h-5 w-5 text-primary" />}
-          color="bg-primary/10"
-        />
-        <StatsCard
-          title="Pending"
-          value={orders.filter((o) => o.status === 'Pending').length.toString()}
-          description="Awaiting processing"
-          icon={<ArrowUpRight className="h-5 w-5 text-yellow-500" />}
-          color="bg-yellow-100"
-        />
-        <StatsCard
-          title="In Transit"
-          value={orders.filter((o) => o.status === 'Shipped').length.toString()}
-          description="Currently shipping"
-          icon={<TruckIcon className="h-5 w-5 text-indigo-500" />}
-          color="bg-indigo-100"
-        />
-        <StatsCard
-          title="Delivered"
-          value={orders.filter((o) => o.status === 'Delivered').length.toString()}
-          description="Successfully completed"
-          icon={<PackageCheck className="h-5 w-5 text-green-500" />}
-          color="bg-green-100"
-        />
+        {(['total_orders', 'pending', 'in_transit', 'delivered'] as const).map((key) => (
+          <StatsCard
+            key={key}
+            title={t(`orders.stats.${key}`)}
+            value={{
+              total_orders: orders.length,
+              pending: orders.filter((o) => o.status === 'Pending').length,
+              in_transit: orders.filter((o) => o.status === 'Shipped').length,
+              delivered: orders.filter((o) => o.status === 'Delivered').length,
+            }[key].toString()}
+            description={t(`orders.stats.${key}_desc`)}
+            icon={
+              {
+                total_orders: <ShoppingBag className="h-5 w-5 text-primary" />,
+                pending: <ArrowUpRight className="h-5 w-5 text-yellow-500" />,
+                in_transit: <TruckIcon className="h-5 w-5 text-indigo-500" />,
+                delivered: <PackageCheck className="h-5 w-5 text-green-500" />,
+              }[key]
+            }
+            color={
+              {
+                total_orders: 'bg-primary/10',
+                pending: 'bg-yellow-100',
+                in_transit: 'bg-indigo-100',
+                delivered: 'bg-green-100',
+              }[key]
+            }
+          />
+        ))}
       </div>
 
+      {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
         <div className="relative flex-1 min-w-[200px]">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -198,7 +172,7 @@ export default function OrdersPage() {
           </div>
           <input
             type="text"
-            placeholder="Search by order ID..."
+            placeholder={t('orders.search_placeholder')}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-primary focus:border-primary"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -208,14 +182,14 @@ export default function OrdersPage() {
           <select
             className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white w-full"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as OrderStatus | 'All')}
+            onChange={(e) => setStatusFilter(e.target.value as any)}
           >
-            <option value="All">All Statuses</option>
-            <option value="Pending">Pending</option>
-            <option value="Processing">Processing</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Canceled">Canceled</option>
+            <option value="All">{t('orders.filter.all_statuses')}</option>
+            {['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled'].map((s) => (
+              <option key={s} value={s}>
+                {t(`orders.filter.${s.toLowerCase()}`)}
+              </option>
+            ))}
           </select>
           <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
             <Filter size={18} className="text-gray-600" />
@@ -223,16 +197,15 @@ export default function OrdersPage() {
         </div>
       </div>
 
+      {/* Orders Table or Empty State */}
       {filteredOrders.length === 0 ? (
         <div className="bg-white rounded-lg shadow-sm p-8 text-center">
           <div className="mx-auto w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <ShoppingBag size={24} className="text-gray-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-1">No orders found</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-1">{t('orders.no_orders.title')}</h3>
           <p className="text-gray-500 text-sm">
-            {searchTerm || statusFilter !== 'All'
-              ? 'Try adjusting your search or filter criteria'
-              : 'You have no orders at the moment'}
+            {searchTerm || statusFilter !== 'All' ? t('no_orders.filtered') : t('no_orders.empty')}
           </p>
         </div>
       ) : (
@@ -240,48 +213,19 @@ export default function OrdersPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Order ID
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Date
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Items
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Total
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Status
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Actions
-                </th>
+                {(['order_id', 'date', 'items', 'total', 'status', 'actions'] as const).map((h) => (
+                  <th
+                    key={h}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {t(`orders.table.${h}`)}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.map((order) => {
-                const statusConfig = getStatusConfig(order.status);
-
+                const cfg = getStatusConfig(order.status as OrderStatus);
                 return (
                   <tr key={order.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -294,20 +238,22 @@ export default function OrdersPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900">{order.items} items</span>
+                      <span className="text-sm text-gray-900">
+                        {order.items} {t('orders.table.items')}
+                      </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-medium text-gray-900">
                         {order.total?.toLocaleString()} DKK
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">{statusConfig.badge}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{cfg.badge}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         className="text-primary hover:text-primary/80 transition-colors"
                         onClick={() => openModal(order)}
                       >
-                        <Eye size={16} />
+                        <Eye size={16} /> {t('orders.modal.view')}
                       </button>
                     </td>
                   </tr>
@@ -317,6 +263,7 @@ export default function OrdersPage() {
           </table>
         </div>
       )}
+
       {selectedOrder && (
         <OrderDetailsModal order={selectedOrder} isOpen={isModalOpen} onClose={closeModal} />
       )}
@@ -331,7 +278,6 @@ interface StatsCardProps {
   icon: React.ReactNode;
   color: string;
 }
-
 function StatsCard({ title, value, description, icon, color }: StatsCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6">

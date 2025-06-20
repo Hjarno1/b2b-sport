@@ -1,7 +1,8 @@
-// src/app/(dashboard)/club-management/page.tsx
+// Updated file with i18n
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Plus,
   Search,
@@ -17,6 +18,7 @@ import Image from 'next/image';
 import { Club, ClubStatus } from '@/lib/data/mock-data';
 
 export default function ClubManagementPage() {
+  const { t } = useTranslation();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,11 +55,11 @@ export default function ClubManagementPage() {
     <div>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Club Management</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your sports clubs and their admins</p>
+          <h1 className="text-2xl font-semibold text-gray-800">{t('club_management.title')}</h1>
+          <p className="text-gray-500 text-sm mt-1">{t('club_management.description')}</p>
         </div>
         <button className="inline-flex items-center justify-center px-4 py-2 bg-primary text-white rounded-md text-sm font-medium transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
-          <Plus size={16} className="mr-2" /> Add Club
+          <Plus size={16} className="mr-2" /> {t('club_management.add_button')}
         </button>
       </div>
 
@@ -69,7 +71,7 @@ export default function ClubManagementPage() {
             </div>
             <input
               type="text"
-              placeholder="Search clubs by name..."
+              placeholder={t('club_management.search_placeholder')}
               className="pl-10 pr-4 py-2 w-full text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -77,7 +79,8 @@ export default function ClubManagementPage() {
           </div>
           <div className="inline-flex">
             <button className="inline-flex items-center px-4 py-2 border border-gray-300 bg-white rounded-md text-sm text-gray-700 hover:bg-gray-50">
-              <Filter size={16} className="mr-2 text-gray-500" /> Filter
+              <Filter size={16} className="mr-2 text-gray-500" />{' '}
+              {t('club_management.filter_button')}
               <svg
                 className="ml-2 h-4 w-4 text-gray-500"
                 fill="none"
@@ -119,9 +122,11 @@ export default function ClubManagementPage() {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No clubs found</h3>
+          <h3 className="text-lg font-medium text-gray-900">
+            {t('club_management.no_results.title')}
+          </h3>
           <p className="mt-1 text-sm text-gray-500">
-            Try adjusting your search or filter to find what you&apos;re looking for.
+            {t('club_management.no_results.description')}
           </p>
         </div>
       )}
@@ -130,6 +135,8 @@ export default function ClubManagementPage() {
 }
 
 function ClubCard({ club }: { club: Club }) {
+  const { t } = useTranslation();
+
   const getStatusConfig = (status: ClubStatus) => {
     switch (status) {
       case ClubStatus.Active:
@@ -181,7 +188,9 @@ function ClubCard({ club }: { club: Club }) {
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-medium text-gray-900 truncate">{club.name}</h3>
-            <p className="text-sm text-gray-500">Created: {club.createdAt}</p>
+            <p className="text-sm text-gray-500">
+              {t('club_management.created')}: {club.createdAt}
+            </p>
           </div>
           <div className="ml-4">
             <button className="text-gray-400 hover:text-gray-500 focus:outline-none">
@@ -195,16 +204,18 @@ function ClubCard({ club }: { club: Club }) {
             <div className="col-span-2">
               <div className="flex items-center">
                 <Users size={16} className="text-gray-400 mr-2" />
-                <span className="text-sm text-gray-600">Club Admin: </span>
+                <span className="text-sm text-gray-600">{t('club_management.club_admin')}:</span>
                 <span className="text-sm font-medium text-gray-900 ml-1">
-                  {club.adminId ? 'Assigned' : 'Pending'}
+                  {club.adminId ? t('club_management.assigned') : t('club_management.pending')}
                 </span>
               </div>
             </div>
             <div>
               <div className="flex items-center">
                 <FileText size={16} className="text-gray-400 mr-2" />
-                <span className="text-sm text-gray-600">Active Agreements:</span>
+                <span className="text-sm text-gray-600">
+                  {t('club_management.active_agreements')}:
+                </span>
                 <span className="text-sm font-medium text-gray-900 ml-1">
                   {club.activeAgreements}
                 </span>
@@ -213,7 +224,7 @@ function ClubCard({ club }: { club: Club }) {
             <div>
               <div className="flex items-center">
                 <Users size={16} className="text-gray-400 mr-2" />
-                <span className="text-sm text-gray-600">Staff:</span>
+                <span className="text-sm text-gray-600">{t('club_management.staff')}:</span>
                 <span className="text-sm font-medium text-gray-900 ml-1">{club.staffCount}</span>
               </div>
             </div>
@@ -226,11 +237,11 @@ function ClubCard({ club }: { club: Club }) {
           className={`flex items-center ${statusConfig.bg} ${statusConfig.text} py-1 px-2.5 rounded-full text-xs font-medium`}
         >
           {statusConfig.icon}
-          {club.status}
+          {t(`club_management.status.${club.status.toLowerCase()}`)}
         </div>
 
         <button className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
-          Manage
+          {t('club_management.manage')}
         </button>
       </div>
     </div>

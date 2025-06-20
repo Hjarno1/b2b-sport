@@ -1,4 +1,3 @@
-// src/components/layout/sidebar.tsx
 'use client';
 
 import Link from 'next/link';
@@ -6,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/context/auth-context';
 import { UserRole } from '@/lib/data/mock-data';
+import { useTranslation } from 'react-i18next';
 import {
   LayoutDashboard,
   Users,
@@ -26,74 +26,6 @@ interface SidebarItem {
   icon: React.ReactNode;
 }
 
-// Club Admin uses more task-oriented language but still understands some business concepts
-const clubAdminItems: SidebarItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    name: 'Staff Management',
-    href: '/staff-management',
-    icon: <UserCog className="h-5 w-5" />,
-  },
-  {
-    name: 'Agreements', // Changed from "Agreements" to "Kit Requests"
-    href: '/agreements',
-    icon: <ClipboardCheck className="h-5 w-5" />,
-  },
-  {
-    name: 'Products', // Changed from "Agreements" to "Kit Requests"
-    href: '/admin-products',
-    icon: <Shirt className="h-5 w-5" />,
-  },
-  {
-    name: 'Orders',
-    href: '/orders',
-    icon: <ShoppingBag className="h-5 w-5" />,
-  },
-  {
-    name: 'Settings',
-    href: '/settings',
-    icon: <Settings className="h-5 w-5" />,
-  },
-];
-
-// Club Staff uses completely user-friendly language focused on their actual tasks
-const clubStaffItems: SidebarItem[] = [
-  {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    name: 'Player Management', // Changed from "Roster Management" to "Player Roster"
-    href: '/player-roster',
-    icon: <UserCircle className="h-5 w-5" />,
-  },
-  {
-    name: 'Kit Details',
-    href: '/kit-setup',
-    icon: <Shirt className="h-5 w-5" />,
-  },
-  {
-    name: 'Products',
-    href: '/staff-products',
-    icon: <ShoppingBag className="h-5 w-5" />,
-  },
-  {
-    name: 'Teams Setup',
-    href: '/teams-setup',
-    icon: <Users className="h-5 w-5" />,
-  },
-  {
-    name: 'Order Tracking', // Changed from "Order Status" to "Order Tracking"
-    href: '/order-tracking',
-    icon: <ShoppingCart className="h-5 w-5" />,
-  },
-];
-
 export function Sidebar({
   isCollapsed = false,
   toggle,
@@ -103,6 +35,96 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
+
+  const clubFinanceItems: SidebarItem[] = [
+    {
+      name: t('sidebar.dashboard'),
+      href: '/dashboard',
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.club_agreements'),
+      href: '/club-agreements',
+      icon: <ClipboardCheck className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.invoices'),
+      href: '/invoices',
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.settings'),
+      href: '/settings',
+      icon: <Settings className="h-5 w-5" />,
+    },
+  ];
+
+  const clubAdminItems: SidebarItem[] = [
+    {
+      name: t('sidebar.dashboard'),
+      href: '/dashboard',
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.staff_management'),
+      href: '/staff-management',
+      icon: <UserCog className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.agreements'),
+      href: '/agreements',
+      icon: <ClipboardCheck className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.products'),
+      href: '/order-create-admin',
+      icon: <Shirt className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.orders'),
+      href: '/orders',
+      icon: <ShoppingBag className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.settings'),
+      href: '/settings',
+      icon: <Settings className="h-5 w-5" />,
+    },
+  ];
+
+  const clubStaffItems: SidebarItem[] = [
+    {
+      name: t('sidebar.dashboard'),
+      href: '/dashboard',
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.player_management'),
+      href: '/player-roster',
+      icon: <UserCircle className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.kit_details'),
+      href: '/kit-setup',
+      icon: <Shirt className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.products'),
+      href: '/order-create-staff',
+      icon: <ShoppingBag className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.teams_setup'),
+      href: '/teams-setup',
+      icon: <Users className="h-5 w-5" />,
+    },
+    {
+      name: t('sidebar.order_tracking'),
+      href: '/order-tracking',
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+  ];
 
   // Select navigation items based on user role
   let navItems: SidebarItem[] = [];
@@ -110,6 +132,8 @@ export function Sidebar({
     navItems = clubAdminItems;
   } else if (user?.role === UserRole.ClubStaff) {
     navItems = clubStaffItems;
+  } else if (user?.role === UserRole.ClubFinance) {
+    navItems = clubFinanceItems;
   }
 
   return (

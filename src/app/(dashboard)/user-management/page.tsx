@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Plus, Search, Building2, Edit, Mail, User } from 'lucide-react';
 import { User as UserType, UserRole, UserStatus, mockClubs } from '@/lib/data/mock-data';
+import { useTranslation } from 'react-i18next';
 
 export default function UserManagementPage() {
+  const { t } = useTranslation('user_management');
   const [users, setUsers] = useState<UserType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,229 +22,176 @@ export default function UserManagementPage() {
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchUsers();
   }, [activeTab]);
 
-  // Filter users
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = users.filter((u) => {
     const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesClub = clubFilter === 'All' || user.clubId === clubFilter;
-
+      u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesClub = clubFilter === 'All' || u.clubId === clubFilter;
     return matchesSearch && matchesClub;
   });
 
   const getStatusBadge = (status: UserStatus) => {
     switch (status) {
       case UserStatus.Active:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            Active
-          </span>
-        );
+        return <span className="badge-green">{t('user_management.status.active')}</span>;
       case UserStatus.Inactive:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-            Inactive
-          </span>
-        );
+        return <span className="badge-red">{t('user_management.status.inactive')}</span>;
       case UserStatus.Pending:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-            Pending
-          </span>
-        );
+        return <span className="badge-yellow">{t('user_management.status.pending')}</span>;
       default:
         return null;
     }
   };
 
-  // Helper to get club name
   const getClubName = (clubId?: string) => {
-    if (!clubId) return 'N/A';
+    if (!clubId) return t('club.na');
     const club = mockClubs.find((c) => c.id === clubId);
-    return club ? club.name : 'Unknown Club';
+    return club ? club.name : t('club.unknown');
   };
 
   const getButtonLabel = () => {
     switch (activeTab) {
       case UserRole.ClubAdmin:
-        return 'Add Club Admin';
+        return t('buttons.addAdmin');
       case UserRole.ClubStaff:
-        return 'Add Club Staff';
+        return t('buttons.addStaff');
+      case UserRole.ClubFinance:
+        return t('buttons.addFinance');
       default:
-        return 'Add User';
+        return t('buttons.addUser');
     }
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      </div>
-    );
+    return <div className="center-spinner">{t('user_management.loading')}</div>;
   }
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">User Management</h1>
-        <button className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md flex items-center">
+      <header className="flex justify-between mb-6">
+        <h1 className="text-2xl">{t('user_management.pageTitle')}</h1>
+        <button className="btn-primary">
           <Plus size={18} className="mr-2" /> {getButtonLabel()}
         </button>
-      </div>
+      </header>
 
-      {/* Tabs */}
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="-mb-px flex">
+      <nav className="tabs mb-6">
+        {['admins', 'staff', 'finance'].map((tab) => (
           <button
-            className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
-              activeTab === UserRole.ClubAdmin
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab(UserRole.ClubAdmin)}
+            key={tab}
+            className={
+              activeTab ===
+              UserRole[(tab.charAt(0).toUpperCase() + tab.slice(1)) as keyof typeof UserRole]
+                ? 'tab-active'
+                : 'tab'
+            }
+            onClick={() =>
+              setActiveTab(
+                UserRole[(tab.charAt(0).toUpperCase() + tab.slice(1)) as keyof typeof UserRole],
+              )
+            }
           >
-            Club Admins
+            {t(`user_management.tabs.${tab}`)}
           </button>
-          <button
-            className={`whitespace-nowrap py-4 px-6 border-b-2 font-medium text-sm ${
-              activeTab === UserRole.ClubStaff
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            }`}
-            onClick={() => setActiveTab(UserRole.ClubStaff)}
-          >
-            Club Staff
-          </button>
-        </nav>
-      </div>
+        ))}
+      </nav>
 
-      <div className="flex gap-4 mb-6">
+      <div className="filters mb-6 flex gap-4">
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-gray-400" />
-          </div>
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          />
           <input
             type="text"
-            placeholder="Search users..."
-            className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder={t('user_management.placeholders.search')}
+            className="input"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-          <div className="relative">
-            <select
-              className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white"
-              value={clubFilter}
-              onChange={(e) => setClubFilter(e.target.value)}
-            >
-              <option value="All">All Clubs</option>
-              {mockClubs.map((club) => (
-                <option key={club.id} value={club.id}>
-                  {club.name}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-              <Building2 size={18} className="text-gray-600" />
-            </div>
-          </div>
+
+        <div className="relative">
+          <select
+            className="select"
+            value={clubFilter}
+            onChange={(e) => setClubFilter(e.target.value)}
+          >
+            <option value="All">{t('user_management.placeholders.allClubs')}</option>
+            {mockClubs.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+          <Building2
+            size={18}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 pointer-events-none"
+          />
+        </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="card overflow-auto">
+        <table className="table">
+          <thead>
             <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Name
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Email
-              </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Club
-                </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Status
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Actions
-              </th>
+              <th>{t('user_management.table.name')}</th>
+              <th>{t('user_management.table.email')}</th>
+              <th>{t('user_management.table.club')}</th>
+              <th>{t('user_management.table.status')}</th>
+              <th className="text-right">{t('user_management.table.actions')}</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody>
             {filteredUsers.length === 0 ? (
               <tr>
-                <td
-                  colSpan={5}
-                  className="px-6 py-4 text-center text-sm text-gray-500"
-                >
-                  No users found matching your criteria
+                <td colSpan={5} className="text-center py-4">
+                  {t('user_management.noResults')}
                 </td>
               </tr>
             ) : (
-              filteredUsers.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
+              filteredUsers.map((u) => (
+                <tr key={u.id}>
+                  <td>
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center">
-                        <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={user?.avatar || '/faces/default-avatar.jpg'}
-                            alt={user?.name || 'User Avatar'}
-                            layout="fill"
-                            objectFit="cover"
-                            priority
-                          />
-                        </div>
+                      <div className="avatar mr-4">
+                        <Image
+                          src={u.avatar || '/faces/default-avatar.jpg'}
+                          alt={u.name}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                        <div className="text-sm text-gray-500 flex items-center">
-                          <User size={14} className="mr-1" /> {user.role}
+                      <div>
+                        <div className="font-medium">{u.name}</div>
+                        <div className="text-sm text-gray-500">
+                          <User size={14} className="inline mr-1" />{' '}
+                          {t(`user_management.roles.${u.role}`)}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Mail size={14} className="mr-1 text-gray-400" />
-                      {user.email}
-                    </div>
+                  <td>
+                    <Mail size={14} className="inline mr-1 text-gray-400" />
+                    {u.email}
                   </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <div className="flex items-center">
-                        <Building2 size={14} className="mr-1 text-gray-400" />
-                        {getClubName(user.clubId)}
-                      </div>
-                    </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(user.status)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td>
+                    <Building2 size={14} className="inline mr-1 text-gray-400" />
+                    {getClubName(u.clubId)}
+                  </td>
+                  <td>{getStatusBadge(u.status)}</td>
+                  <td className="text-right">
                     <button className="text-indigo-600 hover:text-indigo-900 flex items-center ml-auto">
-                      <Edit size={16} className="mr-1" /> Edit
+                      <Edit size={16} className="mr-1" /> {t('user_management.actions.edit')}
                     </button>
                   </td>
                 </tr>

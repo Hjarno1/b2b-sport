@@ -1,7 +1,8 @@
-// src/app/(dashboard)/settings/page.tsx
 'use client';
 
 import { useState } from 'react';
+import i18n from 'i18next';
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { useAuth } from '@/lib/context/auth-context';
 import {
@@ -19,9 +20,11 @@ import {
   Clock,
   Languages,
   Check,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [darkMode, setDarkMode] = useState(false);
@@ -31,8 +34,10 @@ export default function SettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Settings</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage your account settings and preferences</p>
+        <h1 className="text-2xl font-semibold text-gray-800">{t('settings.settings')}</h1>
+        <p className="text-gray-500 text-sm mt-1">
+          {t('settings.manage_desc', 'Manage your account settings and preferences')}
+        </p>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -41,25 +46,25 @@ export default function SettingsPage() {
             active={activeTab === 'profile'}
             onClick={() => setActiveTab('profile')}
             icon={<User size={16} />}
-            label="Profile"
+            label={t('settings.profile')}
           />
           <TabButton
             active={activeTab === 'account'}
             onClick={() => setActiveTab('account')}
             icon={<Lock size={16} />}
-            label="Account"
+            label={t('settings.account')}
           />
           <TabButton
             active={activeTab === 'notifications'}
             onClick={() => setActiveTab('notifications')}
             icon={<Bell size={16} />}
-            label="Notifications"
+            label={t('settings.notifications')}
           />
           <TabButton
             active={activeTab === 'preferences'}
             onClick={() => setActiveTab('preferences')}
             icon={<Globe size={16} />}
-            label="Preferences"
+            label={t('settings.preferences')}
           />
         </div>
 
@@ -67,10 +72,8 @@ export default function SettingsPage() {
           {activeTab === 'profile' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-900">Profile Information</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Update your account profile information and email address.
-                </p>
+                <h3 className="text-lg font-medium text-gray-900">{t('settings.profile_info')}</h3>
+                <p className="mt-1 text-sm text-gray-500">{t('settings.update_profile_desc')}</p>
               </div>
 
               <div className="flex items-center space-x-6">
@@ -79,7 +82,7 @@ export default function SettingsPage() {
                     <div className="relative w-20 h-20 rounded-full overflow-hidden">
                       <Image
                         src={user?.avatar || '/faces/default-avatar.jpg'}
-                        alt={user?.name || 'User Avatar'}
+                        alt={user?.name || t('settings.profile')}
                         layout="fill"
                         objectFit="cover"
                         priority
@@ -91,14 +94,14 @@ export default function SettingsPage() {
                   </button>
                 </div>
                 <button className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                  Change Avatar
+                  {t('settings.change_avatar')}
                 </button>
               </div>
 
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
+                    {t('settings.name')}
                   </label>
                   <input
                     type="text"
@@ -111,7 +114,7 @@ export default function SettingsPage() {
 
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email
+                    {t('settings.email')}
                   </label>
                   <input
                     type="email"
@@ -124,7 +127,7 @@ export default function SettingsPage() {
 
                 <div className="sm:col-span-2">
                   <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                    Role
+                    {t('settings.role')}
                   </label>
                   <input
                     type="text"
@@ -134,14 +137,14 @@ export default function SettingsPage() {
                     disabled
                     className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm bg-gray-50 text-gray-500 text-sm"
                   />
-                  <p className="mt-1 text-xs text-gray-500">Your role cannot be changed.</p>
+                  <p className="mt-1 text-xs text-gray-500">{t('settings.cannot_change_role')}</p>
                 </div>
               </div>
 
               <div className="flex justify-end">
                 <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-sm font-medium flex items-center">
                   <Save size={16} className="mr-2" />
-                  Save Changes
+                  {t('settings.save_changes')}
                 </button>
               </div>
             </div>
@@ -150,10 +153,10 @@ export default function SettingsPage() {
           {activeTab === 'account' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-900">Account Security</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Update your password and configure security settings.
-                </p>
+                <h3 className="text-lg font-medium text-gray-900">
+                  {t('settings.account_security')}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">{t('settings.account_security_desc')}</p>
               </div>
 
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
@@ -162,9 +165,11 @@ export default function SettingsPage() {
                     <Shield size={20} className="text-primary" />
                   </div>
                   <div className="ml-3">
-                    <h4 className="text-sm font-medium text-gray-900">Account Protection</h4>
+                    <h4 className="text-sm font-medium text-gray-900">
+                      {t('settings.account_protection')}
+                    </h4>
                     <p className="text-xs text-gray-500 mt-1">
-                      Your account is protected with two-factor authentication.
+                      {t('settings.account_protection_desc')}
                     </p>
                   </div>
                 </div>
@@ -176,7 +181,7 @@ export default function SettingsPage() {
                     htmlFor="current-password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Current Password
+                    {t('settings.current_password')}
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -194,7 +199,7 @@ export default function SettingsPage() {
 
                 <div>
                   <label htmlFor="new-password" className="block text-sm font-medium text-gray-700">
-                    New Password
+                    {t('settings.new_password')}
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -215,7 +220,7 @@ export default function SettingsPage() {
                     htmlFor="confirm-password"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Confirm Password
+                    {t('settings.confirm_password')}
                   </label>
                   <div className="mt-1 relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -233,21 +238,23 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-4 pt-4">
-                <h4 className="text-sm font-medium text-gray-700">Two-Factor Authentication</h4>
+                <h4 className="text-sm font-medium text-gray-700">
+                  {t('settings.two_factor_auth', 'Two-Factor Authentication')}
+                </h4>
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                   <div className="p-4 flex items-center justify-between">
                     <div>
-                      <h5 className="text-sm font-medium text-gray-900">Authenticator App</h5>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Use an authenticator app to get verification codes
-                      </p>
+                      <h5 className="text-sm font-medium text-gray-900">
+                        {t('settings.auth_app')}
+                      </h5>
+                      <p className="text-xs text-gray-500 mt-1">{t('settings.auth_app_desc')}</p>
                     </div>
                     <div className="flex items-center">
                       <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full flex items-center mr-3">
-                        <Check size={12} className="mr-1" /> Enabled
+                        <Check size={12} className="mr-1" /> {t('settings.enabled')}
                       </span>
                       <button className="text-sm text-primary font-medium hover:underline">
-                        Manage
+                        {t('settings.manage')}
                       </button>
                     </div>
                   </div>
@@ -256,23 +263,21 @@ export default function SettingsPage() {
                       <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
                         <Shield size={16} className="text-green-600" />
                       </div>
-                      <div className="text-xs text-gray-500">
-                        Two-factor authentication adds an extra layer of security to your account
-                      </div>
+                      <div className="text-xs text-gray-500">{t('settings.2fa_desc')}</div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4 pt-4">
-                <h4 className="text-sm font-medium text-gray-700">Sessions</h4>
+                <h4 className="text-sm font-medium text-gray-700">{t('settings.sessions')}</h4>
                 <div className="bg-white border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h5 className="text-sm font-medium text-gray-900">Current Session</h5>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Started on Apr, 16, 2025 from Chrome on Windows
-                      </p>
+                      <h5 className="text-sm font-medium text-gray-900">
+                        {t('settings.current_session')}
+                      </h5>
+                      <p className="text-xs text-gray-500 mt-1">{t('settings.session_started')}</p>
                     </div>
                     <span className="flex h-2 w-2 rounded-full bg-green-400"></span>
                   </div>
@@ -282,7 +287,7 @@ export default function SettingsPage() {
               <div className="flex justify-end">
                 <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-sm font-medium flex items-center">
                   <Save size={16} className="mr-2" />
-                  Update Password
+                  {t('settings.update_password')}
                 </button>
               </div>
             </div>
@@ -291,49 +296,53 @@ export default function SettingsPage() {
           {activeTab === 'notifications' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-900">Notification Settings</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Configure how and when you receive notifications.
-                </p>
+                <h3 className="text-lg font-medium text-gray-900">
+                  {t('settings.notification_settings')}
+                </h3>
+                <p className="mt-1 text-sm text-gray-500">{t('settings.notification_desc')}</p>
               </div>
 
               <div className="space-y-4">
                 <NotificationOption
                   id="new-agreements"
-                  title="New Agreements"
-                  description="Get notified when a new agreement is created"
+                  title={t('settings.new_agreements')}
+                  description={t('settings.new_agreements_desc')}
                   defaultChecked={true}
                 />
 
                 <NotificationOption
                   id="order-updates"
-                  title="Order Updates"
-                  description="Receive notifications when orders change status"
+                  title={t('settings.order_updates')}
+                  description={t('settings.order_updates_desc')}
                   defaultChecked={true}
                 />
 
                 <NotificationOption
                   id="system-updates"
-                  title="System Updates"
-                  description="Get notified about platform updates and maintenance"
+                  title={t('settings.system_updates')}
+                  description={t('settings.system_updates_desc')}
                   defaultChecked={true}
                 />
 
                 <NotificationOption
                   id="staff-changes"
-                  title="Staff Changes"
-                  description="Be informed when staff are added or removed"
+                  title={t('settings.staff_changes')}
+                  description={t('settings.staff_changes_desc')}
                   defaultChecked={false}
                 />
               </div>
 
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Notification Channels</h4>
+                <h4 className="text-sm font-medium text-gray-900 mb-3">
+                  {t('settings.notification_channels')}
+                </h4>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Mail size={16} className="text-gray-500 mr-2" />
-                      <span className="text-sm text-gray-700">Email Notifications</span>
+                      <span className="text-sm text-gray-700">
+                        {t('settings.email_notifications')}
+                      </span>
                     </div>
                     <div>
                       <Switch
@@ -347,7 +356,9 @@ export default function SettingsPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Bell size={16} className="text-gray-500 mr-2" />
-                      <span className="text-sm text-gray-700">Push Notifications</span>
+                      <span className="text-sm text-gray-700">
+                        {t('settings.push_notifications')}
+                      </span>
                     </div>
                     <div>
                       <Switch
@@ -361,26 +372,28 @@ export default function SettingsPage() {
               </div>
 
               <div className="pt-4">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Email Digest Frequency</h4>
+                <h4 className="text-sm font-medium text-gray-900 mb-3">
+                  {t('settings.digest_frequency')}
+                </h4>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <RadioOption
                     id="digest-daily"
                     name="digest"
-                    label="Daily"
-                    description="Get a summary once a day"
+                    label={t('settings.daily')}
+                    description={t('settings.daily_desc')}
                     defaultChecked={true}
                   />
                   <RadioOption
                     id="digest-weekly"
                     name="digest"
-                    label="Weekly"
-                    description="Get a summary once a week"
+                    label={t('settings.weekly')}
+                    description={t('settings.weekly_desc')}
                   />
                   <RadioOption
                     id="digest-off"
                     name="digest"
-                    label="Off"
-                    description="Don't send email digests"
+                    label={t('settings.off')}
+                    description={t('settings.off_desc')}
                   />
                 </div>
               </div>
@@ -388,7 +401,7 @@ export default function SettingsPage() {
               <div className="flex justify-end">
                 <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-sm font-medium flex items-center">
                   <Save size={16} className="mr-2" />
-                  Save Notification Settings
+                  {t('settings.save_changes')}
                 </button>
               </div>
             </div>
@@ -397,17 +410,15 @@ export default function SettingsPage() {
           {activeTab === 'preferences' && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium text-gray-900">Interface Preferences</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Customize your interface and application preferences.
-                </p>
+                <h3 className="text-lg font-medium text-gray-900">{t('settings.preferences')}</h3>
+                <p className="mt-1 text-sm text-gray-500">{t('settings.enable_dark_mode')}</p>
               </div>
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <div>
-                    <h4 className="text-sm font-medium text-gray-900">Dark Mode</h4>
-                    <p className="text-xs text-gray-500 mt-1">Enable dark mode for the interface</p>
+                    <h4 className="text-sm font-medium text-gray-900">{t('settings.dark_mode')}</h4>
+                    <p className="text-xs text-gray-500 mt-1">{t('settings.enable_dark_mode')}</p>
                   </div>
                   <Switch
                     checked={darkMode}
@@ -421,7 +432,7 @@ export default function SettingsPage() {
                     htmlFor="language"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Language
+                    {t('settings.language')}
                   </label>
                   <div className="relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -430,12 +441,12 @@ export default function SettingsPage() {
                     <select
                       id="language"
                       name="language"
+                      value={i18n.language}
+                      onChange={(e) => i18n.changeLanguage(e.target.value)}
                       className="pl-10 block w-full rounded-md border border-gray-300 py-2 px-3 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary text-sm pr-10 appearance-none"
                     >
-                      <option>English</option>
-                      <option>Spanish</option>
-                      <option>French</option>
-                      <option>German</option>
+                      <option value="en">English</option>
+                      <option value="da">Dansk</option>
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                       <svg
@@ -460,7 +471,7 @@ export default function SettingsPage() {
                     htmlFor="timezone"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Timezone
+                    {t('settings.timezone', 'Timezone')}
                   </label>
                   <div className="relative rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -496,26 +507,28 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="pt-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Landing Page</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                    {t('settings.landing_page')}
+                  </h4>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                     <RadioOption
                       id="landing-dashboard"
                       name="landing"
-                      label="Dashboard"
-                      description="Start at the dashboard"
+                      label={t('settings.landing_dashboard')}
+                      description={t('settings.landing_dashboard_desc')}
                       defaultChecked={true}
                     />
                     <RadioOption
                       id="landing-clubs"
                       name="landing"
-                      label="Club Management"
-                      description="Start at club management"
+                      label={t('settings.landing_clubs')}
+                      description={t('settings.landing_clubs_desc')}
                     />
                     <RadioOption
                       id="landing-agreements"
                       name="landing"
-                      label="Agreements"
-                      description="Start at agreements"
+                      label={t('settings.landing_agreements')}
+                      description={t('settings.landing_agreements_desc')}
                     />
                   </div>
                 </div>
@@ -524,7 +537,7 @@ export default function SettingsPage() {
               <div className="flex justify-end">
                 <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary text-sm font-medium flex items-center">
                   <Save size={16} className="mr-2" />
-                  Save Preferences
+                  {t('settings.save_preferences')}
                 </button>
               </div>
             </div>

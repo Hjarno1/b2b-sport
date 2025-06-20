@@ -1,11 +1,12 @@
+// src/app/(dashboard)/teams-setup/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Search, AlertTriangle, CheckCircle, ChevronRight, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
+import { useTranslation } from 'react-i18next';
 
-// Team Type for simplified view
 interface Team {
   id: string;
   name: string;
@@ -15,6 +16,7 @@ interface Team {
 }
 
 export default function TeamsSetupPage() {
+  const { t } = useTranslation('teams_setup');
   const { user } = useAuth();
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -52,8 +54,8 @@ export default function TeamsSetupPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Teams Setup</h1>
-        <p className="text-gray-500 text-sm mt-1">View and manage kit requests per team</p>
+        <h1 className="text-2xl font-semibold text-gray-800">{t('team_setup.pageTitle')}</h1>
+        <p className="text-gray-500 text-sm mt-1">{t('team_setup.pageSubtitle')}</p>
       </div>
 
       {/* Search Bar */}
@@ -63,7 +65,7 @@ export default function TeamsSetupPage() {
         </div>
         <input
           type="text"
-          placeholder="Search teams..."
+          placeholder={t('team_setup.searchPlaceholder')}
           className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-primary focus:border-primary"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -74,9 +76,11 @@ export default function TeamsSetupPage() {
         {filteredTeams.length === 0 ? (
           <div className="col-span-full bg-white rounded-lg shadow-sm p-8 text-center">
             <Users size={48} className="mx-auto text-gray-400 mb-4" />
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">No Teams Found</h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+              {t('team_setup.noTeamsTitle')}
+            </h2>
             <p className="text-gray-500">
-              {searchTerm ? 'Try adjusting your search' : 'There are no teams to display.'}
+              {searchTerm ? t('noTeamsDescFiltered') : t('noTeamsDescEmpty')}
             </p>
           </div>
         ) : (
@@ -92,17 +96,19 @@ export default function TeamsSetupPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-medium text-gray-900">{team.name}</h3>
-                    <p className="text-sm text-gray-500">{team.playerCount} Players</p>
+                    <p className="text-sm text-gray-500">
+                      {t('team_setup.playersCount', { count: team.playerCount })}
+                    </p>
                   </div>
                 </div>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Active Kit Requests:</span>
+                    <span className="text-gray-600">{t('team_setup.activeKitRequests')}</span>
                     <span className="font-medium text-gray-900">{team.kitRequestCount}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Pending Tasks:</span>
+                    <span className="text-gray-600">{t('team_setup.pendingTasks')}</span>
                     <span className="font-medium text-gray-900">{team.pendingCount}</span>
                   </div>
                 </div>
@@ -113,11 +119,12 @@ export default function TeamsSetupPage() {
                   {team.pendingCount > 0 ? (
                     <span className="flex items-center text-yellow-600">
                       <AlertTriangle size={14} className="mr-1.5" />
-                      {team.pendingCount} pending {team.pendingCount === 1 ? 'task' : 'tasks'}
+                      {t('team_setup.tasksPending', { count: team.pendingCount })}
                     </span>
                   ) : (
                     <span className="flex items-center text-green-600">
-                      <CheckCircle size={14} className="mr-1.5" /> All tasks complete
+                      <CheckCircle size={14} className="mr-1.5" />{' '}
+                      {t('team_setup.allTasksComplete')}
                     </span>
                   )}
                 </div>
@@ -126,7 +133,7 @@ export default function TeamsSetupPage() {
                   href="/player-roster"
                   className="inline-flex items-center text-primary hover:text-primary/80 font-medium text-sm"
                 >
-                  View Players
+                  {t('team_setup.viewPlayers')}
                   <ChevronRight size={16} className="ml-1" />
                 </Link>
               </div>

@@ -20,6 +20,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, AgreementStatus } from '@/lib/data/mock-data';
+import { v4 as uuidv4 } from 'uuid';
+import { useTranslation } from 'react-i18next';
 
 // Player from roster
 interface Player {
@@ -62,6 +64,7 @@ interface AgreementDetails {
 }
 
 export default function PlayerKitDetailsPage() {
+  const { t } = useTranslation('player_kit_details');
   const params = useParams();
   const router = useRouter();
   const { user } = useAuth();
@@ -80,24 +83,19 @@ export default function PlayerKitDetailsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch agreement details using the new API
         const detailsResponse = await fetch(
           `/api/player-kit-details?agreementId=${agreementId}&type=details`,
         );
-
         if (!detailsResponse.ok) {
           throw new Error('Failed to fetch agreement details');
         }
-
         const detailsData = await detailsResponse.json();
 
-        // Fetch team roster for this agreement
         const rosterResponse = await fetch(
           `/api/player-kit-details?agreementId=${agreementId}&type=roster`,
         );
         const rosterData = await rosterResponse.json();
 
-        // Set up selected players and mappings from the fetched data
         const mappings = detailsData.playerMappings || [];
         const mappingsRecord: Record<string, PlayerMapping> = {};
         const selected: string[] = [];
@@ -112,11 +110,9 @@ export default function PlayerKitDetailsPage() {
         setSelectedPlayers(selected);
         setPlayerMappings(mappingsRecord);
 
-        // Auto-expand the first incomplete player
         const incompleteMapping = mappings.find(
           (m: PlayerMapping) => !isPlayerMappingComplete(m, detailsData.fields),
         );
-
         if (incompleteMapping) {
           setExpandedPlayers([incompleteMapping.playerId]);
         }
@@ -135,16 +131,30 @@ export default function PlayerKitDetailsPage() {
     (player) => player.name.toLowerCase().includes(searchTerm.toLowerCase()) && player.isActive,
   );
 
+  const handleInvitePlayer = (playerId: string) => {
+    const token = uuidv4();
+    const playerData = {
+      playerId,
+      fields: agreementDetails?.fields,
+      agreementId: agreementDetails?.id,
+    };
+    const invites = JSON.parse(localStorage.getItem('playerInvites') || '{}');
+    invites[token] = playerData;
+    localStorage.setItem('playerInvites', JSON.stringify(invites));
+
+    const inviteUrl = `${window.location.origin}/player-kit-details-invite/${token}`;
+    navigator.clipboard.writeText(inviteUrl);
+    alert(t('invite_alert', { url: inviteUrl }));
+  };
+
   // Function to check if a player mapping is complete
   const isPlayerMappingComplete = (
     mapping: PlayerMapping,
     fields: AgreementField[] | undefined,
   ): boolean => {
-    // Check if fields is an array and has items
     if (!Array.isArray(fields) || fields.length === 0) {
-      return true; // If no fields to validate, consider it complete
+      return true;
     }
-
     for (const field of fields) {
       if (field.required && (!mapping.values[field.id] || mapping.values[field.id].trim() === '')) {
         return false;
@@ -156,30 +166,18 @@ export default function PlayerKitDetailsPage() {
   // Toggle player selection
   const togglePlayerSelection = (playerId: string) => {
     if (selectedPlayers.includes(playerId)) {
-      // Remove player
       setSelectedPlayers(selectedPlayers.filter((id) => id !== playerId));
-
-      // Remove mapping
       const newMappings = { ...playerMappings };
       delete newMappings[playerId];
       setPlayerMappings(newMappings);
     } else {
-      // Add player
       setSelectedPlayers([...selectedPlayers, playerId]);
-
-      // Initialize empty mapping
       if (!playerMappings[playerId]) {
         setPlayerMappings({
           ...playerMappings,
-          [playerId]: {
-            playerId,
-            values: {},
-            isComplete: false,
-          },
+          [playerId]: { playerId, values: {}, isComplete: false },
         });
       }
-
-      // Expand the newly added player
       if (!expandedPlayers.includes(playerId)) {
         setExpandedPlayers([...expandedPlayers, playerId]);
       }
@@ -202,93 +200,45 @@ export default function PlayerKitDetailsPage() {
 
     const updatedMapping: PlayerMapping = {
       ...mapping,
-      values: {
-        ...mapping.values,
-        [fieldId]: value,
-      },
+      values: { ...mapping.values, [fieldId]: value },
     };
-
-    // Check if all required fields are filled
     updatedMapping.isComplete = isPlayerMappingComplete(
       updatedMapping,
       agreementDetails?.fields || [],
     );
-
-    setPlayerMappings({
-      ...playerMappings,
-      [playerId]: updatedMapping,
-    });
+    setPlayerMappings({ ...playerMappings, [playerId]: updatedMapping });
   };
 
   // Save player mappings
   const savePlayerMappings = async () => {
     setSaveStatus('saving');
-
     try {
-      // In a real app, this would be an API call to save mappings
-      // For demo, we'll simulate a delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Convert mappings back to array for API format
       const mappingsArray = Object.values(playerMappings);
-
-      // In real app: Save to backend via API
-      // const response = await fetch(`/api/player-mappings`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     agreementId,
-      //     mappings: mappingsArray
-      //   })
-      // });
-
-      // Update agreement details
       if (agreementDetails) {
-        setAgreementDetails({
-          ...agreementDetails,
-          playerMappings: mappingsArray,
-        });
+        setAgreementDetails({ ...agreementDetails, playerMappings: mappingsArray });
       }
-
       setSaveStatus('saved');
-
-      // Reset to idle after showing success
       setTimeout(() => setSaveStatus('idle'), 3000);
-    } catch (error) {
-      console.error('Error saving mappings:', error);
+    } catch {
       setSaveStatus('error');
-
-      // Reset to idle after showing error
       setTimeout(() => setSaveStatus('idle'), 3000);
     }
   };
 
   // Submit completed mappings and create order
   const submitMappings = async () => {
-    // Check if all selected players have complete mappings
     const allComplete = selectedPlayers.every((playerId) => playerMappings[playerId]?.isComplete);
-
-    if (!allComplete) {
-      if (!confirm('Not all player details are complete. Submit anyway?')) {
-        return;
-      }
-    }
-
-    // In a real app, this would create an order and update the agreement status
-    // For demo, we'll just navigate to the order status page
-    alert('Player details submitted successfully! An order will be created.');
+    if (!allComplete && !confirm(t('confirm_submit'))) return;
+    alert(t('kit_details_summary.all_complete'));
     router.push('/order-tracking');
   };
 
   // Calculate completion percentage
   const calculateCompletionPercentage = (): number => {
     if (selectedPlayers.length === 0) return 0;
-
-    const completeMappings = selectedPlayers.filter(
-      (playerId) => playerMappings[playerId]?.isComplete,
-    ).length;
-
-    return Math.round((completeMappings / selectedPlayers.length) * 100);
+    const completeCount = selectedPlayers.filter((id) => playerMappings[id]?.isComplete).length;
+    return Math.round((completeCount / selectedPlayers.length) * 100);
   };
 
   const completionPercentage = calculateCompletionPercentage();
@@ -306,35 +256,16 @@ export default function PlayerKitDetailsPage() {
     return (
       <div className="bg-white rounded-lg shadow-sm p-8 text-center">
         <AlertTriangle size={48} className="mx-auto text-yellow-500 mb-4" />
-        <h1 className="text-2xl font-semibold text-gray-800 mb-2">Agreement Not Found</h1>
-        <p className="text-gray-500 mb-6">
-          The agreement you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to
-          it.
-        </p>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+          {t('player_kit_details.agreement_not_found.title')}
+        </h1>
+        <p className="text-gray-500 mb-6">{t('player_kit_details.agreement_not_found.desc')}</p>
         <Link
           href="/kit-setup"
           className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
         >
-          <ArrowLeft size={16} className="mr-2" /> Back to Kit Setup
-        </Link>
-      </div>
-    );
-  }
-
-  if (!agreementDetails) {
-    return (
-      <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-        <AlertTriangle size={48} className="mx-auto text-yellow-500 mb-4" />
-        <h1 className="text-2xl font-semibold text-gray-800 mb-2">Agreement Not Found</h1>
-        <p className="text-gray-500 mb-6">
-          The agreement you&apos;re looking for doesn&apos;t exist or you don&apos;t have access to
-          it.
-        </p>
-        <Link
-          href="/kit-setup"
-          className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
-        >
-          <ArrowLeft size={16} className="mr-2" /> Back to Kit Setup
+          <ArrowLeft size={16} className="mr-2" />{' '}
+          {t('player_kit_details.agreement_not_found.back')}
         </Link>
       </div>
     );
@@ -347,22 +278,22 @@ export default function PlayerKitDetailsPage() {
           href="/kit-setup"
           className="inline-flex items-center text-primary hover:underline mb-4"
         >
-          <ArrowLeft size={16} className="mr-1" /> Back to Kit Setup
+          <ArrowLeft size={16} className="mr-1" /> {t('player_kit_details.back')}
         </Link>
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold text-gray-800">
-              Player Kit Details: {agreementDetails.name}
+              {t('player_kit_details.title', { name: agreementDetails.name })}
             </h1>
             <p className="text-gray-500 text-sm mt-1">
-              Map players from your roster to this agreement for {clubName}
+              {t('player_kit_details.subtitle', { club: clubName })}
             </p>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-600">
-              Due: <span className="font-semibold">{agreementDetails.dueDate}</span>
+              {t('player_kit_details.due', { date: agreementDetails.dueDate })}
             </div>
 
             <div className="relative h-8 w-32 bg-gray-200 rounded-full overflow-hidden">
@@ -371,7 +302,7 @@ export default function PlayerKitDetailsPage() {
                 style={{ width: `${completionPercentage}%` }}
               ></div>
               <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
-                {completionPercentage}% Complete
+                {t('player_kit_details.completion', { pct: completionPercentage })}
               </div>
             </div>
           </div>
@@ -383,30 +314,36 @@ export default function PlayerKitDetailsPage() {
         <div>
           {/* Agreement Summary */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mb-6">
-            <h2 className="text-lg font-medium text-gray-800 mb-4">Agreement Details</h2>
-
+            <h2 className="text-lg font-medium text-gray-800 mb-4">
+              {t('player_kit_details.agreement_summary.heading')}
+            </h2>
             <div className="space-y-4">
               <div>
-                <div className="text-sm text-gray-500">Agreement ID</div>
+                <div className="text-sm text-gray-500">
+                  {t('player_kit_details.agreement_summary.id')}
+                </div>
                 <div className="font-medium">{agreementDetails.id}</div>
               </div>
-
               <div>
-                <div className="text-sm text-gray-500">Team</div>
+                <div className="text-sm text-gray-500">
+                  {t('player_kit_details.agreement_summary.team')}
+                </div>
                 <div className="font-medium">{agreementDetails.teamName}</div>
               </div>
-
               <div>
-                <div className="text-sm text-gray-500">Status</div>
+                <div className="text-sm text-gray-500">
+                  {t('player_kit_details.agreement_summary.status')}
+                </div>
                 <div>
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     {agreementDetails.status}
                   </span>
                 </div>
               </div>
-
               <div>
-                <div className="text-sm text-gray-500">Valid Until</div>
+                <div className="text-sm text-gray-500">
+                  {t('player_kit_details.agreement_summary.valid_until')}
+                </div>
                 <div className="font-medium">{agreementDetails.validUntil}</div>
               </div>
             </div>
@@ -415,30 +352,33 @@ export default function PlayerKitDetailsPage() {
           {/* Player Selection */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-medium text-gray-800 mb-4">Select Players</h2>
-
+              <h2 className="text-lg font-medium text-gray-800 mb-4">
+                {t('player_kit_details.select_players.heading')}
+              </h2>
               <div className="relative mb-4">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <Search size={16} className="text-gray-400" />
                 </div>
                 <input
                   type="text"
-                  placeholder="Search players..."
+                  placeholder={t('player_kit_details.select_players.search_placeholder')}
                   className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-primary focus:border-primary text-sm"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-
               <div className="text-sm text-gray-500 mb-2">
-                Selected: {selectedPlayers.length} player{selectedPlayers.length !== 1 ? 's' : ''}
+                {t('player_kit_details.select_players.selected', { count: selectedPlayers.length })}
               </div>
             </div>
 
             <div className="max-h-[400px] overflow-y-auto">
               {filteredRoster.length === 0 ? (
                 <div className="p-6 text-center text-gray-500">
-                  No active players found matching your search.
+                  <div className="text-lg font-semibold mb-2">
+                    {t('player_kit_details.no_players_selected.title')}
+                  </div>
+                  <div>{t('no_players_selected.desc')}</div>
                 </div>
               ) : (
                 <div className="divide-y divide-gray-100">
@@ -475,7 +415,6 @@ export default function PlayerKitDetailsPage() {
                           <div className="text-xs text-gray-500">{player.position}</div>
                         </div>
                       </label>
-
                       {selectedPlayers.includes(player.id) && (
                         <div className="ml-2">
                           {playerMappings[player.id]?.isComplete ? (
@@ -498,21 +437,22 @@ export default function PlayerKitDetailsPage() {
           {selectedPlayers.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <Users size={48} className="mx-auto text-gray-400 mb-4" />
-              <h2 className="text-lg font-semibold text-gray-800 mb-2">No Players Selected</h2>
-              <p className="text-gray-500 mb-4">
-                Select players from the roster to fill in their kit details.
-              </p>
+              <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                {t('no_players_selected.title')}
+              </h2>
+              <p className="text-gray-500 mb-4">{t('no_players_selected.desc')}</p>
             </div>
           ) : (
             <>
               <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden mb-6">
                 <div className="p-6 border-b border-gray-100">
-                  <h2 className="text-lg font-medium text-gray-800">Player Kit Details</h2>
+                  <h2 className="text-lg font-medium text-gray-800">
+                    {t('player_kit_details.player_details.heading')}
+                  </h2>
                   <p className="text-sm text-gray-500 mt-1">
-                    Fill in the required information for each selected player.
+                    {t('player_kit_details.player_details.desc')}
                   </p>
                 </div>
-
                 <div className="divide-y divide-gray-100">
                   {selectedPlayers.map((playerId) => {
                     const player = roster.find((p) => p.id === playerId);
@@ -556,11 +496,13 @@ export default function PlayerKitDetailsPage() {
                           <div className="flex items-center">
                             {mapping.isComplete ? (
                               <span className="mr-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <CheckCircle2 size={12} className="mr-1" /> Complete
+                                <CheckCircle2 size={12} className="mr-1" />{' '}
+                                {t('player_kit_details.player_details.complete')}
                               </span>
                             ) : (
                               <span className="mr-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                <AlertTriangle size={12} className="mr-1" /> Incomplete
+                                <AlertTriangle size={12} className="mr-1" />{' '}
+                                {t('player_kit_details.player_details.incomplete')}
                               </span>
                             )}
 
@@ -589,7 +531,9 @@ export default function PlayerKitDetailsPage() {
                                     }
                                     className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                                   >
-                                    <option value="">Select {field.name}</option>
+                                    <option value="">
+                                      {t('player_kit_details.select_players.search_placeholder')}
+                                    </option>
                                     {field.options?.map((option) => (
                                       <option key={option} value={option}>
                                         {option}
@@ -625,6 +569,15 @@ export default function PlayerKitDetailsPage() {
                                 )}
                               </div>
                             ))}
+                            {/* 🚀 Invite Player Button */}
+                            <div className="md:col-span-2 flex justify-end mt-4">
+                              <button
+                                onClick={() => handleInvitePlayer(playerId)}
+                                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold px-5 py-2.5 rounded-lg shadow-md hover:from-green-600 hover:to-green-700 transition"
+                              >
+                                ✉️ {t('player_kit_details.buttons.invite')}
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -636,14 +589,17 @@ export default function PlayerKitDetailsPage() {
               <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mb-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div>
-                    <h2 className="text-lg font-medium text-gray-800">Kit Details Summary</h2>
+                    <h2 className="text-lg font-medium text-gray-800">
+                      {t('player_kit_details.kit_details_summary.heading')}
+                    </h2>
                     <p className="text-sm text-gray-500 mt-1">
                       {completionPercentage === 100
-                        ? 'All player details are complete!'
-                        : `${
-                            selectedPlayers.length -
-                            selectedPlayers.filter((id) => playerMappings[id]?.isComplete).length
-                          } player(s) still need details.`}
+                        ? t('player_kit_details.kit_details_summary.all_complete')
+                        : t('player_kit_details.kit_details_summary.still_need', {
+                            count:
+                              selectedPlayers.length -
+                              selectedPlayers.filter((id) => playerMappings[id]?.isComplete).length,
+                          })}
                     </p>
                   </div>
 
@@ -653,27 +609,20 @@ export default function PlayerKitDetailsPage() {
                       disabled={saveStatus === 'saving'}
                       className="inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-gray-700 rounded-md hover:bg-gray-50"
                     >
-                      {saveStatus === 'saving' ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-700 mr-2"></div>
-                          Saving...
-                        </>
-                      ) : saveStatus === 'saved' ? (
+                      {saveStatus === 'saving' && t('player_kit_details.buttons.saving')}
+                      {saveStatus === 'saved' && (
                         <>
                           <Check size={16} className="mr-2 text-green-500" />
-                          Saved
-                        </>
-                      ) : saveStatus === 'error' ? (
-                        <>
-                          <X size={16} className="mr-2 text-red-500" />
-                          Error
-                        </>
-                      ) : (
-                        <>
-                          <Save size={16} className="mr-2" />
-                          Save Progress
+                          {t('player_kit_details.buttons.saved')}
                         </>
                       )}
+                      {saveStatus === 'error' && (
+                        <>
+                          <X size={16} className="mr-2 text-red-500" />
+                          {t('player_kit_details.buttons.error')}
+                        </>
+                      )}
+                      {saveStatus === 'idle' && t('buttons.save_progress')}
                     </button>
 
                     <button
@@ -681,48 +630,22 @@ export default function PlayerKitDetailsPage() {
                       className="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
                     >
                       <ShoppingBag size={16} className="mr-2" />
-                      Submit and Create Order
+                      {t('player_kit_details.buttons.submit')}
                     </button>
                   </div>
                 </div>
               </div>
 
               <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-                <h2 className="text-lg font-medium text-gray-800 mb-4">Instructions</h2>
-
-                <div className="space-y-3 text-sm text-gray-600">
-                  <div className="flex items-start">
-                    <span className="inline-block bg-gray-200 text-gray-800 rounded-full h-5 w-5 flex items-center justify-center text-xs font-medium mr-2 mt-0.5">
-                      1
-                    </span>
-                    <div>
-                      Select players from your roster who need kit items from this agreement.
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="inline-block bg-gray-200 text-gray-800 rounded-full h-5 w-5 flex items-center justify-center text-xs font-medium mr-2 mt-0.5">
-                      2
-                    </span>
-                    <div>
-                      Fill in all required details for each player (jersey number, sizes, etc.).
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="inline-block bg-gray-200 text-gray-800 rounded-full h-5 w-5 flex items-center justify-center text-xs font-medium mr-2 mt-0.5">
-                      3
-                    </span>
-                    <div>Use &quot;Save Progress&quot; to save your work without submitting.</div>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="inline-block bg-gray-200 text-gray-800 rounded-full h-5 w-5 flex items-center justify-center text-xs font-medium mr-2 mt-0.5">
-                      4
-                    </span>
-                    <div>
-                      When all details are complete, click &quot;Submit and Create Order&quot; to
-                      generate an order.
-                    </div>
-                  </div>
-                </div>
+                <h2 className="text-lg font-medium text-gray-800 mb-4">
+                  {t('player_kit_details.instructions.heading')}
+                </h2>
+                <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600">
+                  <li>{t('player_kit_details.instructions.step1')}</li>
+                  <li>{t('player_kit_details.instructions.step2')}</li>
+                  <li>{t('player_kit_details.instructions.step3')}</li>
+                  <li>{t('player_kit_details.instructions.step4')}</li>
+                </ol>
               </div>
             </>
           )}
