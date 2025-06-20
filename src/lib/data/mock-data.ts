@@ -79,19 +79,6 @@ export interface Club {
   logo?: string;
 }
 
-export interface PlayerField {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'select';
-  description?: string;
-  required?: boolean;
-  options?: string[];
-}
-
-export interface PlayerData {
-  fields: PlayerField[];
-}
-
 export interface Team {
   id: string;
   name: string;

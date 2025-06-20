@@ -1,18 +1,12 @@
-// src/app/(dashboard)/agreement-templates/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Calendar, 
-  Tag,
-  Edit
-} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Plus, Search, Filter, Calendar, Tag, Edit } from 'lucide-react';
 import { AgreementTemplate } from '@/lib/data/mock-data';
 
 export default function AgreementTemplatesPage() {
+  const { t } = useTranslation();
   const [templates, setTemplates] = useState<AgreementTemplate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,15 +28,15 @@ export default function AgreementTemplatesPage() {
     fetchTemplates();
   }, []);
 
-  // Get unique categories
-  const categories = ['All', ...new Set(templates.map(t => t.category))];
+  const categories = ['All', ...new Set(templates.map((t) => t.category))];
 
-  // Filter templates
-  const filteredTemplates = templates.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || selectedCategory === 'All' || template.category === selectedCategory;
-    
+  const filteredTemplates = templates.filter((template) => {
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      !selectedCategory || selectedCategory === 'All' || template.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
 
@@ -57,9 +51,10 @@ export default function AgreementTemplatesPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Agreement Templates</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t('agreement_templates.title')}</h1>
         <button className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md flex items-center">
-          <Plus size={18} className="mr-2" /> Create New Template
+          <Plus size={18} className="mr-2" />
+          {t('agreement_templates.create_button')}
         </button>
       </div>
 
@@ -70,7 +65,7 @@ export default function AgreementTemplatesPage() {
           </div>
           <input
             type="text"
-            placeholder="Search templates..."
+            placeholder={t('agreement_templates.search_placeholder')}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -84,7 +79,7 @@ export default function AgreementTemplatesPage() {
           >
             {categories.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {category === 'All' ? t('agreement_templates.all_categories') : category}
               </option>
             ))}
           </select>
@@ -104,25 +99,29 @@ export default function AgreementTemplatesPage() {
 }
 
 function TemplateCard({ template }: { template: AgreementTemplate }) {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between mb-2">
         <h3 className="text-lg font-medium text-gray-900">{template.name}</h3>
         <div className="flex items-center">
           <Calendar size={16} className="text-gray-400 mr-1" />
-          <span className="text-sm text-gray-600">Created: {template.createdAt}</span>
+          <span className="text-sm text-gray-600">
+            {t('agreement_templates.created')}: {template.createdAt}
+          </span>
         </div>
       </div>
-      
+
       <p className="text-gray-600 mb-4">{template.description}</p>
-      
+
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <Tag size={16} className="text-indigo-500 mr-1" />
           <span className="text-sm text-gray-600">{template.category}</span>
         </div>
         <button className="bg-indigo-100 hover:bg-indigo-200 text-indigo-700 py-1 px-3 rounded-md flex items-center">
-          <Edit size={16} className="mr-1" /> Edit
+          <Edit size={16} className="mr-1" /> {t('agreement_templates.edit')}
         </button>
       </div>
     </div>

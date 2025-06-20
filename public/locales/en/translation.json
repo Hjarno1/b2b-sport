@@ -1,0 +1,764 @@
+{
+  "settings": {
+    "account_security_desc": "Update your password and configure security settings.",
+    "settings": "Settings",
+    "preferences": "Preferences",
+    "language": "Language",
+    "dark_mode": "Dark Mode",
+    "enable_dark_mode": "Enable dark mode for the interface",
+    "save_preferences": "Save Preferences",
+    "profile": "Profile",
+    "account": "Account",
+    "notifications": "Notifications",
+    "profile_info": "Profile Information",
+    "update_profile_desc": "Update your account profile information and email address.",
+    "change_avatar": "Change Avatar",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "cannot_change_role": "Your role cannot be changed.",
+    "save_changes": "Save Changes",
+    "account_security": "Account Security",
+    "update_password": "Update Password",
+    "account_protection": "Account Protection",
+    "account_protection_desc": "Your account is protected with two-factor authentication.",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "auth_app": "Authenticator App",
+    "auth_app_desc": "Use an authenticator app to get verification codes",
+    "enabled": "Enabled",
+    "manage": "Manage",
+    "2fa_desc": "Two-factor authentication adds an extra layer of security to your account",
+    "sessions": "Sessions",
+    "current_session": "Current Session",
+    "session_started": "Started on Apr, 16, 2025 from Chrome on Windows",
+    "notification_settings": "Notification Settings",
+    "notification_desc": "Configure how and when you receive notifications.",
+    "new_agreements": "New Agreements",
+    "new_agreements_desc": "Get notified when a new agreement is created",
+    "order_updates": "Order Updates",
+    "order_updates_desc": "Receive notifications when orders change status",
+    "system_updates": "System Updates",
+    "system_updates_desc": "Get notified about platform updates and maintenance",
+    "staff_changes": "Staff Changes",
+    "staff_changes_desc": "Be informed when staff are added or removed",
+    "notification_channels": "Notification Channels",
+    "email_notifications": "Email Notifications",
+    "push_notifications": "Push Notifications",
+    "digest_frequency": "Email Digest Frequency",
+    "daily": "Daily",
+    "daily_desc": "Get a summary once a day",
+    "weekly": "Weekly",
+    "weekly_desc": "Get a summary once a week",
+    "off": "Off",
+    "off_desc": "Don't send email digests",
+    "landing_page": "Landing Page",
+    "landing_dashboard": "Dashboard",
+    "landing_dashboard_desc": "Start at the dashboard",
+    "landing_clubs": "Club Management",
+    "landing_clubs_desc": "Start at club management",
+    "landing_agreements": "Agreements",
+    "landing_agreements_desc": "Start at agreements"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "club_agreements": "Club Agreements",
+    "invoices": "Invoices",
+    "settings": "Settings",
+    "staff_management": "Staff Management",
+    "agreements": "Agreements",
+    "products": "Products",
+    "orders": "Orders",
+    "player_management": "Player Management",
+    "kit_details": "Kit Details",
+    "teams_setup": "Teams Setup",
+    "order_tracking": "Order Tracking"
+  },
+  "login": {
+    "welcome": "Welcome back",
+    "description": "Sign in to your account to continue",
+    "error": "Failed to login. Please try again.",
+    "select_role": "Select Role",
+    "demo_note": "For demo purposes, select which role you want to login as.",
+    "demo_credentials": "Demo Credentials",
+    "demo_email": "Email: demo@b2bsports.com",
+    "demo_password": "Password: demo123 (not actually checked)",
+    "sign_in": "Sign in",
+    "signing_in": "Signing in...",
+    "copyright": "B2B Sport © {{year}}"
+  },
+  "active_agreements": {
+    "title": "Active Agreements",
+    "create_new": "Create New Agreement",
+    "search_placeholder": "Search agreements...",
+    "filter_all_clubs": "All Clubs",
+    "filter_all_statuses": "All Statuses",
+    "table": {
+      "agreement_id": "Agreement ID",
+      "club": "Club",
+      "template": "Template",
+      "status": "Status",
+      "valid_until": "Valid Until",
+      "actions": "Actions"
+    },
+    "no_results": "No agreements found matching your criteria",
+    "view": "View",
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
+  },
+  "agreement_templates": {
+    "title": "Agreement Templates",
+    "create_button": "Create New Template",
+    "search_placeholder": "Search templates...",
+    "all_categories": "All Categories",
+    "created": "Created",
+    "edit": "Edit"
+  },
+  "agreements": {
+    "title": "Agreements",
+    "description": "Manage your agreements for {{club}}",
+    "search_placeholder": "Search agreements...",
+    "filter_all_statuses": "All statuses",
+    "your_club": "Your Club",
+    "manage_for": "Manage your agreements for {{club}}",
+    "no_results_title": "No agreements found",
+    "no_results_filtered": "Try adjusting your search or filter criteria",
+    "no_results_empty": "You have no active agreements at the moment",
+    "priority": "Priority",
+    "empty": {
+      "title": "No agreements found",
+      "filtered": "Try adjusting your search or filter criteria",
+      "default": "You have no active agreements at the moment"
+    },
+    "created": "Created",
+    "valid_until": "Valid until",
+    "priority": {
+      "high": "High priority",
+      "normal": "Normal priority",
+      "low": "Low priority"
+    },
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
+  },
+  "club_agreements": {
+    "title": "Club Agreements",
+    "description": "View and manage contracts and agreements related to your club.",
+    "search_placeholder": "Search agreements...",
+    "filter_all_statuses": "All Statuses",
+    "empty_title": "No agreements found",
+    "empty_description": "Try adjusting your search or filters",
+    "start": "Start",
+    "end": "End",
+    "status": {
+      "pending": "Pending",
+      "active": "Active",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    }
+  },
+  "club_management": {
+    "title": "Club Management",
+    "description": "Manage your sports clubs and their admins",
+    "add_button": "Add Club",
+    "search_placeholder": "Search clubs by name...",
+    "filter_button": "Filter",
+    "no_results": {
+      "title": "No clubs found",
+      "description": "Try adjusting your search or filter to find what you're looking for."
+    },
+    "created": "Created",
+    "club_admin": "Club Admin",
+    "assigned": "Assigned",
+    "pending": "Pending",
+    "active_agreements": "Active Agreements",
+    "staff": "Staff",
+    "manage": "Manage",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "setup": "Setup"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome to {{club}} Dashboard",
+    "finance_welcome": "Welcome to {{club}} Finance Dashboard",
+    "finance_description": "Monitor agreements, track orders, and view financial activity",
+    "staff_welcome": "Welcome, {{name}}",
+    "staff_description": "Manage your teams kit information and track orders",
+    "default_club": "Your Club",
+    "your_task": "Your Tasks",
+    "no_tasks": "You have no tasks assigned to you at the moment.",
+    "description": "Manage your club’s staff, agreements, and orders in one place",
+    "view_all_task": "View All {{taskLength}} Tasks",
+    "stats": {
+      "active_agreements": "Active Agreements",
+      "pending_orders": "Pending Orders",
+      "staff_members": "Staff Members",
+      "upcoming_deliveries": "Upcoming Deliveries",
+      "active_club_agreements": "Active Club Agreements",
+      "unpaid_invoices": "Unpaid invoices",
+      "overdue_invoices": "Overdue invoices",
+      "tasks": "Tasks",
+      "completed": "Completed",
+      "pending": "Pending",
+      "orders": "Orders"
+    },
+    "recent_activity": "Recent Activity",
+    "no_activity": "No recent activity found",
+    "view_all": "View all",
+    "view_tasks": "View Tasks",
+    "quick_actions": "Quick Actions",
+    "attention": "Attention Needed",
+    "priority_alert": "You have {{count}} high priority or overdue task(s) that need your attention",
+    "upcoming_deadlines": "Upcoming Deadlines",
+    "due": "Due: ",
+    "team": "Team: ",
+    "progress": "Progress",
+    "teamdue": "Team: {{teamName}} | Due: {{dueDate}}",
+    "actions": {
+      "add_staff": "Add staff member",
+      "add_staff_desc": "Add new staff to your club",
+      "view_agreements": "View agreements",
+      "view_agreements_desc": "Check your active agreements",
+      "track_orders": "Track orders",
+      "track_orders_desc": "Check your order status",
+      "view_club_agreements": "View club agreements",
+      "view_club_agreements_desc": "Check your active club agreements",
+      "view_invoices": "View invoices",
+      "view_invoices_desc": "Check your invoices and payments",
+      "update_roster": "Update Player Roster",
+      "update_roster_desc": "Add or edit player information",
+      "setup_kits": "Set Up Team Kits",
+      "setup_kits_desc": "Complete player kit details"
+    },
+    "deadlines": {
+      "in_progress": "In Progress",
+      "complete": "Completed",
+      "pending": "Pending",
+      "overdue": "Overdue"
+    }
+  },
+  "invoices": {
+    "title": "Invoices",
+    "search_placeholder": "Search invoices...",
+    "columns": {
+      "id": "Invoice #",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status",
+      "action": "Action"
+    },
+    "status": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "overdue": "Overdue"
+    },
+    "no_results": "No invoices found."
+  },
+  "kit_setup": {
+    "title": "Kit Details",
+    "subtitle": "Complete kit details for players in {{club}}",
+    "overall_progress": "Overall Progress",
+    "overall_subtitle_complete": "All player kit details are complete!",
+    "overall_subtitle_incomplete": "Complete kit details for all your teams.",
+    "complete": "Complete",
+    "search_placeholder": "Search kit requests...",
+    "no_requests": {
+      "title": "No Kit Requests Found",
+      "desc_with_search": "Try adjusting your search",
+      "desc_without_search": "There are no kit requests requiring your attention."
+    },
+    "status": {
+      "pending": "Not Started",
+      "active": "Ready to Start",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "canceled": "Canceled"
+    },
+    "required_label": "Required",
+    "progress_label": "Progress",
+    "players_completed": "{{completed}} of {{total}} players completed",
+    "due": "Due: {{date}}",
+    "not_started": "Not started yet",
+    "overdue": "Overdue",
+    "ready_to_start": "Ready to start",
+    "view_details": "View Details",
+    "complete_kit_details": "Complete Kit Details",
+    "how_it_works": "How Kit Setup Works",
+    "step1_title": "Update Your Player Roster",
+    "step1_desc": "Make sure your player roster is complete and up-to-date before setting up kit details.",
+    "step2_title": "Select Players for Kit Setup",
+    "step2_desc": "For each kit request, select which players need equipment and complete their details.",
+    "step3_title": "Submit and Track",
+    "step3_desc": "Once all player details are complete, submit your kit request and track the order status."
+  },
+  "order_tracking": {
+    "title": "Order Tracking",
+    "subtitle": "Track and manage your kit orders for {{club}}",
+    "complete": "progress",
+    "status_cards": {
+      "all_orders": "All Orders",
+      "pending": "Being Prepared",
+      "processing": "In Production",
+      "shipped": "Shipped",
+      "delivered": "Delivered"
+    },
+    "search_placeholder": "Search orders...",
+    "filter": {
+      "all_statuses": "All Statuses"
+    },
+    "no_orders": {
+      "title": "No Orders Found",
+      "filtered": "Try adjusting your search or filter criteria",
+      "empty": "You have no orders at the moment."
+    },
+    "back": "← Back to all orders",
+    "view_details": "View Details",
+    "buttons": {
+      "track_package": "Track Package",
+      "download_order_details": "Download Order Details",
+      "download_kit_list": "Download Complete Kit List",
+      "view_all_items": "View All Items"
+    },
+    "detail": {
+      "heading": "Order Details: {{id}}",
+      "subheading": "{{kitName}} – {{teamName}}",
+      "status_section": "Order Status",
+      "summary_section": "Order Summary",
+      "kit_details_section": "Kit Details"
+    },
+    "timeline": {
+      "submitted": {
+        "title": "Order Submitted",
+        "desc": "Your order has been received and is being processed."
+      },
+      "production": {
+        "title": "In Production",
+        "desc": "Your kit items are being produced and customized."
+      },
+      "shipping": {
+        "title": "Shipping",
+        "desc_shipped": "Your order has been shipped. Tracking number: {{trackingNumber}}",
+        "desc_upcoming": "Your order will be shipped soon."
+      },
+      "delivery": {
+        "title": "Delivery",
+        "desc_delivered": "Your order has been delivered successfully.",
+        "desc_upcoming": "Estimated delivery date: {{date}}"
+      }
+    },
+    "summary": {
+      "order_id": "Order ID:",
+      "kit_name": "Kit Name:",
+      "team": "Team:",
+      "date_ordered": "Date Ordered:",
+      "total_items": "Total Items:",
+      "player_count": "Player Count:",
+      "status": "Status:",
+      "estimated_delivery": "Estimated Delivery:",
+      "tracking_number": "Tracking Number:"
+    },
+    "table": {
+      "player": "Player",
+      "jersey_number": "Jersey #",
+      "name_on_jersey": "Name on Jersey",
+      "sizes": "Sizes"
+    },
+    "status_badge": {
+      "pending": "Being Prepared",
+      "processing": "In Production",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "canceled": "Canceled"
+    },
+    "status_desc": {
+      "pending": "Your order is being prepared",
+      "processing": "Your order is in production",
+      "shipped": "Your order is on the way",
+      "delivered": "Your order has been delivered",
+      "canceled": "Your order has been canceled"
+    }
+  },
+  "orders": {
+    "title": "Orders",
+    "subtitle": "Manage your orders for {{club}}",
+    "stats": {
+      "total_orders": "Total Orders",
+      "total_orders_desc": "All time",
+      "pending": "Pending",
+      "pending_desc": "Awaiting processing",
+      "in_transit": "In Transit",
+      "in_transit_desc": "Currently shipping",
+      "delivered": "Delivered",
+      "delivered_desc": "Successfully completed"
+    },
+    "search_placeholder": "Search by order ID...",
+    "filter": {
+      "all_statuses": "All Statuses",
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "canceled": "Canceled"
+    },
+    "no_orders": {
+      "title": "No orders found",
+      "filtered": "Try adjusting your search or filter criteria",
+      "empty": "You have no orders at the moment"
+    },
+    "table": {
+      "order_id": "Order ID",
+      "date": "Date",
+      "items": "Items",
+      "total": "Total",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "modal": {
+      "view": "View"
+    }
+  },
+  "player_kit_details": {
+    "back": "Back to Kit Setup",
+    "title": "Player Kit Details: {{name}}",
+    "subtitle": "Map players from your roster to this agreement for {{club}}",
+    "due": "Due: {{date}}",
+    "completion": "{{pct}}% Complete",
+    "agreement_not_found": {
+      "title": "Agreement Not Found",
+      "desc": "The agreement you’re looking for doesn’t exist or you don’t have access to it.",
+      "back": "Back to Kit Setup"
+    },
+    "agreement_summary": {
+      "heading": "Agreement Details",
+      "id": "Agreement ID",
+      "team": "Team",
+      "status": "Status",
+      "valid_until": "Valid Until"
+    },
+    "select_players": {
+      "heading": "Select Players",
+      "search_placeholder": "Search players...",
+      "selected": "Selected: {{count}} player{{count, plural, one{} other{s}}}"
+    },
+    "no_players_selected": {
+      "title": "No Players Selected",
+      "desc": "Select players from the roster to fill in their kit details."
+    },
+    "player_details": {
+      "heading": "Player Kit Details",
+      "desc": "Fill in the required information for each selected player.",
+      "complete": "Complete",
+      "incomplete": "Incomplete"
+    },
+    "kit_details_summary": {
+      "heading": "Kit Details Summary",
+      "all_complete": "All player details are complete!",
+      "still_need": "{{count}} player(s) still need details."
+    },
+    "buttons": {
+      "save_progress": "Save Progress",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "error": "Error",
+      "submit": "Submit and Create Order",
+      "invite": "Invite Player"
+    },
+    "instructions": {
+      "heading": "Instructions",
+      "step1": "Select players from your roster who need kit items from this agreement.",
+      "step2": "Fill in all required details for each player (jersey number, sizes, etc.).",
+      "step3": "Use “Save Progress” to save your work without submitting.",
+      "step4": "When all details are complete, click “Submit and Create Order” to generate an order."
+    },
+    "invite_alert": "📨 Invite link copied to clipboard:\n{{url}}",
+    "confirm_submit": "Not all player details are complete. Submit anyway?",
+    "search_placeholder": "Search players..."
+  },
+  "invite": {
+    "invalid_invite": "Invalid or expired invite 😢",
+    "fill_title": "👤 Fill Out Your Player Info",
+    "select_placeholder": "Select {{name}}",
+    "submit": "Submit"
+  },
+  "player_roster": {
+    "default_club": "Your Club",
+    "pageTitle": "Player Roster",
+    "pageSubtitle": "Manage your player list for {{club}}",
+    "addButton": "Add Player",
+    "searchPlaceholder": "Search players...",
+    "positionFilterAll": "All Positions",
+    "addFormTitle": "Add New Player",
+    "labelName": "Name",
+    "labelDOB": "Date of Birth",
+    "labelEmail": "Email",
+    "labelPhone": "Phone",
+    "labelPosition": "Position",
+    "positionPlaceholder": "Select position",
+    "labelJoinedDate": "Joined Date",
+    "labelNotes": "Notes",
+    "labelActive": "Active player (can be selected for kits)",
+    "buttonCancel": "Cancel",
+    "buttonAddPlayer": "Add Player",
+    "buttonSave": "Save Changes",
+    "please_fill_required": "Please fill in all required fields",
+    "rosterCount": "{{count}} player{{count, plural, one{} other{s}}}",
+    "noPlayersFoundTitle": "No players found",
+    "noPlayersFoundDescFiltered": "Try adjusting your filters.",
+    "noPlayersFoundDescEmpty": "Add players to your roster.",
+    "addFirstPlayer": "Add Your First Player",
+    "confirm_delete": "Are you sure you want to remove this player from the roster?",
+    "editAria": "Edit player",
+    "deleteAria": "Delete player",
+    "viewBirth": "Born: {{date}}",
+    "viewJoined": "Joined: {{date}}",
+    "notesLabel": "Notes",
+    "tipsHeading": "Tips for Managing Your Roster",
+    "tip1": "Keep your player list up-to-date to make kit setup easier.",
+    "tip2": "Set inactive players who are no longer with the club to avoid selecting them for kits.",
+    "tip3": "Include contact details for players to help with kit delivery confirmation."
+  },
+  "product": {
+    "not_found": "🚫 Produkt ikke fundet",
+    "price": "{{price}} DKK",
+    "customizable": "🎨 Dette produkt kan tilpasses!"
+  },
+  "staff_management": {
+    "defaultClub": "Your Club",
+    "pageTitle": "Staff Management",
+    "pageSubtitle": "Manage your staff members at {{club}}",
+    "addButton": "Add Staff Member",
+    "searchPlaceholder": "Search staff by name or email...",
+    "noResultsTitle": "No staff members found",
+    "noResultsDescFiltered": "Try adjusting your search",
+    "noResultsDescEmpty": "You haven't added any staff members yet",
+    "addFirst": "Add Your First Staff Member",
+    "colStaff": "Staff Member",
+    "colContact": "Contact",
+    "colStatus": "Status",
+    "colLastLogin": "Last Login",
+    "colActions": "Actions",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending"
+    },
+    "never": "Never",
+    "aria": {
+      "edit": "Edit staff member",
+      "deactivate": "Deactivate staff member",
+      "activate": "Activate staff member"
+    },
+    "modalTitle": "Add New Staff Member",
+    "labelName": "Full Name",
+    "labelEmail": "Email Address",
+    "labelPhone": "Phone Number",
+    "labelTeam": "Assign to Team",
+    "teamPlaceholder": "Select a team",
+    "team1": "First Team",
+    "team2": "Youth Team",
+    "team3": "Women's Team",
+    "buttonCancel": "Cancel",
+    "buttonAdd": "Add Staff Member"
+  },
+  "team_setup": {
+    "pageTitle": "Teams Setup",
+    "pageSubtitle": "View and manage kit requests per team",
+    "searchPlaceholder": "Search teams...",
+    "noTeamsTitle": "No Teams Found",
+    "noTeamsDescFiltered": "Try adjusting your search",
+    "noTeamsDescEmpty": "There are no teams to display.",
+    "playersCount": "{{count}} Players",
+    "activeKitRequests": "Active Kit Requests:",
+    "pendingTasks": "Pending Tasks:",
+    "tasksPending": "{{count}} pending {{count, plural, one {task} other {tasks}}}",
+    "allTasksComplete": "All tasks complete",
+    "viewPlayers": "View Players"
+  },
+  "user_management": {
+    "pageTitle": "User Management",
+    "tabs": {
+      "admins": "Club Admins",
+      "staff": "Club Staff",
+      "finance": "Club Finance"
+    },
+    "placeholders": {
+      "search": "Search users...",
+      "allClubs": "All Clubs"
+    },
+    "buttons": {
+      "addAdmin": "Add Club Admin",
+      "addStaff": "Add Club Staff",
+      "addFinance": "Add Club Finance",
+      "addUser": "Add User"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "club": "Club",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending"
+    },
+    "roles": {
+      "ClubAdmin": "Club Admin",
+      "ClubStaff": "Club Staff",
+      "ClubFinance": "Club Finance"
+    },
+    "actions": {
+      "edit": "Edit"
+    },
+    "noResults": "No users found matching your criteria",
+    "loading": "Loading..."
+  },
+  "validate_order": {
+    "pageTitle": "Confirm order request",
+    "delivery": {
+      "selectTitle": "Select delivery address",
+      "default": "Standard address",
+      "custom": "Alternative address",
+      "defaultName": "Ribe Fritidscenter",
+      "defaultContact": "Gitte Langmach Jacobsen",
+      "staffContact": "Chris Sawaguchi",
+      "defaultStreet": "Sportsvej 8",
+      "defaultCity": "6760 Ribe",
+      "placeholders": {
+        "recipient": "Name of recipient",
+        "street": "Road name and number",
+        "zip": "Zip code",
+        "city": "City"
+      }
+    },
+    "order": {
+      "yourOrder": "Your order",
+      "size": "Size",
+      "quantity": "Quantity",
+      "numbers": "Player Numbers",
+      "price": "Price",
+      "subtotal": "Subtotal",
+      "total": "Total"
+    },
+    "buttons": {
+      "back": "Back",
+      "send": "Send Order Request"
+    },
+    "thanksTitle": "Thank you for your order request!",
+    "thanksSubtitle": "You will receive an order confirmation within the next 48 hours."
+  },
+  "cart": {
+    "add_to_cart": "Add to Cart"
+  },
+  "shopping_cart": {
+    "title": "Your Cart",
+    "empty": "No items in cart.",
+    "size": "Size: {{size}}",
+    "numbers": "Numbers: {{numbers}}",
+    "total": "Total",
+    "buttons": {
+      "close": "Close cart",
+      "remove": "Remove item",
+      "quantity": "Quantity",
+      "edit": "Edit Order",
+      "confirm": "Confirm & Validate"
+    }
+  },
+  "manual_request": {
+    "title": "Manual Request",
+    "description": "Please describe what you need. Our team will contact you within 48 hours.",
+    "requestDetailsLabel": "Request Details",
+    "requestPlaceholder": "What are you looking for?",
+    "deadlineLabel": "Deadline - When do you need it?",
+    "back": "Back",
+    "sendRequest": "Send Request",
+    "thankYou": "Thank you for your request – You will hear from us within 48 hours.",
+    "close": "Close",
+    "alertEnterRequest": "Please enter your request before submitting.",
+    "alertSelectDeadline": "Please select a deadline."
+  },
+  "manage_order": {
+    "title": "Manage Order",
+    "selectSizes": "Select Sizes",
+    "modalTitle": "Select Sizes",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "total": "Total",
+    "withPlayerNumber": "with player number"
+  },
+  "manage_order_staff": {
+    "title": "Manage Order",
+    "inSize": "in size",
+    "withPlayerNumber": "with player number"
+  },
+  "order_overview": {
+    "title": "Order Overview",
+    "quantity": "Quantity:",
+    "size": "Size:",
+    "numbers": "Numbers:",
+    "totalSuffix": "DKK"
+  },
+  "player_number_modal": {
+    "title": "Enter player numbers",
+    "placeholder": "#{{index}}",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "product_card": {
+    "price": "Price: {{amount}} DKK",
+    "select_size": "Select Size",
+    "quantity_placeholder": "Quantity",
+    "add_to_order": "Add to Order",
+    "select_numbers": "Select player numbers",
+    "selectSizesNumbers": "Select Sizes & Numbers"
+  },
+  "order_sidebar": {
+    "title": "Order Overview",
+    "quantity": "Quantity: {{count}}",
+    "size": "Size: {{size}}",
+    "numbers": "Numbers: {{numbers}}"
+  },
+  "order_details": {
+    "title": "📦 Order #{{id}}",
+    "status": "Status: {{status}}",
+    "created": "Created: {{date}}",
+    "updated": "Updated: {{date}}",
+    "items": "Items: {{count}}",
+    "playerCount": "Player Count: {{count}}",
+    "progress": "Progress: {{percent}}%",
+    "estimatedDelivery": "Estimated Delivery: {{date}}",
+    "trackingNumber": "Tracking #: {{number}}",
+    "orderedProducts": "🛍️ Ordered Products",
+    "downloadInvoice": "Download Invoice",
+    "downloadConfirmation": "Download Order Confirmation",
+    "close": "Close",
+    "price": "Price: {{price}} DKK",
+    "quantity": "Quantity: {{count}}",
+    "sizes": "Sizes: {{list}}",
+    "playerNumbers": "Player Numbers: {{list}}"
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "order_create_admin": {
+    "createManualOrder": "Create Manual Order",
+    "validateOrder": "Validate Order",
+    "distributeAcrossSizes": "Distribute {{count}} across sizes",
+    "totalAssigned": "Total: {{assigned}} / {{requested}}",
+    "next": "Next"
+  }
+}

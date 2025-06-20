@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/context/auth-context';
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -129,6 +130,7 @@ const mockActivities: Activity[] = [
 
 export default function ClubStaffDashboard() {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -203,10 +205,10 @@ export default function ClubStaffDashboard() {
           </div>
 
           <div>
-            <h1 className="text-xl font-semibold text-gray-800">Welcome, {user?.name}</h1>
-            <p className="text-gray-500 text-sm mt-1">
-              Manage your teams kit information and track orders
-            </p>
+            <h1 className="text-xl font-semibold text-gray-800">
+              {t('dashboard.staff_welcome', { name: user?.name })}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">{t('dashboard.staff_description')}</p>
           </div>
         </div>
       </div>
@@ -214,25 +216,25 @@ export default function ClubStaffDashboard() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatsCard
-          title="Tasks"
+          title={t('dashboard.stats.tasks')}
           value={stats.totalTasks}
           icon={<ClipboardList className="h-5 w-5 text-primary" />}
           color="bg-primary/10"
         />
         <StatsCard
-          title="Completed"
+          title={t('dashboard.stats.completed')}
           value={stats.completedTasks}
           icon={<CheckCircle className="h-5 w-5 text-green-500" />}
           color="bg-green-100"
         />
         <StatsCard
-          title="Pending"
+          title={t('dashboard.stats.pending')}
           value={stats.pendingTasks}
           icon={<Clock className="h-5 w-5 text-orange-500" />}
           color="bg-orange-100"
         />
         <StatsCard
-          title="Orders"
+          title={t('dashboard.stats.orders')}
           value={stats.pendingOrders}
           icon={<ShoppingBag className="h-5 w-5 text-blue-600" />}
           color="bg-blue-100"
@@ -244,17 +246,16 @@ export default function ClubStaffDashboard() {
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 flex items-center">
           <AlertTriangle className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />
           <div>
-            <h3 className="font-medium text-yellow-800">Attention Needed</h3>
+            <h3 className="font-medium text-yellow-800">{t('dashboard.attention')}</h3>
             <p className="text-sm text-yellow-700 mt-1">
-              You have {priorityTasks.length} high priority or overdue{' '}
-              {priorityTasks.length === 1 ? 'task' : 'tasks'} that need your attention.
+              {t('dashboard.priority_alert', { count: priorityTasks.length })}
             </p>
           </div>
           <Link
             href="#priority-tasks"
             className="ml-auto bg-white text-yellow-700 px-3 py-1 text-sm rounded border border-yellow-300 hover:bg-yellow-50"
           >
-            View Tasks
+            {t('dashboard.view_tasks')}
           </Link>
         </div>
       )}
@@ -264,15 +265,15 @@ export default function ClubStaffDashboard() {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-800">Your Tasks</h2>
+              <h2 className="text-lg font-semibold text-gray-800">{t('dashboard.your_tasks')}</h2>
               <Link href="/kit-setup" className="text-sm text-primary hover:underline">
-                View All
+                {t('dashboard.view_all')}
               </Link>
             </div>
 
             <div className="divide-y divide-gray-100">
               {tasks.length === 0 ? (
-                <div className="p-6 text-center text-gray-500">No tasks found</div>
+                <div className="p-6 text-center text-gray-500">{t('dashboard.no_tasks')}</div>
               ) : (
                 tasks.slice(0, 3).map((task) => (
                   <div
@@ -297,7 +298,10 @@ export default function ClubStaffDashboard() {
 
                         <h3 className="font-medium text-gray-800 mt-1">{task.title}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                          Team: {task.teamName} | Due: {task.dueDate}
+                          {t('dashboard.teamdue', {
+                            teamName: task.teamName,
+                            dueDate: task.dueDate,
+                          })}
                         </p>
                       </div>
 
@@ -320,7 +324,7 @@ export default function ClubStaffDashboard() {
                     {/* Progress bar */}
                     <div className="mt-3">
                       <div className="flex justify-between text-xs text-gray-500 mb-1">
-                        <span>Progress</span>
+                        <span>{t('dashboard.progress')}</span>
                         <span>{task.completionPercentage}%</span>
                       </div>
                       <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -344,7 +348,7 @@ export default function ClubStaffDashboard() {
             {tasks.length > 3 && (
               <div className="px-6 py-3 bg-gray-50 text-center">
                 <Link href="/kit-setup" className="text-sm text-primary hover:underline">
-                  View All {tasks.length} Tasks
+                  {t('dashboard.view_all_tasks', { taskLength: tasks.length })}
                 </Link>
               </div>
             )}
@@ -355,24 +359,26 @@ export default function ClubStaffDashboard() {
         <div>
           <div className="bg-white rounded-lg shadow-sm">
             <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-800">Quick Actions</h2>
+              <h2 className="text-lg font-semibold text-gray-800">
+                {t('dashboard.quick_actions')}
+              </h2>
             </div>
             <div className="p-6 space-y-4">
               <QuickActionCard
-                title="Update Player Roster"
-                description="Add or edit player information"
+                title={t('dashboard.actions.update_roster')}
+                description={t('dashboard.actions.update_roster_desc')}
                 icon={<UserCircle className="h-5 w-5 text-primary" />}
                 href="/player-roster"
               />
               <QuickActionCard
-                title="Set Up Team Kits"
-                description="Complete player kit details"
+                title={t('dashboard.actions.setup_kits')}
+                description={t('dashboard.actions.setup_kits_desc')}
                 icon={<Shirt className="h-5 w-5 text-primary" />}
                 href="/kit-setup"
               />
               <QuickActionCard
-                title="Track Orders"
-                description="Check order status and updates"
+                title={t('dashboard.actions.track_orders')}
+                description={t('dashboard.actions.track_orders_desc')}
                 icon={<ShoppingBag className="h-5 w-5 text-primary" />}
                 href="/order-tracking"
               />
@@ -382,7 +388,9 @@ export default function ClubStaffDashboard() {
           {/* Recent Activity */}
           <div className="bg-white rounded-lg shadow-sm mt-6">
             <div className="px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-800">Recent Activity</h2>
+              <h2 className="text-lg font-semibold text-gray-800">
+                {t('dashboard.recent_activity')}
+              </h2>
             </div>
             <div className="divide-y divide-gray-100">
               {activities.map((activity) => (
@@ -425,7 +433,9 @@ export default function ClubStaffDashboard() {
       {/* Upcoming Deadlines */}
       <div className="mt-6 bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800">Upcoming Deadlines</h2>
+          <h2 className="text-lg font-semibold text-gray-800">
+            {t('dashboard.upcoming_deadlines')}
+          </h2>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -463,7 +473,8 @@ export default function ClubStaffDashboard() {
                       }
                     `}
                     >
-                      Due: {task.dueDate}
+                      {t('dashboard.due')}
+                      {task.dueDate}
                     </span>
                   </div>
                 </div>
@@ -518,29 +529,30 @@ function QuickActionCard({ title, description, icon, href }: QuickActionCardProp
 }
 
 function TaskStatusBadge({ status }: { status: TaskStatus }) {
+  const { t } = useTranslation();
   switch (status) {
     case 'pending':
       return (
         <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-          <Clock size={10} className="mr-1" /> Not Started
+          <Clock size={10} className="mr-1" /> {t('dashboard.deadlines.pending')}
         </div>
       );
     case 'in-progress':
       return (
         <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          <Gauge size={10} className="mr-1" /> In Progress
+          <Gauge size={10} className="mr-1" /> {t('dashboard.deadlines.in_progress')}
         </div>
       );
     case 'complete':
       return (
         <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          <CheckCircle size={10} className="mr-1" /> Completed
+          <CheckCircle size={10} className="mr-1" /> {t('dashboard.deadlines.complete')}
         </div>
       );
     case 'overdue':
       return (
         <div className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-          <AlertTriangle size={10} className="mr-1" /> Overdue
+          <AlertTriangle size={10} className="mr-1" /> {t('dashboard.deadlines.overdue')}
         </div>
       );
     default:
