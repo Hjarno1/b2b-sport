@@ -9,7 +9,6 @@ interface Props {
   setTempNumbers: (nums: string[]) => void;
   onCancel: () => void;
   onConfirm: () => void;
-  activeProduct: Product;
 }
 
 const PlayerNumberModal: React.FC<Props> = ({
@@ -17,7 +16,6 @@ const PlayerNumberModal: React.FC<Props> = ({
   setTempNumbers,
   onCancel,
   onConfirm,
-  activeProduct,
 }) => {
   const { t } = useTranslation('playerNumberModal');
 

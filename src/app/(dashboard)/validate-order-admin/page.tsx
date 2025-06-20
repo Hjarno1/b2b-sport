@@ -105,7 +105,9 @@ export default function ValidateOrderPage() {
         <select
           className="p-2 border rounded w-full"
           value={addressMode}
-          onChange={(e) => setAddressMode(e.target.value as any)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            setAddressMode(e.target.value as 'default' | 'custom')
+          }
         >
           <option value="default">{t('validate_order.delivery.default')}</option>
           <option value="custom">{t('validate_order.delivery.custom')}</option>

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Product, OrderItem } from '@/lib/data/mock-data';
-import { Trash2, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
@@ -17,10 +17,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, selected, onSelect, 
 
   return (
     <div className="border p-4 rounded-xl shadow space-y-3">
-      <img
+      <Image
         src={`/products/${product.images[0]}`}
         alt={product.name}
-        className="w-full h-40 object-cover rounded"
+        width={400}
+        height={160}
+        className="object-cover rounded"
       />
       <h2 className="font-semibold">{product.name}</h2>
       <p>{t('product_card.price', { amount: product.price.toFixed(2) })}</p>

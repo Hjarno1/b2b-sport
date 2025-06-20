@@ -12,10 +12,12 @@ export interface CartItem {
 interface CartState {
   items: CartItem[];
 }
-interface CartAction {
-  type: 'ADD' | 'REMOVE' | 'UPDATE_QTY' | 'CLEAR';
-  payload?: any;
-}
+
+type CartAction =
+  | { type: 'ADD'; payload: CartItem }
+  | { type: 'REMOVE'; payload: number }
+  | { type: 'UPDATE_QTY'; payload: { id: number; quantity: number } }
+  | { type: 'CLEAR' };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
