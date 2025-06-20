@@ -297,20 +297,22 @@ export default function OrderCreateAdminPage() {
 
       {showNumberModal && activeProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-11/12 max-w-2xl">
+          <div className="bg-white p-6 rounded-lg w-11/12 max-w-2xl max-h-[80vh] overflow-auto">
             <h3 className="text-xl font-semibold mb-4">{t('player_number_modal.title')}</h3>
-            <div className="grid grid-cols-{{Object.keys(tempNumbers).length}} gap-4 overflow-x-auto">
+
+            {/* Flex-wrap container prevents off-screen overflow */}
+            <div className="flex flex-wrap justify-start gap-6 overflow-auto max-h-[60vh] p-2">
               {Object.entries(tempNumbers)
                 .filter(([, nums]) => nums.length > 0)
                 .map(([size, nums]) => (
-                  <div key={size} className="flex flex-col">
+                  <div key={size} className="flex flex-col items-center w-24">
                     <h4 className="font-medium mb-2">{size || t('manage_order_staff.inSize')}</h4>
                     {nums.map((n, i) => (
                       <input
                         key={i}
                         type="text"
                         placeholder={t('player_number_modal.placeholder', { index: i + 1 })}
-                        className="mb-2 p-2 border rounded"
+                        className="mb-2 p-2 border rounded w-full text-center"
                         value={n}
                         onChange={(e) => handleNumberChange(size, i, e.target.value)}
                       />
@@ -318,6 +320,7 @@ export default function OrderCreateAdminPage() {
                   </div>
                 ))}
             </div>
+
             <div className="flex justify-end space-x-2 mt-4">
               <button
                 className="px-4 py-2 rounded border"
@@ -332,9 +335,6 @@ export default function OrderCreateAdminPage() {
               <button
                 className="px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50"
                 onClick={handleConfirmNumbers}
-                disabled={Object.values(tempNumbers)
-                  .flat()
-                  .some((num) => !num)}
               >
                 {t('manage_order.confirm')}
               </button>
