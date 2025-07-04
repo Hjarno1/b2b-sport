@@ -30,7 +30,7 @@ export default function OrderCreateStaffPage() {
   const [tempSizeCounts, setTempSizeCounts] = useState<Record<string, number>>({});
   const [tempNumbers, setTempNumbers] = useState<Record<string, string[]>>({});
 
-  const updateSelection = (productId: number, field: keyof OrderItem, value: any) => {
+  const updateSelection = (productId: number, field: keyof OrderItem, value: string | number) => {
     setSelectedOptions((prev) => ({
       ...prev,
       [productId]: { ...prev[productId], [field]: value },

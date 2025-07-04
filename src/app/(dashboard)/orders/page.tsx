@@ -182,10 +182,10 @@ export default function OrdersPage() {
           <select
             className="appearance-none border rounded-md px-4 py-2 pr-8 bg-white w-full"
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
+            onChange={(e) => setStatusFilter(e.target.value as OrderStatus | 'All')}
           >
             <option value="All">{t('orders.filter.all_statuses')}</option>
-            {['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled'].map((s) => (
+            {(['Pending', 'Processing', 'Shipped', 'Delivered', 'Canceled'] as const).map((s) => (
               <option key={s} value={s}>
                 {t(`orders.filter.${s.toLowerCase()}`)}
               </option>

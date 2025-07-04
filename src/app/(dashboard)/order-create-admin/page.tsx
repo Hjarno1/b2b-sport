@@ -31,7 +31,11 @@ export default function OrderCreateAdminPage() {
   const [tempSizeCounts, setTempSizeCounts] = useState<Record<string, number>>({});
   const [tempNumbers, setTempNumbers] = useState<Record<string, string[]>>({});
 
-  const updateSelection = (productId: number, field: keyof OrderItem, value: any) => {
+  const updateSelection = (
+    productId: number,
+    field: keyof OrderItem,
+    value: string | number | string[] | undefined,
+  ) => {
     setSelectedOptions((prev) => ({
       ...prev,
       [productId]: { ...prev[productId], [field]: value },

@@ -3,14 +3,12 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/lib/context/auth-context';
 import { Download, Calendar, Search, Eye } from 'lucide-react';
 import { Invoice, mockInvoices } from '@/lib/data/mock-data';
 import PdfPreviewModal from '@/app/components/shared/PdfPreviewModal';
 
 export default function InvoicesPage() {
   const { t } = useTranslation();
-  const { user } = useAuth();
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [pdfModalOpen, setPdfModalOpen] = useState(false);

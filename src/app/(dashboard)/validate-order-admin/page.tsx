@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { mockProducts, Order, OrderProducts, OrderStatus } from '@/lib/data/mock-data';
 import { useCart } from '@/app/providers/CartProvider';
 
+type AddressMode = 'default' | 'custom';
+
 interface OrderItem {
   id: number;
   name: string;
@@ -21,7 +23,7 @@ export default function ValidateOrderPage() {
   const { t } = useTranslation('validate_order');
   const router = useRouter();
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
-  const [addressMode, setAddressMode] = useState<'default' | 'custom'>('default');
+  const [addressMode, setAddressMode] = useState<AddressMode>('default');
   const [submitted, setSubmitted] = useState(false);
 
   const [customAddress, setCustomAddress] = useState({
@@ -105,7 +107,7 @@ export default function ValidateOrderPage() {
         <select
           className="p-2 border rounded w-full"
           value={addressMode}
-          onChange={(e) => setAddressMode(e.target.value as any)}
+          onChange={(e) => setAddressMode(e.target.value as AddressMode)}
         >
           <option value="default">{t('validate_order.delivery.default')}</option>
           <option value="custom">{t('validate_order.delivery.custom')}</option>

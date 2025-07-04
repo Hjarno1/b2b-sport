@@ -17,7 +17,6 @@ const PlayerNumberModal: React.FC<Props> = ({
   setTempNumbers,
   onCancel,
   onConfirm,
-  activeProduct,
 }) => {
   const { t } = useTranslation('playerNumberModal');
 
