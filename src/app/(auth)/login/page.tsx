@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LogIn } from 'lucide-react';
 import { UserRole } from '@/lib/data/mock-data';
@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const [role, setRole] = useState<UserRole>(UserRole.ClubAdmin);
+  const [email, setEmail] = useState(''); // ← added
+  const [password, setPassword] = useState(''); // ← added
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -22,7 +24,7 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      await login(role);
+      await login(email, password); // ← use email/password
       router.push('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
@@ -56,6 +58,7 @@ export default function LoginPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Role selector */}
               <div>
                 <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
                   {t('login.select_role')}
@@ -90,7 +93,37 @@ export default function LoginPage() {
                 <p className="mt-2 text-xs text-gray-500">{t('login.demo_note')}</p>
               </div>
 
-              {/* Demo credentials field */}
+              {/* Email field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  {t('login.emailLabel')}
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                />
+              </div>
+
+              {/* Password field */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  {t('login.passwordLabel')}
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="mt-1 w-full p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
+                />
+              </div>
+
+              {/* Demo credentials */}
               <div className="rounded-md bg-gray-50 p-4 border border-gray-100">
                 <h3 className="text-sm font-medium text-gray-700">{t('login.demo_credentials')}</h3>
                 <p className="mt-1 text-xs text-gray-500">
@@ -100,6 +133,7 @@ export default function LoginPage() {
                 </p>
               </div>
 
+              {/* Submit */}
               <div>
                 <button
                   type="submit"
@@ -123,19 +157,19 @@ export default function LoginPage() {
                           r="10"
                           stroke="currentColor"
                           strokeWidth="4"
-                        ></circle>
+                        />
                         <path
                           className="opacity-75"
                           fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
+                        />
                       </svg>
                       {t('login.signing_in')}
                     </span>
                   ) : (
                     <>
                       <LogIn className="w-5 h-5 mr-2" />
-                      <span className="text-white">{t('login.sign_in')}</span>
+                      <span>{t('login.sign_in')}</span>
                     </>
                   )}
                 </button>
