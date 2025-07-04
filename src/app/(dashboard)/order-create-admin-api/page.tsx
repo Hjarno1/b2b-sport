@@ -12,6 +12,10 @@
 
 // let nextLineItemId = 1;
 
+export default function Page() {
+  return <div>Admin API Order Creation</div>;
+}
+
 // export default function OrderCreateAdminPage() {
 //   const router = useRouter();
 //   const { t } = useTranslation();
