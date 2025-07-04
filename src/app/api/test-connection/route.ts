@@ -1,4 +1,3 @@
-// import { NextResponse } from 'next/server';
 // import { pool } from '@/lib/db';
 
 // export const runtime = 'nodejs';
@@ -19,5 +18,7 @@
 // }
 
 export async function GET() {
-  return NextResponse.json({ status: 'skipped DB connection for deploy' });
+  return new Response(JSON.stringify({ message: 'Temporary response' }), {
+    status: 200,
+  });
 }
