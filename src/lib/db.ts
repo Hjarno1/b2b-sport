@@ -28,13 +28,7 @@ console.log({
 
 // 👇 Augment globalThis
 declare global {
-  namespace NodeJS {
-    interface Global {
-      __MSSQL_POOL__?: Promise<ConnectionPool>;
-    }
-  }
-
-  var __MSSQL_POOL__: Promise<ConnectionPool> | undefined;
+  const __MSSQL_POOL__: Promise<ConnectionPool> | undefined;
 }
 
 // 👇 Ensure globalThis is typed
