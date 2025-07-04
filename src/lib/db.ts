@@ -1,4 +1,3 @@
-// src/lib/db.ts
 import { ConnectionPool } from 'mssql';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
@@ -11,7 +10,7 @@ const config = {
   database: process.env.MSSQL_DATABASE!,
   options: {
     encrypt: true,
-    trustServerCertificate: true, // Use true for local development
+    trustServerCertificate: true,
   },
   pool: {
     max: 10,
@@ -27,14 +26,25 @@ console.log({
   DATABASE: process.env.MSSQL_DATABASE,
 });
 
-// global singleton to avoid socket exhaustion
+// 👇 Augment globalThis
 declare global {
-  var __MSSQL_POOL__: Promise<ConnectionPool>;
+  namespace NodeJS {
+    interface Global {
+      __MSSQL_POOL__?: Promise<ConnectionPool>;
+    }
+  }
+
+  var __MSSQL_POOL__: Promise<ConnectionPool> | undefined;
 }
 
+// 👇 Ensure globalThis is typed
+const globalForMSSQL = globalThis as typeof globalThis & {
+  __MSSQL_POOL__?: Promise<ConnectionPool>;
+};
+
 const poolPromise: Promise<ConnectionPool> =
-  global.__MSSQL_POOL__ ??
-  (global.__MSSQL_POOL__ = new ConnectionPool(config)
+  globalForMSSQL.__MSSQL_POOL__ ??
+  (globalForMSSQL.__MSSQL_POOL__ = new ConnectionPool(config)
     .connect()
     .then((pool) => {
       console.log('🟢 Connected to MSSQL');

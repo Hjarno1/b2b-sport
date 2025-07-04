@@ -11,12 +11,10 @@ import {
   Calendar,
   Mail,
   Phone,
-  User,
   Save,
   X,
   UserCircle,
 } from 'lucide-react';
-import Image from 'next/image';
 import { useAuth } from '@/lib/context/auth-context';
 import { getClubById, PlayerPosition } from '@/lib/data/mock-data';
 import { useTranslation } from 'react-i18next';

@@ -8,7 +8,20 @@ export default function InvitePage() {
   const { t } = useTranslation('invite');
   const params = useParams();
   const token = params?.id as string | undefined;
-  const [playerData, setPlayerData] = useState<any | null>(null);
+  const [playerData, setPlayerData] = useState<PlayerData | null>(null);
+
+  type Field = {
+    id: string;
+    name: string;
+    type: 'text' | 'number' | 'select';
+    required?: boolean;
+    description?: string;
+    options?: string[];
+  };
+
+  type PlayerData = {
+    fields: Field[];
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -24,7 +37,7 @@ export default function InvitePage() {
     <div className="max-w-xl mx-auto p-8">
       <h1 className="text-2xl font-bold mb-6">{t('invite.fill_title')}</h1>
 
-      {playerData.fields.map((field: any) => (
+      {playerData.fields.map((field: Field) => (
         <div key={field.id} className="mb-4">
           <label className="block font-medium mb-1">
             {field.name} {field.required && <span className="text-red-500">*</span>}

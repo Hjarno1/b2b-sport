@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Product, OrderItem } from '@/lib/data/mock-data';
-import { Trash2, Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface ProductCardProps {
