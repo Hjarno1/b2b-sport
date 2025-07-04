@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { mockClubs } from '@/lib/data/mock-data';
+import CollapsibleText from '@/components/collapsibleText';
+import EmblaCarousel from '@/components/emblaCarousel';
 
 // Groups dropdown options (10 total)
 const groupOptions = [
@@ -37,7 +39,7 @@ const products = [
     name: 'R-Swing Soft Touch 500ml',
     image: '/products/rswing.png',
     details: {
-      images: ['/products/rswing.png', '/products/rswing-usage.png'],
+      images: ['/products/rswing.png'],
       description:
         'Swing flaske i genanvendt rustfrit stål og med en buttery soft touch-finish. Den dobbeltvægget vakuumisolerede flaske holder drikkevarer kolde eller varme i længere tid og er lækagesikker til brug på farten.',
     },
@@ -169,8 +171,15 @@ export default function ClientWinnerPage() {
       </main>
 
       {showModal && modalProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl overflow-hidden max-w-lg w-full">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl overflow-hidden w-full max-w-lg max-h-[90vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
             <div className="p-4 border-b flex justify-between items-center">
               <h2 className="text-xl font-bold">{modalProduct.name}</h2>
               <button
@@ -180,20 +189,12 @@ export default function ClientWinnerPage() {
                 ✕
               </button>
             </div>
-            <div className="p-4 space-y-4">
-              <p className="text-gray-700">{modalProduct.details.description}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {modalProduct.details.images.map((src, i) => (
-                  <div key={i} className="relative w-full h-40 bg-gray-100">
-                    <Image
-                      src={src.startsWith('/') ? src : `/${src}`}
-                      alt=""
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                ))}
-              </div>
+            {/* Scrollable & Carousel */}
+            <div className="p-4 overflow-y-auto flex-1 space-y-4">
+              {/* collapsible description */}
+              <CollapsibleText text={modalProduct.details.description} />
+              {/* carousel for images */}
+              <EmblaCarousel slides={modalProduct.details.images} />
             </div>
           </div>
         </div>
