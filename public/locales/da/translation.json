@@ -86,7 +86,23 @@
     "demo_password": "Adgangskode: demo123 (valideres ikke)",
     "sign_in": "Log ind",
     "signing_in": "Logger ind...",
-    "copyright": "B2B Sport © {{year}}"
+    "copyright": "B2B Sport © {{year}}",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Adgangskode",
+    "invalidCredentials": "Ugyldig e-mail eller adgangskode.",
+    "signIn": "Log ind",
+    "signingIn": "Logger ind...",
+    "forgotPassword": "Glemt adgangskode?"
+  },
+  "forgotPassword": {
+    "title": "Glemt adgangskode",
+    "subtitle": "Indtast din e-mail for at nulstille din adgangskode",
+    "emailLabel": "E-mail",
+    "sendLink": "Send nulstillingslink",
+    "sending": "Sender...",
+    "messageSent": "Hvis der findes en konto tilknyttet den e-mail, vil du modtage instruktioner til nulstilling af adgangskode.",
+    "backToSignIn": "Tilbage til login",
+    "footer": "B2B Sport © {{year}}"
   },
   "active_agreements": {
     "title": "Aktive Aftaler",

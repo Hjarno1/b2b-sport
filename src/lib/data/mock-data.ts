@@ -58,6 +58,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  password: string;
   phone: string;
   role: UserRole;
   clubId?: string;
@@ -274,12 +275,26 @@ export interface OrderItem extends Product {
   numbers?: string[];
 }
 
+export interface WinnerCodeEntry {
+  used: boolean;
+  redeemed?: {
+    token: string;
+    productId: string;
+    clubName: string;
+    firstName: string;
+    lastName: string;
+    printName: string;
+    date: string;
+  };
+}
+
 // Mock Users
 export const mockUsers: User[] = [
   {
     id: 'user-001',
     name: 'Chris Sawaguchi',
     email: 'chsa@ribehk.dk',
+    password: 'password123',
     phone: '+45 20 12 02 24',
     role: UserRole.ClubStaff,
     clubId: 'club-001',
@@ -291,6 +306,7 @@ export const mockUsers: User[] = [
     id: 'user-002',
     name: 'Gitte Langmach Jacobsen',
     email: 'glj@langmachribe.dk',
+    password: 'password123',
     phone: '+45 23 31 84 82',
     role: UserRole.ClubAdmin,
     clubId: 'club-001',
@@ -302,6 +318,7 @@ export const mockUsers: User[] = [
     id: 'user-003',
     name: 'Martin Wolf Andersen',
     email: 'maan@rhk.dk',
+    password: 'password123',
     phone: '+45 60 17 70 20',
     role: UserRole.ClubStaff,
     clubId: 'club-001',
@@ -313,6 +330,7 @@ export const mockUsers: User[] = [
     id: 'user-004',
     name: 'Finance Ribe HK',
     email: 'finance@rhk.dk',
+    password: 'password123',
     phone: '+45 30 12 34 56',
     role: UserRole.ClubFinance,
     clubId: 'club-001',
@@ -1111,6 +1129,12 @@ export const mockTeamViewModels: TeamViewModel[] = [
     pendingCount: 0,
   },
 ];
+
+export const winnerCodes: Record<string, WinnerCodeEntry> = {
+  ABC123TOKEN: { used: false },
+  DEF456TOKEN: { used: false },
+  GHI789TOKEN: { used: false },
+};
 
 export const mockKitRequests: KitRequestViewModel[] = [
   {

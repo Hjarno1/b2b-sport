@@ -3,19 +3,21 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslation } from 'react-i18next';
 
 import { useAuth } from '@/lib/context/auth-context';
-import { UserRole, mockClubs } from '@/lib/data/mock-data';
+import { mockClubs } from '@/lib/data/mock-data';
+import Link from 'next/link';
 
 export default function ClubLoginPage() {
   const club = mockClubs[0];
   const { t } = useTranslation();
-  const [role, setRole] = useState<UserRole>(UserRole.ClubAdmin);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
@@ -24,10 +26,10 @@ export default function ClubLoginPage() {
     setIsLoading(true);
     setError(null);
     try {
-      await login(role);
+      await login(email, password);
       router.push('/dashboard');
     } catch {
-      setError('Failed to login. Please try again.');
+      setError(t('login.invalidCredentials'));
     } finally {
       setIsLoading(false);
     }
@@ -64,71 +66,49 @@ export default function ClubLoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-            {/* Role select */}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                {t('login.select_role')}
+              <label htmlFor="email" className="block text-sm font-medium">
+                {t('login.emailLabel')}
               </label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value as UserRole)}
-                className="mt-1 block w-full rounded-lg border-gray-300 bg-gray-50 py-2 px-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              >
-                <option value={UserRole.ClubAdmin}>{t('club_roles.club_admin')}</option>
-                <option value={UserRole.ClubStaff}>{t('club_roles.club_staff')}</option>
-                <option value={UserRole.ClubFinance}>{t('club_roles.club_finance')}</option>
-              </select>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="mt-1 w-full"
+              />
             </div>
-
-            {/* Demo creds */}
-            <div className="rounded-lg bg-gray-100 p-4 text-sm text-gray-600">
-              <p>
-                <span className="font-medium">{t('login.demo_credentials')}</span>
-              </p>
-              <p>{t('login.demo_email')}</p>
-              <p>{t('login.demo_password')}</p>
-            </div>
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`w-full py-3 rounded-lg text-white font-medium shadow-md ${
-                isLoading
-                  ? 'bg-blue-400 cursor-wait'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              } flex justify-center items-center`}
-            >
-              {isLoading ? (
-                <svg
-                  className="animate-spin h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium">
+                {t('login.passwordLabel')}
+              </label>
+              <div className="mt-1 relative">
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                  ></path>
-                </svg>
-              ) : (
-                <>
-                  <LogIn className="h-5 w-5 mr-2" />
-                  {t('login.sign_in')}
-                </>
-              )}
+                  {showPassword ? t('login.hidePassword') : t('login.showPassword')}
+                </button>
+              </div>
+            </div>
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+            <button type="submit" disabled={isLoading} className="w-full py-2">
+              {isLoading ? t('login.signingIn') : t('login.signIn')}
             </button>
+            <p className="text-center text-sm">
+              <Link href="/forgot-password">{t('login.forgotPassword')}</Link>
+            </p>
           </form>
 
           <p className="mt-6 text-center text-gray-400 text-sm">

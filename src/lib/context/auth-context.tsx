@@ -2,12 +2,12 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, UserRole } from '@/lib/data/mock-data';
+import { User } from '@/lib/data/mock-data';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
-  login: (role: UserRole) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = async (role: UserRole) => {
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
       // Find a user with the selected role from our mock data
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ role }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {

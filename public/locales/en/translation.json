@@ -86,7 +86,23 @@
     "demo_password": "Password: demo123 (not actually checked)",
     "sign_in": "Sign in",
     "signing_in": "Signing in...",
-    "copyright": "B2B Sport © {{year}}"
+    "copyright": "B2B Sport © {{year}}",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "invalidCredentials": "Invalid email or password.",
+    "signIn": "Sign In",
+    "signingIn": "Signing In...",
+    "forgotPassword": "Forgot password?"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email to reset your password",
+    "emailLabel": "Email",
+    "sendLink": "Send Reset Link",
+    "sending": "Sending...",
+    "messageSent": "If an account with that email exists, you will receive password reset instructions.",
+    "backToSignIn": "Back to Sign In",
+    "footer": "B2B Sport © {{year}}"
   },
   "active_agreements": {
     "title": "Active Agreements",
