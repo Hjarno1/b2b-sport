@@ -5,6 +5,12 @@
 //   try {
 //     const order = await req.json();
 
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({ orders: [] });
+}
+
 //     /* Run EVERYTHING atomically so a size-lookup failure rolls the header back */
 //     const created = await prisma.$transaction(async (tx) => {
 //       /* 1️⃣  Header row ------------------------------------------------ */
