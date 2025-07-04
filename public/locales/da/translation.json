@@ -92,7 +92,9 @@
     "invalidCredentials": "Ugyldig e-mail eller adgangskode.",
     "signIn": "Log ind",
     "signingIn": "Logger ind...",
-    "forgotPassword": "Glemt adgangskode?"
+    "forgotPassword": "Glemt adgangskode?",
+    "showPassword": "Vis adgangskode",
+    "hidePassword": "Skjul adgangskode"
   },
   "forgotPassword": {
     "title": "Glemt adgangskode",
