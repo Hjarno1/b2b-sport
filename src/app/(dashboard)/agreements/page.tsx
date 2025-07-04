@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Search,
   Filter,
@@ -19,8 +20,8 @@ import { Agreement, AgreementStatus, getClubById } from '@/lib/data/mock-data';
 import { useAuth } from '@/lib/context/auth-context';
 import PdfPreviewModal from '@/app/components/shared/PdfPreviewModal';
 
-
 export default function AgreementsPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +36,6 @@ export default function AgreementsPage() {
         const response = await fetch('/api/agreements');
         let data = await response.json();
 
-        // Filter agreements for the current club admin
         if (user && user.clubId) {
           data = data.filter((agreement: Agreement) => agreement.clubId === user.clubId);
         }
@@ -51,7 +51,6 @@ export default function AgreementsPage() {
     fetchAgreements();
   }, [user]);
 
-  // Filter agreements
   const filteredAgreements = agreements.filter((agreement) => {
     const matchesSearch =
       agreement.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,7 +66,7 @@ export default function AgreementsPage() {
         return {
           badge: (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-              <HourglassIcon size={12} className="mr-1" /> Pending
+              <HourglassIcon size={12} className="mr-1" /> {t('active_agreements.status.pending')}
             </span>
           ),
           icon: <AlertCircle size={16} className="text-yellow-500" />,
@@ -76,7 +75,7 @@ export default function AgreementsPage() {
         return {
           badge: (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-              <CheckCircle size={12} className="mr-1" /> Active
+              <CheckCircle size={12} className="mr-1" /> {t('active_agreements.status.active')}
             </span>
           ),
           icon: <CheckCircle size={16} className="text-green-500" />,
@@ -85,7 +84,7 @@ export default function AgreementsPage() {
         return {
           badge: (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-              <Clock size={12} className="mr-1" /> In Progress
+              <Clock size={12} className="mr-1" /> {t('active_agreements.status.in_progress')}
             </span>
           ),
           icon: <Clock size={16} className="text-blue-500" />,
@@ -94,7 +93,7 @@ export default function AgreementsPage() {
         return {
           badge: (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-              <CheckCircle size={12} className="mr-1" /> Completed
+              <CheckCircle size={12} className="mr-1" /> {t('active_agreements.status.completed')}
             </span>
           ),
           icon: <CheckCircle size={16} className="text-indigo-500" />,
@@ -103,7 +102,7 @@ export default function AgreementsPage() {
         return {
           badge: (
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-              <XCircle size={12} className="mr-1" /> Canceled
+              <XCircle size={12} className="mr-1" /> {t('active_agreements.status.canceled')}
             </span>
           ),
           icon: <XCircle size={16} className="text-gray-500" />,
@@ -116,7 +115,7 @@ export default function AgreementsPage() {
     }
   };
 
-  const clubName = user?.clubId ? getClubById(user.clubId)?.name : 'Your Club';
+  const clubName = user?.clubId ? getClubById(user.clubId)?.name : t('agreements.your_club');
 
   if (isLoading) {
     return (
@@ -130,8 +129,10 @@ export default function AgreementsPage() {
     <div>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-800">Agreements</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your agreements for {clubName}</p>
+          <h1 className="text-2xl font-semibold text-gray-800">{t('sidebar.agreements')}</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            {t('agreements.manage_for', { club: clubName })}
+          </p>
         </div>
       </div>
 
@@ -142,7 +143,7 @@ export default function AgreementsPage() {
           </div>
           <input
             type="text"
-            placeholder="Search agreements..."
+            placeholder={t('active_agreements.search_placeholder')}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-primary focus:border-primary"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -154,10 +155,10 @@ export default function AgreementsPage() {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as AgreementStatus | 'All')}
           >
-            <option value="All">All Statuses</option>
+            <option value="All">{t('active_agreements.filter_all_statuses')}</option>
             {Object.values(AgreementStatus).map((status) => (
               <option key={status} value={status}>
-                {status}
+                {t(`active_agreements.status.${status.toLowerCase()}`)}
               </option>
             ))}
           </select>
@@ -172,11 +173,13 @@ export default function AgreementsPage() {
           <div className="mx-auto w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <FileText size={24} className="text-gray-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-1">No agreements found</h3>
+          <h3 className="text-lg font-medium text-gray-900 mb-1">
+            {t('agreements.no_results_title')}
+          </h3>
           <p className="text-gray-500 text-sm">
             {searchTerm || statusFilter !== 'All'
-              ? 'Try adjusting your search or filter criteria'
-              : 'You have no active agreements at the moment'}
+              ? t('agreements.no_results_filtered')
+              : t('agreements.no_results_empty')}
           </p>
         </div>
       ) : (
@@ -202,11 +205,15 @@ export default function AgreementsPage() {
                   <div className="space-y-2 mt-4 text-sm text-gray-600">
                     <div className="flex items-center">
                       <Calendar size={14} className="mr-2 text-gray-400" />
-                      <span>Created: {agreement.createdAt}</span>
+                      <span>
+                        {t('agreements.created')}: {agreement.createdAt}
+                      </span>
                     </div>
                     <div className="flex items-center">
                       <Clock size={14} className="mr-2 text-gray-400" />
-                      <span>Valid until: {agreement.validUntil}</span>
+                      <span>
+                        {t('agreements.valid_until')}: {agreement.validUntil}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -225,7 +232,7 @@ export default function AgreementsPage() {
                               : '#9ca3af',
                         }}
                       ></div>
-                      {agreement.priority} Priority
+                      {t(`agreements.priority.${agreement.priority.toLowerCase()}`)}
                     </div>
                   </div>
 

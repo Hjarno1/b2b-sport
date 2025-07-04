@@ -1,5 +1,7 @@
 import React from 'react';
 import type { Product, OrderItem } from '@/lib/data/mock-data';
+import { Trash2, Pencil } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +12,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, selected, onSelect, onAdd, label }) => {
+  const { t } = useTranslation('productCard');
   const hasSizes = Array.isArray(product.sizes) && product.sizes.length > 0;
 
   return (
@@ -20,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, selected, onSelect, 
         className="w-full h-40 object-cover rounded"
       />
       <h2 className="font-semibold">{product.name}</h2>
-      <p>Price: {product.price} DKK</p>
+      <p>{t('product_card.price', { amount: product.price.toFixed(2) })}</p>
 
       {hasSizes && (
         <select
@@ -28,7 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, selected, onSelect, 
           value={selected.size || ''}
           onChange={(e) => onSelect('size', e.target.value)}
         >
-          <option value="">Select Size</option>
+          <option value="">{t('product_card.select_size')}</option>
           {product.sizes!.map((size) => (
             <option key={size} value={size}>
               {size}
@@ -39,14 +42,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, selected, onSelect, 
 
       <input
         type="number"
-        placeholder="Quantity"
+        placeholder={t('product_card.quantity_placeholder')}
         className="w-full p-2 border rounded"
         value={selected.quantity || ''}
         onChange={(e) => onSelect('quantity', parseInt(e.target.value))}
       />
 
       <button className="bg-blue-600 text-white px-4 py-2 rounded w-full" onClick={onAdd}>
-        {label || (product.customizable ? 'Select player numbers' : 'Add to Order')}
+        {label
+          ? label
+          : t(product.customizable ? 'product_card.select_numbers' : 'product_card.add_to_order')}
       </button>
     </div>
   );

@@ -3,11 +3,14 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { mockProducts, Product } from '@/lib/data/mock-data'; // <-- 👈 using your mock data
+import { mockProducts, Product } from '@/lib/data/mock-data';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductPage() {
+  const { t } = useTranslation('product');
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string>('');
 
   useEffect(() => {
     const found = mockProducts.find((p) => p.id === Number(id));
@@ -15,9 +18,9 @@ export default function ProductPage() {
   }, [id]);
 
   if (!product) {
-    return <div className="p-8 text-center">🚫 Product not found</div>;
+    return <div className="p-8 text-center">{t('product.not_found')}</div>;
   }
-  console.log(product.images[0]);
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="grid md:grid-cols-2 gap-8">
@@ -49,39 +52,16 @@ export default function ProductPage() {
         {/* Product Details */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h1>
-          <p className="text-lg text-primary font-semibold mb-4">{product.price.toFixed(2)} DKK</p>
+          <p className="text-lg text-primary font-semibold mb-4">
+            {t('product.price', { price: product.price.toFixed(2) })}
+          </p>
 
-          {/* Beskrivelse */}
+          {/* Description */}
           {product.description && <p className="mb-4 text-gray-700">{product.description}</p>}
 
-          {/* {Array.isArray(product.sizes) && product.sizes.length > 0 && (
-              <div className="mb-4">
-                <label className="block mb-1 font-medium">Vælg størrelse</label>
-                <select
-                  className="w-full border border-gray-300 rounded-md py-2 px-3"
-                  value={selectedSize}
-                  onChange={(e) => setSelectedSize(e.target.value)}
-                >
-                  <option value="">Vælg størrelse</option>
-                  {product.sizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )} */}
-
           {product.customizable && (
-            <p className="text-sm text-blue-600 mb-4">🎨 Dette produkt kan tilpasses!</p>
+            <p className="text-sm text-blue-600 mb-4">{t('product.customizable')}</p>
           )}
-
-          {/* <button
-              className="w-full mt-4 bg-primary text-white font-semibold py-2 rounded-lg hover:bg-primary/80 transition"
-              onClick={() => alert('🛒 Tilføjet til kurv!')}
-            >
-              Tilføj til kurv
-            </button> */}
         </div>
       </div>
     </div>

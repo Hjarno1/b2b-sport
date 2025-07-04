@@ -1,0 +1,1948 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model EFMigrationsHistory {
+  MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.NVarChar(150)
+  ProductVersion String @db.NVarChar(32)
+
+  @@map("__EFMigrationsHistory")
+}
+
+model Alerts {
+  Id                                  Int                     @id(map: "PK_Alerts") @default(autoincrement())
+  Active                              Boolean
+  ErrorMsg                            String?                 @db.NVarChar(Max)
+  Label                               String?                 @db.NVarChar(Max)
+  ErrorType                           Int
+  Color                               String?                 @db.NVarChar(Max)
+  B2BParrentProductsparrentProduct_id Int?
+  CreationDate                        DateTime
+  ModifiedDate                        DateTime
+  B2BProductproduct_id                Int?
+  IsCompleted                         Boolean                 @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Alerts__IsComple__1A1FD08D")
+  SupplierProduct                     String?                 @db.NVarChar(Max)
+  SupplierSKU                         String?                 @db.NVarChar(Max)
+  Supplier                            String?                 @db.NVarChar(Max)
+  SupplierProductImageURL             String?                 @db.NVarChar(Max)
+  B2BSupplierId                       Int?
+  TempB2BProductsId                   Int?
+  B2BParrentProducts                  B2BParrentProducts?     @relation(fields: [B2BParrentProductsparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Alerts_B2BParrentProducts_B2BParrentProductsparrentProduct_id")
+  B2BProdducts                        B2BProdducts?           @relation(fields: [B2BProductproduct_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Alerts_B2BProdducts_B2BProductproduct_id")
+  Suppliers                           Suppliers?              @relation(fields: [B2BSupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Alerts_Suppliers_B2BSupplierId")
+  TempB2BProducts                     TempB2BProducts?        @relation(fields: [TempB2BProductsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Alerts_TempB2BProducts_TempB2BProductsId")
+  B2BCategoryGroups                   B2BCategoryGroups[]
+  B2BMainCategory                     B2BMainCategory[]
+  B2BPrintPositions                   B2BPrintPositions[]
+  ProductLog                          ProductLog[]
+  SupplierLogs                        SupplierLogs[]
+  TempB2BPrintPositions               TempB2BPrintPositions[]
+
+  @@index([B2BParrentProductsparrentProduct_id], map: "IX_Alerts_B2BParrentProductsparrentProduct_id")
+  @@index([B2BProductproduct_id], map: "IX_Alerts_B2BProductproduct_id")
+  @@index([B2BSupplierId], map: "IX_Alerts_B2BSupplierId")
+  @@index([TempB2BProductsId], map: "IX_Alerts_TempB2BProductsId")
+}
+
+model AspNetRoleClaims {
+  Id          Int         @id(map: "PK_AspNetRoleClaims") @default(autoincrement())
+  RoleId      String      @db.NVarChar(450)
+  ClaimType   String?     @db.NVarChar(Max)
+  ClaimValue  String?     @db.NVarChar(Max)
+  AspNetRoles AspNetRoles @relation(fields: [RoleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetRoleClaims_AspNetRoles_RoleId")
+
+  @@index([RoleId], map: "IX_AspNetRoleClaims_RoleId")
+}
+
+model AspNetRoles {
+  Id               String             @id(map: "PK_AspNetRoles") @db.NVarChar(450)
+  Name             String?            @db.NVarChar(256)
+  NormalizedName   String?            @db.NVarChar(256)
+  ConcurrencyStamp String?            @db.NVarChar(Max)
+  AspNetRoleClaims AspNetRoleClaims[]
+  AspNetUserRoles  AspNetUserRoles[]
+}
+
+model AspNetUserClaims {
+  Id          Int         @id(map: "PK_AspNetUserClaims") @default(autoincrement())
+  UserId      String      @db.NVarChar(450)
+  ClaimType   String?     @db.NVarChar(Max)
+  ClaimValue  String?     @db.NVarChar(Max)
+  AspNetUsers AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserClaims_AspNetUsers_UserId")
+
+  @@index([UserId], map: "IX_AspNetUserClaims_UserId")
+}
+
+model AspNetUserLogins {
+  LoginProvider       String      @db.NVarChar(128)
+  ProviderKey         String      @db.NVarChar(128)
+  ProviderDisplayName String?     @db.NVarChar(Max)
+  UserId              String      @db.NVarChar(450)
+  AspNetUsers         AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserLogins_AspNetUsers_UserId")
+
+  @@id([LoginProvider, ProviderKey], map: "PK_AspNetUserLogins")
+  @@index([UserId], map: "IX_AspNetUserLogins_UserId")
+}
+
+model AspNetUserRoles {
+  UserId      String      @db.NVarChar(450)
+  RoleId      String      @db.NVarChar(450)
+  AspNetRoles AspNetRoles @relation(fields: [RoleId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserRoles_AspNetRoles_RoleId")
+  AspNetUsers AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserRoles_AspNetUsers_UserId")
+
+  @@id([UserId, RoleId], map: "PK_AspNetUserRoles")
+  @@index([RoleId], map: "IX_AspNetUserRoles_RoleId")
+}
+
+model AspNetUsers {
+  Id                   String             @id(map: "PK_AspNetUsers") @db.NVarChar(450)
+  UserName             String?            @db.NVarChar(256)
+  NormalizedUserName   String?            @db.NVarChar(256)
+  Email                String?            @db.NVarChar(256)
+  NormalizedEmail      String?            @db.NVarChar(256)
+  EmailConfirmed       Boolean
+  PasswordHash         String?            @db.NVarChar(Max)
+  SecurityStamp        String?            @db.NVarChar(Max)
+  ConcurrencyStamp     String?            @db.NVarChar(Max)
+  PhoneNumber          String?            @db.NVarChar(Max)
+  PhoneNumberConfirmed Boolean
+  TwoFactorEnabled     Boolean
+  LockoutEnd           DateTime?          @db.DateTimeOffset
+  LockoutEnabled       Boolean
+  AccessFailedCount    Int
+  AspNetUserClaims     AspNetUserClaims[]
+  AspNetUserLogins     AspNetUserLogins[]
+  AspNetUserRoles      AspNetUserRoles[]
+  AspNetUserTokens     AspNetUserTokens[]
+
+  @@index([NormalizedEmail], map: "EmailIndex")
+}
+
+model AspNetUserTokens {
+  UserId        String      @db.NVarChar(450)
+  LoginProvider String      @db.NVarChar(128)
+  Name          String      @db.NVarChar(128)
+  Value         String?     @db.NVarChar(Max)
+  AspNetUsers   AspNetUsers @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_AspNetUserTokens_AspNetUsers_UserId")
+
+  @@id([UserId, LoginProvider, Name], map: "PK_AspNetUserTokens")
+}
+
+model B2BBrands {
+  Id                    Int                     @id(map: "PK_B2BBrands") @default(autoincrement())
+  Name                  String?                 @db.NVarChar(Max)
+  Comment               String?                 @db.NVarChar(Max)
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  B2BParrentProducts    B2BParrentProducts[]
+  TempB2BParentProducts TempB2BParentProducts[]
+}
+
+model B2BCategoryGroups {
+  Id                    Int                     @id(map: "PK_B2BCategoryGroups") @default(autoincrement())
+  CategoryGroup         String?                 @db.NVarChar(Max)
+  B2BCountryId          Int?
+  CreationDate          DateTime                @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BCatego__Creat__2818EA29")
+  ModifiedDate          DateTime                @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BCatego__Modif__290D0E62")
+  Active                Boolean                 @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BCatego__Activ__4E0988E7")
+  AlertId               Int?
+  AboveTheFold          String?                 @db.NVarChar(Max)
+  BelowTheFold          String?                 @db.NVarChar(Max)
+  NopOrder              Int                     @default(0, map: "DF__B2BCatego__NopOr__51DA19CB")
+  NopId                 Int                     @default(0, map: "DF__B2BCatego__NopId__53C2623D")
+  NopSynced             Boolean                 @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BCatego__NopSy__55AAAAAF")
+  CustomText            String?                 @db.NVarChar(Max)
+  ProductHighligt       String?                 @db.NVarChar(Max)
+  SeoURL                String?                 @db.NVarChar(Max)
+  Alerts                Alerts?                 @relation(fields: [AlertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BCategoryGroups_Alerts_AlertId")
+  B2BCountry            B2BCountry?             @relation(fields: [B2BCountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BCategoryGroups_B2BCountry_B2BCountryId")
+  B2BMainCategory       B2BMainCategory[]
+  B2BParrentProducts    B2BParrentProducts[]
+  B2BProductTypes       B2BProductTypes[]
+  TempB2BParentProducts TempB2BParentProducts[]
+
+  @@index([AlertId], map: "IX_B2BCategoryGroups_AlertId")
+  @@index([B2BCountryId], map: "IX_B2BCategoryGroups_B2BCountryId")
+}
+
+model B2BCountry {
+  Id                      Int                       @id(map: "PK_B2BCountry") @default(autoincrement())
+  CountryCode             String?                   @db.NVarChar(Max)
+  CountryCurrency         String?                   @db.NVarChar(Max)
+  CountryName             String?                   @db.NVarChar(Max)
+  NopWebsite              String?                   @db.NVarChar(Max)
+  CreationDate            DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BCountr__Creat__3E082B48")
+  ModifiedDate            DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BCountr__Modif__3EFC4F81")
+  NopProjectName          String?                   @db.NVarChar(Max)
+  LatestProductSync       DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BCountr__Lates__43E1002F")
+  NopCountryId            Int                       @default(0, map: "DF__B2BCountr__NopCo__7F01C5FD")
+  B2BCategoryGroups       B2BCategoryGroups[]
+  B2BDeliveryTime         B2BDeliveryTime[]
+  B2BMainCategory         B2BMainCategory[]
+  B2BMasterPrintPositions B2BMasterPrintPositions[]
+  B2BMaterials            B2BMaterials[]
+  B2BOrderQuantity        B2BOrderQuantity[]
+  B2BParrentProducts      B2BParrentProducts[]
+  B2BPriceScaling         B2BPriceScaling[]
+  B2BPrintPositions       B2BPrintPositions[]
+  B2BProdducts            B2BProdducts[]
+  B2BProductPrices        B2BProductPrices[]
+  B2BProductSize          B2BProductSize[]
+  B2BProductTextileSizes  B2BProductTextileSizes[]
+  B2BProductTypes         B2BProductTypes[]
+  B2BResponsibles         B2BResponsibles[]
+  B2BRibbons              B2BRibbons[]
+  Campaigns               Campaigns[]
+  Colours                 Colours[]
+  Customers               Customers[]
+  EmailTemplates          EmailTemplates[]
+  Handling_PriceClass     Handling_PriceClass[]
+  Imprint_PriceClasses    Imprint_PriceClasses[]
+  LocalStrings            LocalStrings[]
+  LogoFiles               LogoFiles[]
+  OutlookAddinCategories  OutlookAddinCategories[]
+  PrintTechniques         PrintTechniques[]
+  RequestCommunications   RequestCommunications[]
+  RequestPrintProofs      RequestPrintProofs[]
+  SupplierHandlingCost    SupplierHandlingCost[]
+  TempB2BParentProducts   TempB2BParentProducts[]
+  TempB2BPrintPositions   TempB2BPrintPositions[]
+  TempB2BProductPrices    TempB2BProductPrices[]
+  TempB2BProducts         TempB2BProducts[]
+}
+
+model B2BDeliveryTime {
+  Id                    Int                     @id(map: "PK_B2BDeliveryTime") @default(autoincrement())
+  DeliveryTime          String?                 @db.NVarChar(Max)
+  CountryId             Int?
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  B2BCountry            B2BCountry?             @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BDeliveryTime_B2BCountry_CountryId")
+  B2BParrentProducts    B2BParrentProducts[]
+  TempB2BParentProducts TempB2BParentProducts[]
+
+  @@index([CountryId], map: "IX_B2BDeliveryTime_CountryId")
+}
+
+model B2BMainCategory {
+  B2BMainCategoryId                   Int                              @id(map: "PK_B2BMainCategory") @default(autoincrement())
+  CategoryGroupId                     Int?
+  Category                            String?                          @db.NVarChar(Max)
+  fk_country                          Int?
+  CreationDate                        DateTime                         @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BMainCa__Creat__2630A1B7")
+  ModifiedDate                        DateTime                         @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BMainCa__Modif__2724C5F0")
+  B2BParrentProductsparrentProduct_id Int?
+  AboveTheFold                        String?                          @db.NVarChar(Max)
+  BelowTheFold                        String?                          @db.NVarChar(Max)
+  NopOrder                            Int                              @default(0, map: "DF__B2BMainCa__NopOr__4D1564AE")
+  Active                              Boolean                          @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BMainCa__Activ__4EFDAD20")
+  AlertId                             Int?
+  NopParentIdId                       Int                              @default(0, map: "DF__B2BMainCa__NopId__52CE3E04")
+  NopSynced                           Boolean                          @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BMainCa__NopSy__54B68676")
+  CustomText                          String?                          @db.NVarChar(Max)
+  NopChildId                          Int                              @default(0, map: "DF__B2BMainCa__NopCh__5B638405")
+  SeoURL                              String?                          @db.NVarChar(Max)
+  TempB2BParentProductId              Int?
+  Alerts                              Alerts?                          @relation(fields: [AlertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMainCategory_Alerts_AlertId")
+  B2BCategoryGroups                   B2BCategoryGroups?               @relation(fields: [CategoryGroupId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMainCategory_B2BCategoryGroups_CategoryGroupId")
+  B2BCountry                          B2BCountry?                      @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMainCategory_B2BCountry_fk_country")
+  B2BParrentProducts                  B2BParrentProducts?              @relation(fields: [B2BParrentProductsparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMainCategory_B2BParrentProducts_B2BParrentProductsparrentProduct_id")
+  TempB2BParentProducts               TempB2BParentProducts?           @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMainCategory_TempB2BParentProducts_TempB2BParentProductId")
+  B2BProductTypes                     B2BProductTypes[]
+  ParentProductB2BMainCategories      ParentProductB2BMainCategories[]
+  RequestProducts                     RequestProducts[]
+
+  @@index([AlertId], map: "IX_B2BMainCategory_AlertId")
+  @@index([B2BParrentProductsparrentProduct_id], map: "IX_B2BMainCategory_B2BParrentProductsparrentProduct_id")
+  @@index([CategoryGroupId], map: "IX_B2BMainCategory_CategoryGroupId")
+  @@index([fk_country], map: "IX_B2BMainCategory_fk_country")
+  @@index([TempB2BParentProductId], map: "IX_B2BMainCategory_TempB2BParentProductId")
+}
+
+model B2BMasterPrintPositions {
+  Id         Int         @id(map: "PK_B2BMasterPrintPositions") @default(autoincrement())
+  Name       String?     @db.NVarChar(Max)
+  CountryId  Int?
+  B2BCountry B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMasterPrintPositions_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_B2BMasterPrintPositions_CountryId")
+}
+
+model B2BMaterials {
+  Id                    Int                     @id(map: "PK_B2BMaterials") @default(autoincrement())
+  Name                  String?                 @db.NVarChar(Max)
+  CountryId             Int?
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  B2BCountry            B2BCountry?             @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BMaterials_B2BCountry_CountryId")
+  B2BParrentProducts    B2BParrentProducts[]
+  TempB2BParentProducts TempB2BParentProducts[]
+
+  @@index([CountryId], map: "IX_B2BMaterials_CountryId")
+}
+
+model B2BOrderQuantity {
+  Id                    Int                     @id(map: "PK_B2BOrderQuantity") @default(autoincrement())
+  Quantity              Int
+  CountryId             Int?
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  B2BCountry            B2BCountry?             @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BOrderQuantity_B2BCountry_CountryId")
+  B2BParrentProducts    B2BParrentProducts[]
+  TempB2BParentProducts TempB2BParentProducts[]
+
+  @@index([CountryId], map: "IX_B2BOrderQuantity_CountryId")
+}
+
+model B2BParrentProducts {
+  parrentProduct_id                       Int                                       @id(map: "PK_B2BParrentProducts") @default(autoincrement())
+  parrentProduct_dimensions               String?                                   @db.NVarChar(Max)
+  parrentProduct_height                   Float                                     @default(dbgenerated("CONVERT([real],(0))"), map: "DF__B2BParren__parre__4DB4832C") @db.Real
+  parrentProduct_length                   Float                                     @default(dbgenerated("CONVERT([real],(0))"), map: "DF__B2BParren__parre__4EA8A765") @db.Real
+  parrentProduct_longDescription          String?                                   @db.NVarChar(Max)
+  parrentProduct_mainCategory             String?                                   @db.NVarChar(Max)
+  parrentProduct_masterId                 String?                                   @db.NVarChar(Max)
+  parrentProduct_parrentSku               String?                                   @db.NVarChar(Max)
+  parrentProduct_printPositions           Int                                       @default(0, map: "DF__B2BParren__parre__5090EFD7")
+  parrentProduct_printable                Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__parre__51851410")
+  parrentProduct_shortDescription         String?                                   @db.NVarChar(Max)
+  parrentProduct_width                    Float                                     @default(dbgenerated("CONVERT([real],(0))"), map: "DF__B2BParren__parre__52793849") @db.Real
+  parrentProduct_material                 String?                                   @db.NVarChar(Max)
+  parrentProduct_productName              String?                                   @db.NVarChar(Max)
+  alert                                   Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__alert__70FDBF69")
+  alertMessage                            String?                                   @db.NVarChar(Max)
+  alertStatus                             String?                                   @db.NVarChar(Max)
+  parrentProduct_supplierSubCategory      String?                                   @db.NVarChar(Max)
+  Supplier                                String?                                   @db.NVarChar(Max)
+  fk_country                              Int?
+  NopSynced                               Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__NopSy__0C70CFB4")
+  B2BProductTypeId                        Int?
+  CreationDate                            DateTime                                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BParren__Creat__338A9CD5")
+  ModifiedDate                            DateTime                                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BParren__Modif__347EC10E")
+  B2BMasterCategoryId                     Int?
+  B2BBrandsId                             Int?
+  B2BMaterialId                           Int?
+  Deactivate                              Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__Activ__0A537D18")
+  StatusId                                Int?
+  ProductSheet                            String?                                   @db.NVarChar(Max)
+  ProductTemplate                         String?                                   @db.NVarChar(Max)
+  SeoUrl                                  String?                                   @db.NVarChar(Max)
+  DeleteProduct                           Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__Delet__4FBCC72F")
+  B2BDeliveryTimeId                       Int?
+  B2BOrderQuantityId                      Int?
+  SupplierCategory                        String?                                   @db.NVarChar(Max)
+  SupplierDescription                     String?                                   @db.NVarChar(Max)
+  SupplierProductName                     String?                                   @db.NVarChar(Max)
+  B2BEco                                  Boolean                                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BParren__B2BEc__03C67B1A")
+  OfferFrom                               DateTime                                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BParren__Offer__4B4D17CD")
+  OfferInPercent                          Int                                       @default(0, map: "DF__B2BParren__Offer__4C413C06")
+  OfferTo                                 DateTime                                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BParren__Offer__4D35603F")
+  CampaignId                              Int?
+  Alerts                                  Alerts[]
+  B2BMainCategory                         B2BMainCategory[]
+  B2BBrands                               B2BBrands?                                @relation(fields: [B2BBrandsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BBrands_B2BBrandsId")
+  B2BCategoryGroups                       B2BCategoryGroups?                        @relation(fields: [B2BMasterCategoryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BCategoryGroups_B2BMasterCategoryId")
+  B2BCountry                              B2BCountry?                               @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BCountry_fk_country")
+  B2BDeliveryTime                         B2BDeliveryTime?                          @relation(fields: [B2BDeliveryTimeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BDeliveryTime_B2BDeliveryTimeId")
+  B2BMaterials                            B2BMaterials?                             @relation(fields: [B2BMaterialId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BMaterials_B2BMaterialId")
+  B2BOrderQuantity                        B2BOrderQuantity?                         @relation(fields: [B2BOrderQuantityId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BOrderQuantity_B2BOrderQuantityId")
+  B2BProductTypes                         B2BProductTypes?                          @relation(fields: [B2BProductTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_B2BProductTypes_B2BProductTypeId")
+  Campaigns                               Campaigns?                                @relation(fields: [CampaignId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_Campaigns_CampaignId")
+  ProductStatus                           ProductStatus?                            @relation(fields: [StatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BParrentProducts_ProductStatus_StatusId")
+  B2BPrintPositions                       B2BPrintPositions[]
+  B2BProdducts                            B2BProdducts[]
+  B2BProductPrices                        B2BProductPrices[]
+  B2BProductSize                          B2BProductSize[]
+  ErrorMessages                           ErrorMessages[]
+  ParentProductB2BMainCategories          ParentProductB2BMainCategories[]
+  ParentProductB2BProductSizes            ParentProductB2BProductSizes[]
+  ParentProductB2BProductTextileSizes     ParentProductB2BProductTextileSizes[]
+  ParentProductB2BRibbons                 ParentProductB2BRibbons[]
+  ProductLog                              ProductLog[]
+  ProductSyncWarnings                     ProductSyncWarnings[]
+  RequestProducts                         RequestProducts[]
+  TempB2BProductPrices                    TempB2BProductPrices[]
+  TempB2BProducts                         TempB2BProducts[]
+  TempParentProductB2BProductTextileSizes TempParentProductB2BProductTextileSizes[]
+
+  @@index([B2BBrandsId], map: "IX_B2BParrentProducts_B2BBrandsId")
+  @@index([B2BDeliveryTimeId], map: "IX_B2BParrentProducts_B2BDeliveryTimeId")
+  @@index([B2BMasterCategoryId], map: "IX_B2BParrentProducts_B2BMasterCategoryId")
+  @@index([B2BMaterialId], map: "IX_B2BParrentProducts_B2BMaterialId")
+  @@index([B2BOrderQuantityId], map: "IX_B2BParrentProducts_B2BOrderQuantityId")
+  @@index([B2BProductTypeId], map: "IX_B2BParrentProducts_B2BProductTypeId")
+  @@index([CampaignId], map: "IX_B2BParrentProducts_CampaignId")
+  @@index([fk_country], map: "IX_B2BParrentProducts_fk_country")
+  @@index([StatusId], map: "IX_B2BParrentProducts_StatusId")
+}
+
+model B2BPriceScaling {
+  scale_id              Int               @id(map: "PK_B2BPriceScaling") @default(autoincrement())
+  scale_minimumQuantity Int
+  fk_priceIdid          Int?
+  alert                 String?           @db.NVarChar(Max)
+  scale_priceDK         String?           @db.NVarChar(Max)
+  scale_priceEU         String?           @db.NVarChar(Max)
+  scale_supplierPrice   String?           @db.NVarChar(Max)
+  alertActive           Boolean           @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BPriceS__alert__68687968")
+  scale_priceFI         String?           @db.NVarChar(Max)
+  fk_country            Int?
+  CreationDate          DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPriceS__Creat__737017C0")
+  ModifiedDate          DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPriceS__Modif__74643BF9")
+  B2BCountry            B2BCountry?       @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPriceScaling_B2BCountry_fk_country")
+  B2BProductPrices      B2BProductPrices? @relation(fields: [fk_priceIdid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPriceScaling_B2BProductPrices_fk_priceIdid")
+
+  @@index([fk_country], map: "IX_B2BPriceScaling_fk_country")
+  @@index([fk_priceIdid], map: "IX_B2BPriceScaling_fk_priceIdid")
+}
+
+model B2BPrintPositions {
+  Id                                                                  Int                               @id(map: "PK_B2BPrintPositions") @default(autoincrement())
+  Position                                                            String?                           @db.NVarChar(Max)
+  print_express                                                       Boolean
+  print_position                                                      String?                           @db.NVarChar(Max)
+  print_supplier                                                      String?                           @db.NVarChar(Max)
+  print_productName                                                   String?                           @db.NVarChar(Max)
+  MaxColors                                                           Float?
+  print_dimensions                                                    String?                           @db.NVarChar(Max)
+  fk_country                                                          Int?
+  fk_imprint_priceClass                                               Int?
+  fk_alertId                                                          Int?
+  child_product                                                       String?                           @db.NVarChar(Max)
+  print_type                                                          String?                           @db.NVarChar(Max)
+  CreationDate                                                        DateTime                          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPrintP__Creat__7187CF4E")
+  ModifiedDate                                                        DateTime                          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPrintP__Modif__727BF387")
+  ExternalPrint                                                       Boolean                           @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BPrintP__Exter__4B2D1C3C")
+  parentProductparrentProduct_id                                      Int?
+  IsDisabled                                                          Boolean                           @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__B2BPrintP__IsDis__58DC1D15")
+  Alerts                                                              Alerts?                           @relation(fields: [fk_alertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPrintPositions_Alerts_fk_alertId")
+  B2BCountry                                                          B2BCountry?                       @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPrintPositions_B2BCountry_fk_country")
+  B2BParrentProducts                                                  B2BParrentProducts?               @relation(fields: [parentProductparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPrintPositions_B2BParrentProducts_parentProductparrentProduct_id")
+  Imprint_PriceClasses                                                Imprint_PriceClasses?             @relation(fields: [fk_imprint_priceClass], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BPrintPositions_Imprint_PriceClasses_fk_imprint_priceClass")
+  RequestProductB2BPrintPositions                                     RequestProductB2BPrintPositions[]
+  RequestProducts_RequestProducts_PrintPosition1IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition1IdToB2BPrintPositions")
+  RequestProducts_RequestProducts_PrintPosition2IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition2IdToB2BPrintPositions")
+  RequestProducts_RequestProducts_PrintPosition3IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition3IdToB2BPrintPositions")
+  RequestProducts_RequestProducts_PrintPosition4IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition4IdToB2BPrintPositions")
+  RequestProducts_RequestProducts_PrintPosition5IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition5IdToB2BPrintPositions")
+  RequestProducts_RequestProducts_PrintPosition6IdToB2BPrintPositions RequestProducts[]                 @relation("RequestProducts_PrintPosition6IdToB2BPrintPositions")
+
+  @@index([fk_alertId], map: "IX_B2BPrintPositions_fk_alertId")
+  @@index([fk_country], map: "IX_B2BPrintPositions_fk_country")
+  @@index([fk_imprint_priceClass], map: "IX_B2BPrintPositions_fk_imprint_priceClass")
+  @@index([parentProductparrentProduct_id], map: "IX_B2BPrintPositions_parentProductparrentProduct_id")
+}
+
+model B2BPrintTypes {
+  Id           Int      @id(map: "PK_B2BPrintTypes") @default(autoincrement())
+  Type         String?  @db.NVarChar(Max)
+  CreationDate DateTime @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPrintT__Creat__6F9F86DC")
+  ModifiedDate DateTime @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BPrintT__Modif__7093AB15")
+}
+
+model B2BProdducts {
+  product_id                    Int                 @id(map: "PK_B2BProdducts") @default(autoincrement())
+  product_BatteryType           String?             @db.NVarChar(Max)
+  product_CommercialItemHeight  String?             @db.NVarChar(Max)
+  product_CommercialItemLength  String?             @db.NVarChar(Max)
+  product_CommercialItemWeight  String?             @db.NVarChar(Max)
+  product_CommercialItemWidth   String?             @db.NVarChar(Max)
+  product_CountryOfOrigin       String?             @db.NVarChar(Max)
+  product_DeliveryTimeMT_IL1_T1 DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProddu__produ__405A880E")
+  product_Flavours              String?             @db.NVarChar(Max)
+  product_IntraCode             String?             @db.NVarChar(Max)
+  product_NumberOfBatteries     Int                 @default(0, map: "DF__B2BProddu__produ__414EAC47")
+  product_OrderUnit             Int                 @default(0, map: "DF__B2BProddu__produ__4242D080")
+  product_PriceClass_IL1_CN     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_CN2    String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_CN3    String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_CN4    String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_CN5    String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_CN6    String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T1     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T2     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T3     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T4     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T5     String?             @db.NVarChar(Max)
+  product_PriceClass_IL1_T6     String?             @db.NVarChar(Max)
+  product_ProductImageURL       String?             @db.NVarChar(Max)
+  product_Q_OnPallet            String?             @db.NVarChar(Max)
+  product_SearchTerms           String?             @db.NVarChar(Max)
+  product_Sizes                 String?             @db.NVarChar(Max)
+  product_WritingColor          String?             @db.NVarChar(Max)
+  product_brandNames            String?             @db.NVarChar(Max)
+  product_longDescriptionDK     String?             @db.NVarChar(Max)
+  product_longDescriptionEN     String?             @db.NVarChar(Max)
+  product_longDescriptionFI     String?             @db.NVarChar(Max)
+  product_shortDescriptionEN    String?             @db.NVarChar(Max)
+  product_shortDescriptionFI    String?             @db.NVarChar(Max)
+  product_sku                   String?             @db.NVarChar(Max)
+  fk_country                    Int?
+  fk_parentSKU                  Int?
+  product_ColorNameId           Int?
+  product_shortDescription      String?             @db.NVarChar(Max)
+  ProductTypeId                 Int?
+  CreationDate                  DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProddu__Creat__31A25463")
+  ModifiedDate                  DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProddu__Modif__3296789C")
+  product_color                 String?             @db.NVarChar(Max)
+  product_stock                 Int                 @default(0, map: "DF__B2BProddu__produ__5911273F")
+  Supplier                      String?             @db.NVarChar(Max)
+  Alerts                        Alerts[]
+  B2BCountry                    B2BCountry?         @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProdducts_B2BCountry_fk_country")
+  B2BParrentProducts            B2BParrentProducts? @relation(fields: [fk_parentSKU], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProdducts_B2BParrentProducts_fk_parentSKU")
+  B2BProductTypes               B2BProductTypes?    @relation(fields: [ProductTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProdducts_B2BProductTypes_ProductTypeId")
+  Colours                       Colours?            @relation(fields: [product_ColorNameId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProdducts_Colours_product_ColorNameId")
+  B2BProductImages              B2BProductImages[]
+  RequestProducts               RequestProducts[]
+  SupplierChildSkus             SupplierChildSkus[]
+
+  @@index([fk_country], map: "IX_B2BProdducts_fk_country")
+  @@index([fk_parentSKU], map: "IX_B2BProdducts_fk_parentSKU")
+  @@index([product_ColorNameId], map: "IX_B2BProdducts_product_ColorNameId")
+  @@index([ProductTypeId], map: "IX_B2BProdducts_ProductTypeId")
+}
+
+model B2BProductImages {
+  Id              Int           @id(map: "PK_B2BProductImages") @default(autoincrement())
+  ImagePath       String?       @db.NVarChar(Max)
+  fk_childproduct Int?
+  CreationDate    DateTime      @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProduc__Creat__2FBA0BF1")
+  ModifiedDate    DateTime      @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProduc__Modif__30AE302A")
+  B2BProdducts    B2BProdducts? @relation(fields: [fk_childproduct], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductImages_B2BProdducts_fk_childproduct")
+
+  @@index([fk_childproduct], map: "IX_B2BProductImages_fk_childproduct")
+}
+
+model B2BProductPrices {
+  id                             Int                 @id(map: "PK_B2BProductPrices") @default(autoincrement())
+  price_validUntill              String?             @db.NVarChar(Max)
+  parrentSku                     String?             @db.NVarChar(Max)
+  price_startingPriceDK          String?             @db.NVarChar(Max)
+  price_startingPriceEU          String?             @db.NVarChar(Max)
+  price_startingPriceFI          String?             @db.NVarChar(Max)
+  price_startingPriceSupplier    String?             @db.NVarChar(Max)
+  fk_country                     Int?
+  CreationDate                   DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProduc__Creat__6DB73E6A")
+  ModifiedDate                   DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BProduc__Modif__6EAB62A3")
+  PriceQ1                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__222B06A9")
+  PriceQ2                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__231F2AE2")
+  PriceQ3                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__24134F1B")
+  PriceQ4                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__25077354")
+  PriceQ5                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__25FB978D")
+  PriceQ6                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__26EFBBC6")
+  PriceStart                     Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__27E3DFFF")
+  PriceP1                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__28D80438")
+  PriceP2                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__29CC2871")
+  PriceP3                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__2AC04CAA")
+  PriceP4                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__2BB470E3")
+  PriceP5                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__2CA8951C")
+  PriceP6                        Float               @default(0.0000000000000000, map: "DF__B2BProduc__Price__2D9CB955")
+  ParentProductparrentProduct_id Int?
+  CostPriceP1                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__6E414E4F")
+  CostPriceP2                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__6F357288")
+  CostPriceP3                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__702996C1")
+  CostPriceP4                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__711DBAFA")
+  CostPriceP5                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__7211DF33")
+  CostPriceP6                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__7306036C")
+  CostPriceQ1                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__73FA27A5")
+  CostPriceQ2                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__74EE4BDE")
+  CostPriceQ3                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__75E27017")
+  CostPriceQ4                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__76D69450")
+  CostPriceQ5                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__77CAB889")
+  CostPriceQ6                    Float               @default(0.0000000000000000, map: "DF__B2BProduc__CostP__78BEDCC2")
+  PreviousCostPriceP1            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7172C0B5")
+  PreviousCostPriceP2            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7266E4EE")
+  PreviousCostPriceP3            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__735B0927")
+  PreviousCostPriceP4            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__744F2D60")
+  PreviousCostPriceP5            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__75435199")
+  PreviousCostPriceP6            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__763775D2")
+  PreviousCostPriceQ1            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__772B9A0B")
+  PreviousCostPriceQ2            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__781FBE44")
+  PreviousCostPriceQ3            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7913E27D")
+  PreviousCostPriceQ4            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7A0806B6")
+  PreviousCostPriceQ5            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7AFC2AEF")
+  PreviousCostPriceQ6            Float               @default(0.0000000000000000, map: "DF__B2BProduc__Previ__7BF04F28")
+  B2BPriceScaling                B2BPriceScaling[]
+  B2BCountry                     B2BCountry?         @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductPrices_B2BCountry_fk_country")
+  B2BParrentProducts             B2BParrentProducts? @relation(fields: [ParentProductparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductPrices_B2BParrentProducts_ParentProductparrentProduct_id")
+
+  @@index([fk_country], map: "IX_B2BProductPrices_fk_country")
+  @@index([ParentProductparrentProduct_id], map: "IX_B2BProductPrices_ParentProductparrentProduct_id")
+}
+
+model B2BProductSize {
+  Id                                  Int                            @id(map: "PK_B2BProductSize") @default(autoincrement())
+  Name                                String?                        @db.NVarChar(Max)
+  CountryId                           Int?
+  CreationDate                        DateTime
+  ModifiedDate                        DateTime
+  B2BParrentProductsparrentProduct_id Int?
+  TempB2BParentProductId              Int?
+  B2BCountry                          B2BCountry?                    @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductSize_B2BCountry_CountryId")
+  B2BParrentProducts                  B2BParrentProducts?            @relation(fields: [B2BParrentProductsparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductSize_B2BParrentProducts_B2BParrentProductsparrentProduct_id")
+  TempB2BParentProducts               TempB2BParentProducts?         @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductSize_TempB2BParentProducts_TempB2BParentProductId")
+  ParentProductB2BProductSizes        ParentProductB2BProductSizes[]
+  RequestProducts                     RequestProducts[]
+
+  @@index([B2BParrentProductsparrentProduct_id], map: "IX_B2BProductSize_B2BParrentProductsparrentProduct_id")
+  @@index([CountryId], map: "IX_B2BProductSize_CountryId")
+  @@index([TempB2BParentProductId], map: "IX_B2BProductSize_TempB2BParentProductId")
+}
+
+model B2BProductTextileSizes {
+  Id                                      Int                                       @id(map: "PK_B2BProductTextileSizes") @default(autoincrement())
+  Name                                    String?                                   @db.NVarChar(Max)
+  DisplayOrder                            Int
+  CountryId                               Int?
+  CreationDate                            DateTime
+  ModifiedDate                            DateTime
+  B2BCountry                              B2BCountry?                               @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductTextileSizes_B2BCountry_CountryId")
+  ParentProductB2BProductTextileSizes     ParentProductB2BProductTextileSizes[]
+  RequestProductB2BTextileSizes           RequestProductB2BTextileSizes[]
+  SupplierTextileSizes                    SupplierTextileSizes[]
+  TempParentProductB2BProductTextileSizes TempParentProductB2BProductTextileSizes[]
+
+  @@index([CountryId], map: "IX_B2BProductTextileSizes_CountryId")
+}
+
+model B2BProductTypes {
+  Id                    Int                     @id(map: "PK_B2BProductTypes") @default(autoincrement())
+  Type                  String?                 @db.NVarChar(Max)
+  B2BMasterCategoryId   Int?
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  B2BCountryId          Int?
+  B2BMainCategoryId     Int?
+  B2BParrentProducts    B2BParrentProducts[]
+  B2BProdducts          B2BProdducts[]
+  B2BCategoryGroups     B2BCategoryGroups?      @relation(fields: [B2BMasterCategoryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductTypes_B2BCategoryGroups_B2BMasterCategoryId")
+  B2BCountry            B2BCountry?             @relation(fields: [B2BCountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductTypes_B2BCountry_B2BCountryId")
+  B2BMainCategory       B2BMainCategory?        @relation(fields: [B2BMainCategoryId], references: [B2BMainCategoryId], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BProductTypes_B2BMainCategory_B2BMainCategoryId")
+  TempB2BParentProducts TempB2BParentProducts[]
+  TempB2BProducts       TempB2BProducts[]
+
+  @@index([B2BCountryId], map: "IX_B2BProductTypes_B2BCountryId")
+  @@index([B2BMainCategoryId], map: "IX_B2BProductTypes_B2BMainCategoryId")
+  @@index([B2BMasterCategoryId], map: "IX_B2BProductTypes_B2BMasterCategoryId")
+}
+
+model B2BResponsibles {
+  Id              Int          @id(map: "PK_B2BResponsibles") @default(autoincrement())
+  Name            String?      @db.NVarChar(Max)
+  CreationDate    DateTime     @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BRespon__Creat__6BCEF5F8")
+  ModifiedDate    DateTime     @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BRespon__Modif__6CC31A31")
+  EconomicId      Int          @default(0, map: "DF__B2BRespon__Econo__08012052")
+  Email           String?      @db.NVarChar(Max)
+  ResponsibleName String?      @db.NVarChar(Max)
+  CountryId       Int?
+  B2BCountry      B2BCountry?  @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BResponsibles_B2BCountry_CountryId")
+  Customers       Customers[]
+  ProductLog      ProductLog[]
+  Requests        Requests[]
+
+  @@index([CountryId], map: "IX_B2BResponsibles_CountryId")
+}
+
+model B2BRibbons {
+  Id                      Int                       @id(map: "PK_B2BRibbons") @default(autoincrement())
+  Name                    String?                   @db.NVarChar(Max)
+  CountryId               Int?
+  CreationDate            DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BRibbon__Creat__270FB757")
+  ModifiedDate            DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__B2BRibbon__Modif__2803DB90")
+  B2BCountry              B2BCountry?               @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_B2BRibbons_B2BCountry_CountryId")
+  ParentProductB2BRibbons ParentProductB2BRibbons[]
+
+  @@index([CountryId], map: "IX_B2BRibbons_CountryId")
+}
+
+model B2BSportCustomerTypes {
+  Id           Int         @id(map: "PK_B2BSportCustomerTypes") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  Customers    Customers[]
+}
+
+model B2BSportTypes {
+  Id           Int         @id(map: "PK_B2BSportTypes") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  Customers    Customers[]
+}
+
+model B2BSportUserRoles {
+  Id            Int             @id(map: "PK_B2BSportUserRoles") @default(autoincrement())
+  Name          String?         @db.NVarChar(Max)
+  CreationDate  DateTime
+  ModifiedDate  DateTime
+  ContactPerson ContactPerson[]
+}
+
+model Campaigns {
+  Id                 Int                  @id(map: "PK_Campaigns") @default(autoincrement())
+  Name               String?              @db.NVarChar(Max)
+  DiscountTypeId     Int
+  DiscountPercentage Int
+  RequiresCouponCode Boolean
+  CouponCode         String?              @db.NVarChar(Max)
+  LimitationTimes    Int
+  CountryId          Int?
+  StartDateUtc       DateTime
+  EndDateUtc         DateTime
+  CreationDate       DateTime
+  ModifiedDate       DateTime
+  B2BParrentProducts B2BParrentProducts[]
+  B2BCountry         B2BCountry?          @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Campaigns_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_Campaigns_CountryId")
+}
+
+model CancellationReasons {
+  Id           Int        @id(map: "PK_CancellationReasons") @default(autoincrement())
+  Reason       String     @db.NVarChar(Max)
+  CreationDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Cancellat__Creat__69E6AD86")
+  ModifiedDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Cancellat__Modif__6ADAD1BF")
+  Requests     Requests[]
+}
+
+model Colours {
+  Id              Int               @id(map: "PK_Colours") @default(autoincrement())
+  Name            String            @db.NVarChar(Max)
+  fk_country      Int?
+  CreationDate    DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Colours__Creatio__67FE6514")
+  ModifiedDate    DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Colours__Modifie__68F2894D")
+  B2BColorCode    String?           @db.NVarChar(Max)
+  HexCode         String?           @db.NVarChar(Max)
+  RgbColor        String?           @db.NVarChar(Max)
+  IsTextured      Boolean           @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Colours__IsTextu__0C90CB45")
+  B2BProdducts    B2BProdducts[]
+  B2BCountry      B2BCountry?       @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Colours_B2BCountry_fk_country")
+  MultipleColors  MultipleColors[]
+  SupplierColours SupplierColours[]
+  TempB2BProducts TempB2BProducts[]
+
+  @@index([fk_country], map: "IX_Colours_fk_country")
+}
+
+model CommunicationTypes {
+  Id                    Int                     @id(map: "PK_CommunicationTypes") @default(autoincrement())
+  Name                  String?                 @db.NVarChar(Max)
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  RequestCommunications RequestCommunications[]
+}
+
+model Complaints {
+  Id              Int               @id(map: "PK_Complaints") @default(autoincrement())
+  Cause           String?           @db.NVarChar(Max)
+  CreationDate    DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Complaint__Creat__66161CA2")
+  ModifiedDate    DateTime          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Complaint__Modif__670A40DB")
+  RequestProducts RequestProducts[]
+}
+
+model ContactPerson {
+  Id                   Int                @id(map: "PK_ContactPerson") @default(autoincrement())
+  Phone                String?            @db.NVarChar(Max)
+  Email                String?            @db.NVarChar(Max)
+  fk_customerId        Int?
+  Comment              String?            @db.NVarChar(Max)
+  Firstname            String?            @db.NVarChar(Max)
+  Lastname             String?            @db.NVarChar(Max)
+  Linkedin             Boolean            @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__ContactPe__Linke__664B26CC")
+  Newsletter           Boolean            @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__ContactPe__Newsl__673F4B05")
+  Showroom             Boolean            @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__ContactPe__Showr__68336F3E")
+  fk_jobtitle          Int?
+  EconomicId           Int                @default(0, map: "DF__ContactPe__Econo__05C3D225")
+  CreationDate         DateTime           @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ContactPe__Creat__7DEDA633")
+  ModifiedDate         DateTime           @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ContactPe__Modif__7EE1CA6C")
+  fk_b2bsportuserroles Int?
+  B2BSportUserRoles    B2BSportUserRoles? @relation(fields: [fk_b2bsportuserroles], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ContactPerson_B2BSportUserRoles_fk_b2bsportuserroles")
+  Customers            Customers?         @relation(fields: [fk_customerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ContactPerson_Customers_fk_customerId")
+  JobTitles            JobTitles?         @relation(fields: [fk_jobtitle], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ContactPerson_JobTitles_fk_jobtitle")
+  Requests             Requests[]
+
+  @@index([fk_b2bsportuserroles], map: "IX_ContactPerson_fk_b2bsportuserroles")
+  @@index([fk_customerId], map: "IX_ContactPerson_fk_customerId")
+  @@index([fk_jobtitle], map: "IX_ContactPerson_fk_jobtitle")
+}
+
+model CurrentStatuses {
+  Id           Int        @id(map: "PK_CurrentStatuses") @default(autoincrement())
+  Name         String     @db.NVarChar(Max)
+  CreationDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CurrentSt__Creat__642DD430")
+  ModifiedDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CurrentSt__Modif__6521F869")
+  Requests     Requests[]
+}
+
+model CustomerAlternativeAddresses {
+  Id           Int        @id(map: "PK_CustomerAlternativeAddresses") @default(autoincrement())
+  Company      String?    @db.NVarChar(Max)
+  Address      String?    @db.NVarChar(Max)
+  zip          String?    @db.NVarChar(Max)
+  City         String?    @db.NVarChar(Max)
+  Country      String?    @db.NVarChar(Max)
+  ATT          String?    @db.NVarChar(Max)
+  Phone        String?    @db.NVarChar(Max)
+  Email        String?    @db.NVarChar(Max)
+  CustomerId   Int?
+  RequestId    Int?
+  CreationDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CustomerA__Creat__7C055DC1")
+  ModifiedDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CustomerA__Modif__7CF981FA")
+  Address2     String?    @db.NVarChar(Max)
+  Customers    Customers? @relation(fields: [CustomerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_CustomerAlternativeAddresses_Customers_CustomerId")
+  Requests     Requests?  @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_CustomerAlternativeAddresses_Requests_RequestId")
+
+  @@index([CustomerId], map: "IX_CustomerAlternativeAddresses_CustomerId")
+  @@index([RequestId], map: "IX_CustomerAlternativeAddresses_RequestId")
+}
+
+model CustomerChannels {
+  Id           Int         @id(map: "PK_CustomerChannels") @default(autoincrement())
+  Channel      String      @db.NVarChar(Max)
+  CreationDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CustomerC__Creat__62458BBE")
+  ModifiedDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__CustomerC__Modif__6339AFF7")
+  Customers    Customers[]
+}
+
+model Customers {
+  Id                                          Int                            @id(map: "PK_Customers") @default(autoincrement())
+  CreationDate                                DateTime
+  Att                                         String?                        @db.NVarChar(Max)
+  Telephone                                   String?                        @db.NVarChar(Max)
+  Email                                       String?                        @db.NVarChar(Max)
+  CVR                                         String?                        @db.NVarChar(Max)
+  Name                                        String                         @db.NVarChar(255)
+  Address                                     String?                        @db.NVarChar(Max)
+  EAN                                         String?                        @db.NVarChar(Max)
+  InvoicingAddress                            String?                        @db.NVarChar(Max)
+  ZipCodeId                                   Int?
+  IndustryId                                  Int?
+  InvoicingZipId                              Int?
+  InvoicingEmail                              String?                        @db.NVarChar(Max)
+  Newsletter                                  Boolean                        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Customers__Newsl__18EBB532")
+  ResellerId                                  Int?
+  Showroom                                    Boolean                        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Customers__Showr__22751F6C")
+  B2BResponsibleId                            Int?
+  ChannelId                                   Int?
+  Currency                                    String?                        @db.NVarChar(Max)
+  PaymentTermsId                              Int?
+  VatZoneId                                   Int?
+  City                                        String?                        @db.NVarChar(Max)
+  CountryId                                   Int?
+  AlternativeZip                              String?                        @db.NVarChar(Max)
+  ModifiedDate                                DateTime                       @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Customers__Modif__61516785")
+  DUNSNumber                                  BigInt                         @default(dbgenerated("CONVERT([bigint],(0))"), map: "DF__Customers__DUNSN__6E765879")
+  Address2                                    String?                        @db.NVarChar(Max)
+  fk_b2bcustomerprofessiontype                Int?
+  fk_b2bsporttype                             Int?
+  fk_mastercustomertype                       Int?
+  ContactPerson                               ContactPerson[]
+  CustomerAlternativeAddresses                CustomerAlternativeAddresses[]
+  B2BCountry                                  B2BCountry?                    @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_B2BCountry_CountryId")
+  B2BResponsibles                             B2BResponsibles?               @relation(fields: [B2BResponsibleId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_B2BResponsibles_B2BResponsibleId")
+  B2BSportCustomerTypes                       B2BSportCustomerTypes?         @relation(fields: [fk_b2bsporttype], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_B2BSportCustomerTypes_fk_b2bsporttype")
+  B2BSportTypes                               B2BSportTypes?                 @relation(fields: [fk_b2bcustomerprofessiontype], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_B2BSportTypes_fk_b2bcustomerprofessiontype")
+  CustomerChannels                            CustomerChannels?              @relation(fields: [ChannelId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_CustomerChannels_ChannelId")
+  Industries                                  Industries?                    @relation(fields: [IndustryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_Industries_IndustryId")
+  MasterCustomerTypes                         MasterCustomerTypes?           @relation(fields: [fk_mastercustomertype], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_MasterCustomerTypes_fk_mastercustomertype")
+  PaymentTerms                                PaymentTerms?                  @relation(fields: [PaymentTermsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_PaymentTerms_PaymentTermsId")
+  Resellers                                   Resellers?                     @relation(fields: [ResellerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_Resellers_ResellerId")
+  VatZones                                    VatZones?                      @relation(fields: [VatZoneId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_VatZones_VatZoneId")
+  ZipCodes_Customers_InvoicingZipIdToZipCodes ZipCodes?                      @relation("Customers_InvoicingZipIdToZipCodes", fields: [InvoicingZipId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_ZipCodes_InvoicingZipId")
+  ZipCodes_Customers_ZipCodeIdToZipCodes      ZipCodes?                      @relation("Customers_ZipCodeIdToZipCodes", fields: [ZipCodeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Customers_ZipCodes_ZipCodeId")
+  LogoFiles                                   LogoFiles[]
+  RequestPrintProofs                          RequestPrintProofs[]
+  Requests                                    Requests[]
+
+  @@index([B2BResponsibleId], map: "IX_Customers_B2BResponsibleId")
+  @@index([ChannelId], map: "IX_Customers_ChannelId")
+  @@index([CountryId], map: "IX_Customers_CountryId")
+  @@index([fk_b2bcustomerprofessiontype], map: "IX_Customers_fk_b2bcustomerprofessiontype")
+  @@index([fk_b2bsporttype], map: "IX_Customers_fk_b2bsporttype")
+  @@index([fk_mastercustomertype], map: "IX_Customers_fk_mastercustomertype")
+  @@index([IndustryId], map: "IX_Customers_IndustryId")
+  @@index([InvoicingZipId], map: "IX_Customers_InvoicingZipId")
+  @@index([PaymentTermsId], map: "IX_Customers_PaymentTermsId")
+  @@index([ResellerId], map: "IX_Customers_ResellerId")
+  @@index([VatZoneId], map: "IX_Customers_VatZoneId")
+  @@index([ZipCodeId], map: "IX_Customers_ZipCodeId")
+}
+
+model EmailTemplates {
+  Id                Int         @id(map: "PK_EmailTemplates") @default(autoincrement())
+  Name              String?     @db.NVarChar(Max)
+  Body              String?     @db.NVarChar(Max)
+  CountryId         Int?
+  EmailTemplateType Int
+  CreationDate      DateTime
+  ModifiedDate      DateTime
+  Subject           String?     @db.NVarChar(Max)
+  IncludeTerms      Boolean     @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__EmailTemp__Inclu__28A2FA0E")
+  B2BCountry        B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_EmailTemplates_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_EmailTemplates_CountryId")
+}
+
+model EndStatuses {
+  Id           Int        @id(map: "PK_EndStatuses") @default(autoincrement())
+  Status       String?    @db.NVarChar(Max)
+  CreationDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__EndStatus__Creat__5F691F13")
+  ModifiedDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__EndStatus__Modif__605D434C")
+  Requests     Requests[]
+}
+
+model ErrorMessages {
+  Id                                  Int                    @id(map: "PK_ErrorMessages") @default(autoincrement())
+  Error                               Boolean
+  ErrStatus                           String?                @db.NVarChar(Max)
+  ErrMsg                              String?                @db.NVarChar(Max)
+  ErrCode                             String?                @db.NVarChar(Max)
+  Data                                String?                @db.NVarChar(Max)
+  B2BParrentProductsparrentProduct_id Int?
+  CreationDate                        DateTime               @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ErrorMess__Creat__5D80D6A1")
+  ModifiedDate                        DateTime               @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ErrorMess__Modif__5E74FADA")
+  TempB2BParentProductId              Int?
+  B2BParrentProducts                  B2BParrentProducts?    @relation(fields: [B2BParrentProductsparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ErrorMessages_B2BParrentProducts_B2BParrentProductsparrentProduct_id")
+  TempB2BParentProducts               TempB2BParentProducts? @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ErrorMessages_TempB2BParentProducts_TempB2BParentProductId")
+
+  @@index([B2BParrentProductsparrentProduct_id], map: "IX_ErrorMessages_B2BParrentProductsparrentProduct_id")
+  @@index([TempB2BParentProductId], map: "IX_ErrorMessages_TempB2BParentProductId")
+}
+
+model Handling_PriceClass {
+  Id           Int         @id(map: "PK_Handling_PriceClass") @default(autoincrement())
+  PriceClass   String?     @db.NVarChar(Max)
+  Currency     String?     @db.NVarChar(Max)
+  Quantity     Int
+  Price        Int
+  Margin       Int?
+  fk_country   Int?
+  CreationDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Handling___Creat__5B988E2F")
+  ModifiedDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Handling___Modif__5C8CB268")
+  B2BCountry   B2BCountry? @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Handling_PriceClass_B2BCountry_fk_country")
+
+  @@index([fk_country], map: "IX_Handling_PriceClass_fk_country")
+}
+
+model Imprint_PriceClasses {
+  Id                    Int                     @id(map: "PK_Imprint_PriceClasses") @default(autoincrement())
+  PriceClass            String?                 @db.NVarChar(Max)
+  Currency              String?                 @db.NVarChar(Max)
+  Quantity              Int
+  Price                 Float?
+  Price2                Float?
+  Price3                Float?
+  Price4                Float?
+  Price5                Float?
+  Price6                Float?
+  Margin                Float?
+  Price7                Float?
+  MaxColors             Float?
+  StartupPrice          Float?
+  Alert                 String?                 @db.NVarChar(Max)
+  NextColorPrice        Float?
+  description           String?                 @db.NVarChar(Max)
+  fk_country            Int?
+  CreationDate          DateTime                @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Imprint_P__Creat__59B045BD")
+  ModifiedDate          DateTime                @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Imprint_P__Modif__5AA469F6")
+  Supplier              String?                 @db.NVarChar(Max)
+  NopId                 Int                     @default(0, map: "DF__Imprint_P__NopId__5C57A83E")
+  NopSynced             Boolean                 @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Imprint_P__NopSy__5D4BCC77")
+  SupplierLogId         Int?
+  B2BPrintPositions     B2BPrintPositions[]
+  B2BCountry            B2BCountry?             @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Imprint_PriceClasses_B2BCountry_fk_country")
+  SupplierLogs          SupplierLogs?           @relation(fields: [SupplierLogId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Imprint_PriceClasses_SupplierLogs_SupplierLogId")
+  TempB2BPrintPositions TempB2BPrintPositions[]
+
+  @@index([fk_country], map: "IX_Imprint_PriceClasses_fk_country")
+  @@index([SupplierLogId], map: "IX_Imprint_PriceClasses_SupplierLogId")
+}
+
+model Industries {
+  Id           Int         @id(map: "PK_Industries") @default(autoincrement())
+  Code         String?     @db.NVarChar(Max)
+  Industry     String      @db.NVarChar(Max)
+  CreationDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Industrie__Creat__57C7FD4B")
+  ModifiedDate DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Industrie__Modif__58BC2184")
+  Customers    Customers[]
+}
+
+model JobTitles {
+  Id            Int             @id(map: "PK_JobTitles") @default(autoincrement())
+  Title         String?         @db.NVarChar(Max)
+  CreationDate  DateTime        @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__JobTitles__Creat__55DFB4D9")
+  ModifiedDate  DateTime        @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__JobTitles__Modif__56D3D912")
+  ContactPerson ContactPerson[]
+}
+
+model LocalStrings {
+  Id           Int         @id(map: "PK_LocalStrings") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  LocalString  String?     @db.NVarChar(Max)
+  Category     String?     @db.NVarChar(Max)
+  CountryId    Int?
+  CreationDate DateTime
+  ModifiedDate DateTime
+  B2BCountry   B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LocalStrings_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_LocalStrings_CountryId")
+}
+
+model LogoFiles {
+  Id                            Int                             @id(map: "PK_LogoFiles") @default(autoincrement())
+  Url                           String?                         @db.NVarChar(Max)
+  CreationDate                  DateTime
+  ModifiedDate                  DateTime
+  CustomerId                    Int?
+  RequestProductId              Int?
+  NopId                         String?                         @db.NVarChar(Max)
+  DownloadUrl                   String?                         @db.NVarChar(Max)
+  Name                          String?                         @db.NVarChar(Max)
+  RequestCommunicationId        Int?
+  RequestId                     Int?
+  CountryId                     Int?
+  B2BCountry                    B2BCountry?                     @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LogoFiles_B2BCountry_CountryId")
+  Customers                     Customers?                      @relation(fields: [CustomerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LogoFiles_Customers_CustomerId")
+  RequestCommunications         RequestCommunications?          @relation(fields: [RequestCommunicationId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LogoFiles_RequestCommunications_RequestCommunicationId")
+  RequestProducts               RequestProducts?                @relation(fields: [RequestProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LogoFiles_RequestProducts_RequestProductId")
+  Requests                      Requests?                       @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_LogoFiles_Requests_RequestId")
+  RequestCommunicationLogoFiles RequestCommunicationLogoFiles[]
+  RequestLogoFiles              RequestLogoFiles[]
+
+  @@index([CountryId], map: "IX_LogoFiles_CountryId")
+  @@index([CustomerId], map: "IX_LogoFiles_CustomerId")
+  @@index([RequestCommunicationId], map: "IX_LogoFiles_RequestCommunicationId")
+  @@index([RequestId], map: "IX_LogoFiles_RequestId")
+  @@index([RequestProductId], map: "IX_LogoFiles_RequestProductId")
+}
+
+model Logs {
+  Id             Int      @id(map: "PK_Logs") @default(autoincrement())
+  ErrorMessage   String?  @db.NVarChar(Max)
+  ErrorException String?  @db.NVarChar(Max)
+  CreationDate   DateTime
+  ModifiedDate   DateTime
+}
+
+model MasterCustomerTypes {
+  Id           Int         @id(map: "PK_MasterCustomerTypes") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  Customers    Customers[]
+}
+
+model MasterProperties {
+  Id          Int     @id(map: "PK_MasterProperties") @default(autoincrement())
+  Name        String? @db.NVarChar(Max)
+  Value       String? @db.NVarChar(Max)
+  Initialized Boolean
+}
+
+model MultipleColors {
+  Id           Int      @id(map: "PK_MultipleColors") @default(autoincrement())
+  HexCode      String?  @db.NVarChar(Max)
+  RgbColor     String?  @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  ColourId     Int?
+  Colours      Colours? @relation(fields: [ColourId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_MultipleColors_Colours_ColourId")
+
+  @@index([ColourId], map: "IX_MultipleColors_ColourId")
+}
+
+model OutlookAddinCategories {
+  Id           Int         @id(map: "PK_OutlookAddinCategories") @default(autoincrement())
+  Category     String?     @db.NVarChar(Max)
+  CountryId    Int?
+  CreationDate DateTime
+  ModifiedDate DateTime
+  Label        String?     @db.NVarChar(Max)
+  B2BCountry   B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_OutlookAddinCategories_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_OutlookAddinCategories_CountryId")
+}
+
+model ParentProductB2BMainCategories {
+  B2BParentProductId     Int
+  B2BMainCategoryId      Int
+  CreationDate           DateTime               @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ParentPro__Creat__3C1FE2D6")
+  ModifiedDate           DateTime               @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ParentPro__Modif__3D14070F")
+  TempB2BParentProductId Int?
+  B2BMainCategory        B2BMainCategory        @relation(fields: [B2BMainCategoryId], references: [B2BMainCategoryId], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BMainCategories_B2BMainCategory_B2BMainCategoryId")
+  B2BParrentProducts     B2BParrentProducts     @relation(fields: [B2BParentProductId], references: [parrentProduct_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BMainCategories_B2BParrentProducts_B2BParentProductId")
+  TempB2BParentProducts  TempB2BParentProducts? @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ParentProductB2BMainCategories_TempB2BParentProducts_TempB2BParentProductId")
+
+  @@id([B2BParentProductId, B2BMainCategoryId], map: "PK_ParentProductB2BMainCategories")
+  @@index([B2BMainCategoryId], map: "IX_ParentProductB2BMainCategories_B2BMainCategoryId")
+  @@index([TempB2BParentProductId], map: "IX_ParentProductB2BMainCategories_TempB2BParentProductId")
+}
+
+model ParentProductB2BProductSizes {
+  B2BParentProductId     Int
+  B2BProductSizeId       Int
+  CreationDate           DateTime
+  ModifiedDate           DateTime
+  TempB2BParentProductId Int?
+  B2BParrentProducts     B2BParrentProducts     @relation(fields: [B2BParentProductId], references: [parrentProduct_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BProductSizes_B2BParrentProducts_B2BParentProductId")
+  B2BProductSize         B2BProductSize         @relation(fields: [B2BProductSizeId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BProductSizes_B2BProductSize_B2BProductSizeId")
+  TempB2BParentProducts  TempB2BParentProducts? @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ParentProductB2BProductSizes_TempB2BParentProducts_TempB2BParentProductId")
+
+  @@id([B2BParentProductId, B2BProductSizeId], map: "PK_ParentProductB2BProductSizes")
+  @@index([B2BProductSizeId], map: "IX_ParentProductB2BProductSizes_B2BProductSizeId")
+  @@index([TempB2BParentProductId], map: "IX_ParentProductB2BProductSizes_TempB2BParentProductId")
+}
+
+model ParentProductB2BProductTextileSizes {
+  B2BParentProductId      Int
+  B2BProductTextileSizeId Int
+  Quantity                Int
+  CreationDate            DateTime
+  ModifiedDate            DateTime
+  TempB2BParentProductId  Int?
+  B2BParrentProducts      B2BParrentProducts     @relation(fields: [B2BParentProductId], references: [parrentProduct_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BProductTextileSizes_B2BParrentProducts_B2BParentProductId")
+  B2BProductTextileSizes  B2BProductTextileSizes @relation(fields: [B2BProductTextileSizeId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BProductTextileSizes_B2BProductTextileSizes_B2BProductTextileSizeId")
+  TempB2BParentProducts   TempB2BParentProducts? @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ParentProductB2BProductTextileSizes_TempB2BParentProducts_TempB2BParentProductId")
+
+  @@id([B2BParentProductId, B2BProductTextileSizeId], map: "PK_ParentProductB2BProductTextileSizes")
+  @@index([B2BProductTextileSizeId], map: "IX_ParentProductB2BProductTextileSizes_B2BProductTextileSizeId")
+  @@index([TempB2BParentProductId], map: "IX_ParentProductB2BProductTextileSizes_TempB2BParentProductId")
+}
+
+model ParentProductB2BRibbons {
+  B2BParentProductId Int
+  B2BRibbonId        Int
+  CreationDate       DateTime
+  ModifiedDate       DateTime
+  B2BParrentProducts B2BParrentProducts @relation(fields: [B2BParentProductId], references: [parrentProduct_id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BRibbons_B2BParrentProducts_B2BParentProductId")
+  B2BRibbons         B2BRibbons         @relation(fields: [B2BRibbonId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ParentProductB2BRibbons_B2BRibbons_B2BRibbonId")
+
+  @@id([B2BParentProductId, B2BRibbonId], map: "PK_ParentProductB2BRibbons")
+  @@index([B2BRibbonId], map: "IX_ParentProductB2BRibbons_B2BRibbonId")
+}
+
+model PaymentStatuses {
+  Id           Int        @id(map: "PK_PaymentStatuses") @default(autoincrement())
+  Name         String?    @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  Requests     Requests[]
+}
+
+model PaymentTerms {
+  Id                 Int         @id(map: "PK_PaymentTerms") @default(autoincrement())
+  PaymentTermsNumber Int
+  DaysOfCredit       Int
+  Description        String?     @db.NVarChar(Max)
+  Name               String?     @db.NVarChar(Max)
+  PaymentTermsType   String?     @db.NVarChar(Max)
+  EconomicLink       String?     @db.NVarChar(Max)
+  Customers          Customers[]
+}
+
+model PaymentTypes {
+  Id           Int        @id(map: "PK_PaymentTypes") @default(autoincrement())
+  Name         String?    @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  DisplayName  String?    @db.NVarChar(Max)
+  Requests     Requests[]
+}
+
+model PrintTechniques {
+  Id           Int         @id(map: "PK_PrintTechniques") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  B2BName      String?     @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  CountryId    Int?
+  B2BCountry   B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_PrintTechniques_B2BCountry_CountryId")
+
+  @@index([CountryId], map: "IX_PrintTechniques_CountryId")
+}
+
+model ProductLog {
+  Id                                  Int                 @id(map: "PK_ProductLog") @default(autoincrement())
+  B2BParrentProductsparrentProduct_id Int?
+  B2BResponsibleId                    Int?
+  AlertId                             Int?
+  Title                               String?             @db.NVarChar(Max)
+  Description                         String?             @db.NVarChar(Max)
+  Comment                             String?             @db.NVarChar(Max)
+  CreationDate                        DateTime
+  ModifiedDate                        DateTime
+  Date                                DateTime
+  LogType                             String?             @db.NVarChar(Max)
+  Alerts                              Alerts?             @relation(fields: [AlertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductLog_Alerts_AlertId")
+  B2BParrentProducts                  B2BParrentProducts? @relation(fields: [B2BParrentProductsparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductLog_B2BParrentProducts_B2BParrentProductsparrentProduct_id")
+  B2BResponsibles                     B2BResponsibles?    @relation(fields: [B2BResponsibleId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductLog_B2BResponsibles_B2BResponsibleId")
+
+  @@index([AlertId], map: "IX_ProductLog_AlertId")
+  @@index([B2BParrentProductsparrentProduct_id], map: "IX_ProductLog_B2BParrentProductsparrentProduct_id")
+  @@index([B2BResponsibleId], map: "IX_ProductLog_B2BResponsibleId")
+}
+
+model ProductStatus {
+  Id                    Int                     @id(map: "PK_ProductStatus") @default(autoincrement())
+  Reason                String?                 @db.NVarChar(Max)
+  B2BParrentProducts    B2BParrentProducts[]
+  TempB2BParentProducts TempB2BParentProducts[]
+}
+
+model ProductSyncWarnings {
+  Id                             Int                 @id(map: "PK_ProductSyncWarnings") @default(autoincrement())
+  ParentProductparrentProduct_id Int?
+  ErrorMsg                       String?             @db.NVarChar(Max)
+  CreationDate                   DateTime
+  ModifiedDate                   DateTime
+  B2BParrentProducts             B2BParrentProducts? @relation(fields: [ParentProductparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProductSyncWarnings_B2BParrentProducts_ParentProductparrentProduct_id")
+
+  @@index([ParentProductparrentProduct_id], map: "IX_ProductSyncWarnings_ParentProductparrentProduct_id")
+}
+
+model RequestCommunicationLogoFiles {
+  LogoFilesId           Int
+  CommunicationId       Int
+  Id                    Int
+  CreationDate          DateTime
+  ModifiedDate          DateTime
+  LogoFiles             LogoFiles             @relation(fields: [LogoFilesId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestCommunicationLogoFiles_LogoFiles_LogoFilesId")
+  RequestCommunications RequestCommunications @relation(fields: [CommunicationId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestCommunicationLogoFiles_RequestCommunications_CommunicationId")
+
+  @@id([LogoFilesId, CommunicationId], map: "PK_RequestCommunicationLogoFiles")
+  @@index([CommunicationId], map: "IX_RequestCommunicationLogoFiles_CommunicationId")
+}
+
+model RequestCommunications {
+  Id                            Int                             @id(map: "PK_RequestCommunications") @default(autoincrement())
+  RequestId                     Int?
+  Date                          DateTime
+  Recipient                     String?                         @db.NVarChar(Max)
+  Note                          String?                         @db.NVarChar(Max)
+  CreationDate                  DateTime                        @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__RequestCo__Creat__53F76C67")
+  ModifiedDate                  DateTime                        @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__RequestCo__Modif__54EB90A0")
+  CountryId                     Int?
+  IsSent                        Boolean                         @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__RequestCo__IsSen__1960B67E")
+  Subject                       String?                         @db.NVarChar(Max)
+  To                            String?                         @db.NVarChar(Max)
+  IncludeTerms                  Boolean                         @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__RequestCo__Inclu__29971E47")
+  Category                      String?                         @db.NVarChar(Max)
+  FromOutlook                   Boolean                         @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__RequestCo__FromO__40457975")
+  CommunicationTypeId           Int?
+  LogoFiles                     LogoFiles[]
+  RequestCommunicationLogoFiles RequestCommunicationLogoFiles[]
+  B2BCountry                    B2BCountry?                     @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestCommunications_B2BCountry_CountryId")
+  CommunicationTypes            CommunicationTypes?             @relation(fields: [CommunicationTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestCommunications_CommunicationTypes_CommunicationTypeId")
+  Requests                      Requests?                       @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestCommunications_Requests_RequestId")
+
+  @@index([CommunicationTypeId], map: "IX_RequestCommunications_CommunicationTypeId")
+  @@index([CountryId], map: "IX_RequestCommunications_CountryId")
+  @@index([RequestId], map: "IX_RequestCommunications_RequestId")
+}
+
+model RequestLogoFiles {
+  LogoFilesId  Int
+  RequestId    Int
+  Id           Int
+  CreationDate DateTime
+  ModifiedDate DateTime
+  LogoFiles    LogoFiles @relation(fields: [LogoFilesId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestLogoFiles_LogoFiles_LogoFilesId")
+  Requests     Requests  @relation(fields: [RequestId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestLogoFiles_Requests_RequestId")
+
+  @@id([LogoFilesId, RequestId], map: "PK_RequestLogoFiles")
+  @@index([RequestId], map: "IX_RequestLogoFiles_RequestId")
+}
+
+model RequestPrintProofs {
+  Id           Int         @id(map: "PK_RequestPrintProofs") @default(autoincrement())
+  Name         String?     @db.NVarChar(Max)
+  CustomerId   Int?
+  CreationDate DateTime
+  ModifiedDate DateTime
+  RequestId    Int         @default(0, map: "DF__RequestPr__Reque__50B0EB68")
+  CountryId    Int?
+  B2BCountry   B2BCountry? @relation(fields: [CountryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestPrintProofs_B2BCountry_CountryId")
+  Customers    Customers?  @relation(fields: [CustomerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestPrintProofs_Customers_CustomerId")
+  Requests     Requests    @relation(fields: [RequestId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestPrintProofs_Requests_RequestId")
+
+  @@index([CountryId], map: "IX_RequestPrintProofs_CountryId")
+  @@index([CustomerId], map: "IX_RequestPrintProofs_CustomerId")
+  @@index([RequestId], map: "IX_RequestPrintProofs_RequestId")
+}
+
+model RequestProductB2BPrintPositions {
+  RequestProductId        Int
+  PrintPositionId         Int
+  Id                      Int
+  ChosenColors            Int
+  CreationDate            DateTime
+  ModifiedDate            DateTime
+  TempB2BPrintPositionsId Int?
+  B2BPrintPositions       B2BPrintPositions      @relation(fields: [PrintPositionId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestProductB2BPrintPositions_B2BPrintPositions_PrintPositionId")
+  RequestProducts         RequestProducts        @relation(fields: [RequestProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_RequestProductB2BPrintPositions_RequestProducts_RequestProductId")
+  TempB2BPrintPositions   TempB2BPrintPositions? @relation(fields: [TempB2BPrintPositionsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProductB2BPrintPositions_TempB2BPrintPositions_TempB2BPrintPositionsId")
+
+  @@id([RequestProductId, PrintPositionId], map: "PK_RequestProductB2BPrintPositions")
+  @@index([PrintPositionId], map: "IX_RequestProductB2BPrintPositions_PrintPositionId")
+  @@index([TempB2BPrintPositionsId], map: "IX_RequestProductB2BPrintPositions_TempB2BPrintPositionsId")
+}
+
+model RequestProductB2BTextileSizes {
+  Id                     Int                     @id(map: "PK_RequestProductB2BTextileSizes") @default(autoincrement())
+  RequestProductId       Int?
+  TextileSizeId          Int?
+  Quantity               Int
+  CreationDate           DateTime
+  ModifiedDate           DateTime
+  B2BProductTextileSizes B2BProductTextileSizes? @relation(fields: [TextileSizeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProductB2BTextileSizes_B2BProductTextileSizes_TextileSizeId")
+  RequestProducts        RequestProducts?        @relation(fields: [RequestProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProductB2BTextileSizes_RequestProducts_RequestProductId")
+
+  @@index([RequestProductId], map: "IX_RequestProductB2BTextileSizes_RequestProductId")
+  @@index([TextileSizeId], map: "IX_RequestProductB2BTextileSizes_TextileSizeId")
+}
+
+model RequestProducts {
+  Id                                                                    Int                               @id(map: "PK_RequestProducts") @default(autoincrement())
+  RequestId                                                             Int?
+  B2BCategoryId                                                         Int?
+  Price                                                                 Float
+  Volume                                                                Float
+  OrderDate                                                             DateTime
+  ShippingDate                                                          DateTime?
+  DeliveryDate                                                          DateTime?
+  TrackingCode                                                          String?                           @db.NVarChar(Max)
+  Comment                                                               String?                           @db.NVarChar(Max)
+  SupplierId                                                            Int?
+  ComplaintId                                                           Int?
+  SKUparrentProduct_id                                                  Int?
+  fk_b2bProduct                                                         Int?
+  MaxColoursChoesen                                                     String?                           @db.NVarChar(Max)
+  PrintPosition1Id                                                      Int?
+  PrintPosition2Id                                                      Int?
+  PrintPosition3Id                                                      Int?
+  PrintPosition4Id                                                      Int?
+  PrintPosition5Id                                                      Int?
+  PrintPosition6Id                                                      Int?
+  DiscountPercent                                                       Float                             @default(0.0000000000000000, map: "DF__RequestPr__Disco__4AA30C57")
+  DiscountPrice                                                         Float                             @default(0.0000000000000000, map: "DF__RequestPr__Disco__4B973090")
+  PrintPirce                                                            Float                             @default(0.0000000000000000, map: "DF__RequestPr__Print__505BE5AD")
+  ProductSku                                                            String?                           @db.NVarChar(Max)
+  CreationDate                                                          DateTime                          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__RequestPr__Creat__520F23F5")
+  ModifiedDate                                                          DateTime                          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__RequestPr__Modif__5303482E")
+  NopDiscount                                                           Float                             @default(0.0000000000000000, map: "DF__RequestPr__NopDi__01892CED")
+  TotalSetupPrice                                                       Float                             @default(0.0000000000000000, map: "DF__RequestPr__Total__11BF94B6")
+  ProductSizeId                                                         Int?
+  LogoFiles                                                             LogoFiles[]
+  RequestProductB2BPrintPositions                                       RequestProductB2BPrintPositions[]
+  RequestProductB2BTextileSizes                                         RequestProductB2BTextileSizes[]
+  B2BMainCategory                                                       B2BMainCategory?                  @relation(fields: [B2BCategoryId], references: [B2BMainCategoryId], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BMainCategory_B2BCategoryId")
+  B2BParrentProducts                                                    B2BParrentProducts?               @relation(fields: [SKUparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BParrentProducts_SKUparrentProduct_id")
+  B2BPrintPositions_RequestProducts_PrintPosition1IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition1IdToB2BPrintPositions", fields: [PrintPosition1Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition1Id")
+  B2BPrintPositions_RequestProducts_PrintPosition2IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition2IdToB2BPrintPositions", fields: [PrintPosition2Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition2Id")
+  B2BPrintPositions_RequestProducts_PrintPosition3IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition3IdToB2BPrintPositions", fields: [PrintPosition3Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition3Id")
+  B2BPrintPositions_RequestProducts_PrintPosition4IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition4IdToB2BPrintPositions", fields: [PrintPosition4Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition4Id")
+  B2BPrintPositions_RequestProducts_PrintPosition5IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition5IdToB2BPrintPositions", fields: [PrintPosition5Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition5Id")
+  B2BPrintPositions_RequestProducts_PrintPosition6IdToB2BPrintPositions B2BPrintPositions?                @relation("RequestProducts_PrintPosition6IdToB2BPrintPositions", fields: [PrintPosition6Id], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BPrintPositions_PrintPosition6Id")
+  B2BProdducts                                                          B2BProdducts?                     @relation(fields: [fk_b2bProduct], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BProdducts_fk_b2bProduct")
+  B2BProductSize                                                        B2BProductSize?                   @relation(fields: [ProductSizeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_B2BProductSize_ProductSizeId")
+  Complaints                                                            Complaints?                       @relation(fields: [ComplaintId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_Complaints_ComplaintId")
+  Requests                                                              Requests?                         @relation(fields: [RequestId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_Requests_RequestId")
+  Suppliers                                                             Suppliers?                        @relation(fields: [SupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_RequestProducts_Suppliers_SupplierId")
+
+  @@index([B2BCategoryId], map: "IX_RequestProducts_B2BCategoryId")
+  @@index([ComplaintId], map: "IX_RequestProducts_ComplaintId")
+  @@index([fk_b2bProduct], map: "IX_RequestProducts_fk_b2bProduct")
+  @@index([PrintPosition1Id], map: "IX_RequestProducts_PrintPosition1Id")
+  @@index([PrintPosition2Id], map: "IX_RequestProducts_PrintPosition2Id")
+  @@index([PrintPosition3Id], map: "IX_RequestProducts_PrintPosition3Id")
+  @@index([PrintPosition4Id], map: "IX_RequestProducts_PrintPosition4Id")
+  @@index([PrintPosition5Id], map: "IX_RequestProducts_PrintPosition5Id")
+  @@index([PrintPosition6Id], map: "IX_RequestProducts_PrintPosition6Id")
+  @@index([ProductSizeId], map: "IX_RequestProducts_ProductSizeId")
+  @@index([RequestId], map: "IX_RequestProducts_RequestId")
+  @@index([SKUparrentProduct_id], map: "IX_RequestProducts_SKUparrentProduct_id")
+  @@index([SupplierId], map: "IX_RequestProducts_SupplierId")
+}
+
+model Requests {
+  Id                           Int                            @id(map: "PK_Requests") @default(autoincrement())
+  RequestDate                  DateTime
+  B2bInvoiceNumber             String?                        @db.NVarChar(Max)
+  InvoiceDate                  DateTime?
+  DueDate                      DateTime?
+  TrustPilot                   Boolean
+  TrustPilotDate               DateTime?
+  LegalAction                  Boolean
+  Comment                      String?                        @db.NVarChar(Max)
+  PaymentDate                  DateTime?
+  RequestDeadline              DateTime                       @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Requests__Reques__48CFD27E")
+  CustomerId                   Int?
+  ExpressDelivery              Boolean                        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__Expres__6E01572D")
+  ExpressProduction            Boolean                        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__Expres__6EF57B66")
+  DeliveryAddress              String?                        @db.NVarChar(Max)
+  DeliveryZipId                Int?
+  EndStatusId                  Int?
+  StartStatusId                Int?
+  SampleApproved               DateTime?
+  SampleRequested              DateTime?
+  SampleSent                   DateTime?
+  CancellationReasonId         Int?
+  CurrentStatusId              Int?
+  B2bOrderNumber               String?                        @db.NVarChar(Max)
+  OrderStatus                  Int                            @default(0, map: "DF__Requests__OrderS__59E54FE7")
+  OrderNumber                  String?                        @db.NVarChar(Max)
+  DraftLink                    String?                        @db.NVarChar(Max)
+  fk_contactPersonId           Int?
+  OrderHeading                 String?                        @db.NVarChar(Max)
+  OrderReference               String?                        @db.NVarChar(Max)
+  CreationDate                 DateTime                       @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Requests__Creati__5026DB83")
+  ModifiedDate                 DateTime                       @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Requests__Modifi__511AFFBC")
+  OrderPaid                    Boolean                        @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Requests__OrderP__064DE20A")
+  PaymentStatusId              Int?
+  PaymentTypeId                Int?
+  InvoiceNumber                String?                        @db.NVarChar(Max)
+  QuoteNumber                  String?                        @db.NVarChar(Max)
+  BookedNumber                 String?                        @db.NVarChar(Max)
+  B2BResponsibleId             Int?
+  CustomerAlternativeAddresses CustomerAlternativeAddresses[]
+  LogoFiles                    LogoFiles[]
+  RequestCommunications        RequestCommunications[]
+  RequestLogoFiles             RequestLogoFiles[]
+  RequestPrintProofs           RequestPrintProofs[]
+  RequestProducts              RequestProducts[]
+  B2BResponsibles              B2BResponsibles?               @relation(fields: [B2BResponsibleId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_B2BResponsibles_B2BResponsibleId")
+  CancellationReasons          CancellationReasons?           @relation(fields: [CancellationReasonId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_CancellationReasons_CancellationReasonId")
+  ContactPerson                ContactPerson?                 @relation(fields: [fk_contactPersonId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_ContactPerson_fk_contactPersonId")
+  CurrentStatuses              CurrentStatuses?               @relation(fields: [CurrentStatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_CurrentStatuses_CurrentStatusId")
+  Customers                    Customers?                     @relation(fields: [CustomerId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_Customers_CustomerId")
+  EndStatuses                  EndStatuses?                   @relation(fields: [EndStatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_EndStatuses_EndStatusId")
+  PaymentStatuses              PaymentStatuses?               @relation(fields: [PaymentStatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_PaymentStatuses_PaymentStatusId")
+  PaymentTypes                 PaymentTypes?                  @relation(fields: [PaymentTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_PaymentTypes_PaymentTypeId")
+  StartStatuses                StartStatuses?                 @relation(fields: [StartStatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_StartStatuses_StartStatusId")
+  ZipCodes                     ZipCodes?                      @relation(fields: [DeliveryZipId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Requests_ZipCodes_DeliveryZipId")
+
+  @@index([B2BResponsibleId], map: "IX_Requests_B2BResponsibleId")
+  @@index([CancellationReasonId], map: "IX_Requests_CancellationReasonId")
+  @@index([CurrentStatusId], map: "IX_Requests_CurrentStatusId")
+  @@index([CustomerId], map: "IX_Requests_CustomerId")
+  @@index([DeliveryZipId], map: "IX_Requests_DeliveryZipId")
+  @@index([EndStatusId], map: "IX_Requests_EndStatusId")
+  @@index([fk_contactPersonId], map: "IX_Requests_fk_contactPersonId")
+  @@index([PaymentStatusId], map: "IX_Requests_PaymentStatusId")
+  @@index([PaymentTypeId], map: "IX_Requests_PaymentTypeId")
+  @@index([StartStatusId], map: "IX_Requests_StartStatusId")
+}
+
+model Resellers {
+  Id                  Int         @id(map: "PK_Resellers") @default(autoincrement())
+  Name                String?     @db.NVarChar(Max)
+  EconomicGroupNumber Int?
+  EconomicLink        String?     @db.NVarChar(Max)
+  CreationDate        DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Resellers__Creat__4E3E9311")
+  ModifiedDate        DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Resellers__Modif__4F32B74A")
+  Customers           Customers[]
+}
+
+model StartStatuses {
+  Id           Int        @id(map: "PK_StartStatuses") @default(autoincrement())
+  Status       String?    @db.NVarChar(Max)
+  CreationDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__StartStat__Creat__4C564A9F")
+  ModifiedDate DateTime   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__StartStat__Modif__4D4A6ED8")
+  Requests     Requests[]
+}
+
+model SupplierChildSkus {
+  Id                   Int              @id(map: "PK_SupplierChildSkus") @default(autoincrement())
+  Name                 String?          @db.NVarChar(Max)
+  CreationDate         DateTime
+  ModifiedDate         DateTime
+  B2BProductproduct_id Int?
+  TempB2BProductsId    Int?
+  B2BProdducts         B2BProdducts?    @relation(fields: [B2BProductproduct_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierChildSkus_B2BProdducts_B2BProductproduct_id")
+  TempB2BProducts      TempB2BProducts? @relation(fields: [TempB2BProductsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierChildSkus_TempB2BProducts_TempB2BProductsId")
+
+  @@index([B2BProductproduct_id], map: "IX_SupplierChildSkus_B2BProductproduct_id")
+  @@index([TempB2BProductsId], map: "IX_SupplierChildSkus_TempB2BProductsId")
+}
+
+model SupplierColours {
+  Id                Int        @id(map: "PK_SupplierColours") @default(autoincrement())
+  SupplierColorName String     @db.NVarChar(Max)
+  B2BColorNameId    Int?
+  SupplierId        Int?
+  CreationDate      DateTime
+  ModifiedDate      DateTime
+  Colours           Colours?   @relation(fields: [B2BColorNameId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierColours_Colours_B2BColorNameId")
+  Suppliers         Suppliers? @relation(fields: [SupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierColours_Suppliers_SupplierId")
+
+  @@index([B2BColorNameId], map: "IX_SupplierColours_B2BColorNameId")
+  @@index([SupplierId], map: "IX_SupplierColours_SupplierId")
+}
+
+model SupplierHandles {
+  handles_id            Int      @id(map: "PK_SupplierHandles") @default(autoincrement())
+  handles_code          String?  @db.NVarChar(Max)
+  handles_description   String?  @db.NVarChar(Max)
+  handles_supplierPrice Float    @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierH__handl__6A50C1DA") @db.Real
+  handles_priceDK       Float    @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierH__handl__6E2152BE") @db.Real
+  handles_priceEU       Float    @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierH__handl__6F1576F7") @db.Real
+  handles_priceFI       Float    @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierH__handl__70099B30") @db.Real
+  CreationDate          DateTime @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierH__Creat__4A6E022D")
+  ModifiedDate          DateTime @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierH__Modif__4B622666")
+}
+
+model SupplierHandlingCost {
+  Id         Int         @id(map: "PK_SupplierHandlingCost") @default(autoincrement())
+  code       String?     @db.NVarChar(Max)
+  price      String?     @db.NVarChar(Max)
+  supplierId Int?
+  countryId  Int?
+  B2BCountry B2BCountry? @relation(fields: [countryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierHandlingCost_B2BCountry_countryId")
+  Suppliers  Suppliers?  @relation(fields: [supplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierHandlingCost_Suppliers_supplierId")
+
+  @@index([countryId], map: "IX_SupplierHandlingCost_countryId")
+  @@index([supplierId], map: "IX_SupplierHandlingCost_supplierId")
+}
+
+model SupplierLogs {
+  Id                   Int                    @id(map: "PK_SupplierLogs") @default(autoincrement())
+  SupplierId           Int?
+  AlertId              Int?
+  Title                String?                @db.NVarChar(Max)
+  Description          String?                @db.NVarChar(Max)
+  Comment              String?                @db.NVarChar(Max)
+  LogType              String?                @db.NVarChar(Max)
+  CreationDate         DateTime
+  ModifiedDate         DateTime
+  TotalAdded           Int                    @default(0, map: "DF__SupplierL__Total__4999D985")
+  TotalUpdated         Int                    @default(0, map: "DF__SupplierL__Total__4A8DFDBE")
+  Imprint_PriceClasses Imprint_PriceClasses[]
+  Alerts               Alerts?                @relation(fields: [AlertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierLogs_Alerts_AlertId")
+  Suppliers            Suppliers?             @relation(fields: [SupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierLogs_Suppliers_SupplierId")
+
+  @@index([AlertId], map: "IX_SupplierLogs_AlertId")
+  @@index([SupplierId], map: "IX_SupplierLogs_SupplierId")
+}
+
+model SupplierPrintCosts {
+  printCost_id                       Int                        @id(map: "PK_SupplierPrintCosts") @default(autoincrement())
+  printCost_rangeId                  String?                    @db.NVarChar(Max)
+  fk_supplierPrintPriceprintPrice_id String?                    @db.NVarChar(450)
+  alert                              Boolean                    @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__SupplierP__alert__7F4BDEC0")
+  alertMessage                       String?                    @db.NVarChar(Max)
+  alertStatus                        String?                    @db.NVarChar(Max)
+  printCost_areaFrom                 Float                      @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__print__004002F9") @db.Real
+  printCost_areaTo                   Float                      @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__print__01342732") @db.Real
+  CreationDate                       DateTime                   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Creat__4885B9BB")
+  ModifiedDate                       DateTime                   @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Modif__4979DDF4")
+  SupplierPrintPrices                SupplierPrintPrices?       @relation(fields: [fk_supplierPrintPriceprintPrice_id], references: [printPrice_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierPrintCosts_SupplierPrintPrices_fk_supplierPrintPriceprintPrice_id")
+  SupplierPrintPriceScales           SupplierPrintPriceScales[]
+
+  @@index([fk_supplierPrintPriceprintPrice_id], map: "IX_SupplierPrintCosts_fk_supplierPrintPriceprintPrice_id")
+}
+
+model SupplierPrintPrices {
+  printPrice_id                  String               @id(map: "PK_SupplierPrintPrices") @db.NVarChar(450)
+  printPrice_nextColourIndicator String?              @db.NVarChar(Max)
+  printPrice_pricingType         String?              @db.NVarChar(Max)
+  printPrice_repeat              String?              @db.NVarChar(Max)
+  printPrice_description         String?              @db.NVarChar(Max)
+  printPrice_setupDK             String?              @db.NVarChar(Max)
+  printPrice_setupEU             String?              @db.NVarChar(Max)
+  printPrice_setupFI             String?              @db.NVarChar(Max)
+  alert                          Boolean              @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__SupplierP__alert__7E57BA87")
+  alertMessage                   String?              @db.NVarChar(Max)
+  alertStatus                    String?              @db.NVarChar(Max)
+  printPrice_descId              String?              @db.NVarChar(Max)
+  CreationDate                   DateTime             @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Creat__469D7149")
+  ModifiedDate                   DateTime             @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Modif__47919582")
+  SupplierPrintCosts             SupplierPrintCosts[]
+}
+
+model SupplierPrintPriceScales {
+  scale_id                        Int                 @id(map: "PK_SupplierPrintPriceScales") @default(autoincrement())
+  scale_minimumQuantity           Float               @db.Real
+  fk_supplerPrintCostprintCost_id Int?
+  scale_supplierPrice             Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__695C9DA1") @db.Real
+  scale_priceDK                   Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__6B44E613") @db.Real
+  scale_priceEU                   Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__6C390A4C") @db.Real
+  scale_priceFI                   Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__6D2D2E85") @db.Real
+  alert                           Boolean             @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__SupplierP__alert__7993056A")
+  alertMessage                    String?             @db.NVarChar(Max)
+  alertStatus                     String?             @db.NVarChar(Max)
+  scale_nextPriceDK               Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__7A8729A3") @db.Real
+  scale_nextPriceEU               Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__7B7B4DDC") @db.Real
+  scale_nextPriceFI               Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__7C6F7215") @db.Real
+  scale_nextPriceSupplier         Float               @default(dbgenerated("CONVERT([real],(0))"), map: "DF__SupplierP__scale__7D63964E") @db.Real
+  CreationDate                    DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Creat__44B528D7")
+  ModifiedDate                    DateTime            @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__SupplierP__Modif__45A94D10")
+  SupplierPrintCosts              SupplierPrintCosts? @relation(fields: [fk_supplerPrintCostprintCost_id], references: [printCost_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierPrintPriceScales_SupplierPrintCosts_fk_supplerPrintCostprintCost_id")
+
+  @@index([fk_supplerPrintCostprintCost_id], map: "IX_SupplierPrintPriceScales_fk_supplerPrintCostprintCost_id")
+}
+
+model SupplierProductBacklogs {
+  Id           Int        @id(map: "PK_SupplierProductBacklogs") @default(autoincrement())
+  Name         String?    @db.NVarChar(Max)
+  SupplierSKU  String?    @db.NVarChar(Max)
+  ImageURL     String?    @db.NVarChar(Max)
+  CreationDate DateTime
+  ModifiedDate DateTime
+  SupplierName String?    @db.NVarChar(Max)
+  SupplierId   Int?
+  Suppliers    Suppliers? @relation(fields: [SupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierProductBacklogs_Suppliers_SupplierId")
+
+  @@index([SupplierId], map: "IX_SupplierProductBacklogs_SupplierId")
+}
+
+model Suppliers {
+  Id                                Int                       @id(map: "PK_Suppliers") @default(autoincrement())
+  Name                              String?                   @db.NVarChar(Max)
+  Code                              String?                   @db.NVarChar(Max)
+  CreationDate                      DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Suppliers__Creat__42CCE065")
+  ModifiedDate                      DateTime                  @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__Suppliers__Modif__43C1049E")
+  ExternalImprint                   Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Suppliers__Exter__4944D3CA")
+  InternalImprint                   Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Suppliers__Inter__4A38F803")
+  Email                             String?                   @db.NVarChar(Max)
+  Address                           String?                   @db.NVarChar(Max)
+  AltAddress                        String?                   @db.NVarChar(Max)
+  BankAccountNumber                 String?                   @db.NVarChar(Max)
+  City                              String?                   @db.NVarChar(Max)
+  ContactEmail                      String?                   @db.NVarChar(Max)
+  ContactMobile                     String?                   @db.NVarChar(Max)
+  ContactName                       String?                   @db.NVarChar(Max)
+  ContactPhone                      String?                   @db.NVarChar(Max)
+  Country                           String?                   @db.NVarChar(Max)
+  CustomerNumber                    String?                   @db.NVarChar(Max)
+  EmailFinance                      String?                   @db.NVarChar(Max)
+  EmailPO                           String?                   @db.NVarChar(Max)
+  IBAN                              Int                       @default(0, map: "DF__Suppliers__IBAN__2101D846")
+  Password                          String?                   @db.NVarChar(Max)
+  PaymentCondition                  String?                   @db.NVarChar(Max)
+  Phone                             String?                   @db.NVarChar(Max)
+  SWIFT                             Int                       @default(0, map: "DF__Suppliers__SWIFT__21F5FC7F")
+  Username                          String?                   @db.NVarChar(Max)
+  Website                           String?                   @db.NVarChar(Max)
+  Zip                               Int                       @default(0, map: "DF__Suppliers__Zip__22EA20B8")
+  SupplierAPIKey                    String?                   @db.NVarChar(Max)
+  SupplierAPIBaseUrl                String?                   @db.NVarChar(Max)
+  SupplierAPIPriceClassUrl          String?                   @db.NVarChar(Max)
+  SupplierAPIAuthType               String?                   @db.NVarChar(Max)
+  SupplierAPIPrintDataUrl           String?                   @db.NVarChar(Max)
+  SupplierAPIProductsUrl            String?                   @db.NVarChar(Max)
+  SupplierAPIProductPricesUrl       String?                   @db.NVarChar(Max)
+  SupplierAPIStockUrl               String?                   @db.NVarChar(Max)
+  SupplierAPIPrintDataUrl_Secondary String?                   @db.NVarChar(Max)
+  APIDataSource                     Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Suppliers__APIDa__039170F0")
+  ManaualDataSource                 Boolean                   @default(dbgenerated("CONVERT([bit],(0))"), map: "DF__Suppliers__Manau__04859529")
+  SupplierCDNUrl                    String?                   @db.NVarChar(Max)
+  Alerts                            Alerts[]
+  RequestProducts                   RequestProducts[]
+  SupplierColours                   SupplierColours[]
+  SupplierHandlingCost              SupplierHandlingCost[]
+  SupplierLogs                      SupplierLogs[]
+  SupplierProductBacklogs           SupplierProductBacklogs[]
+  SupplierTextileSizes              SupplierTextileSizes[]
+}
+
+model SupplierTextileSizes {
+  Id                      Int                     @id(map: "PK_SupplierTextileSizes") @default(autoincrement())
+  Name                    String?                 @db.NVarChar(Max)
+  SupplierId              Int?
+  B2BProductTextileSizeId Int?
+  CreationDate            DateTime
+  ModifiedDate            DateTime
+  B2BProductTextileSizes  B2BProductTextileSizes? @relation(fields: [B2BProductTextileSizeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierTextileSizes_B2BProductTextileSizes_B2BProductTextileSizeId")
+  Suppliers               Suppliers?              @relation(fields: [SupplierId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_SupplierTextileSizes_Suppliers_SupplierId")
+
+  @@index([B2BProductTextileSizeId], map: "IX_SupplierTextileSizes_B2BProductTextileSizeId")
+  @@index([SupplierId], map: "IX_SupplierTextileSizes_SupplierId")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B619B14CA77") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model TempB2BParentProducts {
+  Id                                      Int                                       @id(map: "PK_TempB2BParentProducts") @default(autoincrement())
+  fk_country                              Int?
+  parrentProduct_productName              String?                                   @db.NVarChar(Max)
+  parrentProduct_masterId                 String?                                   @db.NVarChar(Max)
+  parrentProduct_parrentSku               String?                                   @db.NVarChar(Max)
+  parrentProduct_printPositions           Int
+  parrentProduct_dimensions               String?                                   @db.NVarChar(Max)
+  parrentProduct_length                   Float                                     @db.Real
+  parrentProduct_width                    Float                                     @db.Real
+  parrentProduct_height                   Float                                     @db.Real
+  parrentProduct_longDescription          String?                                   @db.NVarChar(Max)
+  parrentProduct_shortDescription         String?                                   @db.NVarChar(Max)
+  parrentProduct_printable                Boolean
+  parrentProduct_material                 String?                                   @db.NVarChar(Max)
+  parrentProduct_mainCategory             String?                                   @db.NVarChar(Max)
+  parrentProduct_supplierSubCategory      String?                                   @db.NVarChar(Max)
+  B2BMasterCategoryId                     Int?
+  B2BProductTypeId                        Int?
+  alert                                   Boolean
+  alertStatus                             String?                                   @db.NVarChar(Max)
+  alertMessage                            String?                                   @db.NVarChar(Max)
+  Supplier                                String?                                   @db.NVarChar(Max)
+  B2BBrandsId                             Int?
+  B2BMaterialId                           Int?
+  NopSynced                               Boolean
+  Deactivate                              Boolean
+  StatusId                                Int?
+  ProductSheet                            String?                                   @db.NVarChar(Max)
+  ProductTemplate                         String?                                   @db.NVarChar(Max)
+  SeoUrl                                  String?                                   @db.NVarChar(Max)
+  B2BDeliveryTimeId                       Int?
+  B2BOrderQuantityId                      Int?
+  DeleteProduct                           Boolean
+  SupplierProductName                     String?                                   @db.NVarChar(Max)
+  SupplierDescription                     String?                                   @db.NVarChar(Max)
+  SupplierCategory                        String?                                   @db.NVarChar(Max)
+  B2BEco                                  Boolean
+  ExpiryDate                              DateTime
+  CreationDate                            DateTime
+  ModifiedDate                            DateTime
+  B2BMainCategory                         B2BMainCategory[]
+  B2BProductSize                          B2BProductSize[]
+  ErrorMessages                           ErrorMessages[]
+  ParentProductB2BMainCategories          ParentProductB2BMainCategories[]
+  ParentProductB2BProductSizes            ParentProductB2BProductSizes[]
+  ParentProductB2BProductTextileSizes     ParentProductB2BProductTextileSizes[]
+  B2BBrands                               B2BBrands?                                @relation(fields: [B2BBrandsId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BBrands_B2BBrandsId")
+  B2BCategoryGroups                       B2BCategoryGroups?                        @relation(fields: [B2BMasterCategoryId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BCategoryGroups_B2BMasterCategoryId")
+  B2BCountry                              B2BCountry?                               @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BCountry_fk_country")
+  B2BDeliveryTime                         B2BDeliveryTime?                          @relation(fields: [B2BDeliveryTimeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BDeliveryTime_B2BDeliveryTimeId")
+  B2BMaterials                            B2BMaterials?                             @relation(fields: [B2BMaterialId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BMaterials_B2BMaterialId")
+  B2BOrderQuantity                        B2BOrderQuantity?                         @relation(fields: [B2BOrderQuantityId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BOrderQuantity_B2BOrderQuantityId")
+  B2BProductTypes                         B2BProductTypes?                          @relation(fields: [B2BProductTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_B2BProductTypes_B2BProductTypeId")
+  ProductStatus                           ProductStatus?                            @relation(fields: [StatusId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BParentProducts_ProductStatus_StatusId")
+  TempB2BPrintPositions                   TempB2BPrintPositions[]
+  TempB2BProductPrices                    TempB2BProductPrices[]
+  TempB2BProducts                         TempB2BProducts[]
+  TempParentProductB2BProductTextileSizes TempParentProductB2BProductTextileSizes[]
+
+  @@index([B2BBrandsId], map: "IX_TempB2BParentProducts_B2BBrandsId")
+  @@index([B2BDeliveryTimeId], map: "IX_TempB2BParentProducts_B2BDeliveryTimeId")
+  @@index([B2BMasterCategoryId], map: "IX_TempB2BParentProducts_B2BMasterCategoryId")
+  @@index([B2BMaterialId], map: "IX_TempB2BParentProducts_B2BMaterialId")
+  @@index([B2BOrderQuantityId], map: "IX_TempB2BParentProducts_B2BOrderQuantityId")
+  @@index([B2BProductTypeId], map: "IX_TempB2BParentProducts_B2BProductTypeId")
+  @@index([fk_country], map: "IX_TempB2BParentProducts_fk_country")
+  @@index([StatusId], map: "IX_TempB2BParentProducts_StatusId")
+}
+
+model TempB2BPrintPositions {
+  Id                              Int                               @id(map: "PK_TempB2BPrintPositions") @default(autoincrement())
+  Position                        String?                           @db.NVarChar(Max)
+  fk_country                      Int?
+  parentProductId                 Int?
+  print_productName               String?                           @db.NVarChar(Max)
+  print_supplier                  String?                           @db.NVarChar(Max)
+  print_express                   Boolean
+  print_position                  String?                           @db.NVarChar(Max)
+  print_type                      String?                           @db.NVarChar(Max)
+  print_dimensions                String?                           @db.NVarChar(Max)
+  MaxColors                       Float?
+  fk_imprint_priceClass           Int?
+  fk_alertId                      Int?
+  child_product                   String?                           @db.NVarChar(Max)
+  ExternalPrint                   Boolean
+  IsDisabled                      Boolean
+  CreationDate                    DateTime
+  ModifiedDate                    DateTime
+  ExpiryDate                      DateTime                          @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__TempB2BPr__Expir__3C0AD43D")
+  RequestProductB2BPrintPositions RequestProductB2BPrintPositions[]
+  Alerts                          Alerts?                           @relation(fields: [fk_alertId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BPrintPositions_Alerts_fk_alertId")
+  B2BCountry                      B2BCountry?                       @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BPrintPositions_B2BCountry_fk_country")
+  Imprint_PriceClasses            Imprint_PriceClasses?             @relation(fields: [fk_imprint_priceClass], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BPrintPositions_Imprint_PriceClasses_fk_imprint_priceClass")
+  TempB2BParentProducts           TempB2BParentProducts?            @relation(fields: [parentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BPrintPositions_TempB2BParentProducts_parentProductId")
+
+  @@index([fk_alertId], map: "IX_TempB2BPrintPositions_fk_alertId")
+  @@index([fk_country], map: "IX_TempB2BPrintPositions_fk_country")
+  @@index([fk_imprint_priceClass], map: "IX_TempB2BPrintPositions_fk_imprint_priceClass")
+  @@index([parentProductId], map: "IX_TempB2BPrintPositions_parentProductId")
+}
+
+model TempB2BProductImages {
+  Id                Int              @id(map: "PK_TempB2BProductImages") @default(autoincrement())
+  ImagePath         String?          @db.NVarChar(Max)
+  Name              String?          @db.NVarChar(Max)
+  Fk_childProductId Int?
+  ExpiryDate        DateTime
+  CreationDate      DateTime
+  ModifiedDate      DateTime
+  TempB2BProducts   TempB2BProducts? @relation(fields: [Fk_childProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProductImages_TempB2BProducts_Fk_childProductId")
+
+  @@index([Fk_childProductId], map: "IX_TempB2BProductImages_Fk_childProductId")
+}
+
+model TempB2BProductPrices {
+  Id                             Int                    @id(map: "PK_TempB2BProductPrices") @default(autoincrement())
+  fk_country                     Int?
+  ParentProductparrentProduct_id Int?
+  parrentSku                     String?                @db.NVarChar(Max)
+  price_startingPriceSupplier    String?                @db.NVarChar(Max)
+  PriceStart                     Float
+  PriceQ1                        Float
+  PriceQ2                        Float
+  PriceQ3                        Float
+  PriceQ4                        Float
+  PriceQ5                        Float
+  PriceQ6                        Float
+  PriceP1                        Float
+  PriceP2                        Float
+  PriceP3                        Float
+  PriceP4                        Float
+  PriceP5                        Float
+  PriceP6                        Float
+  CostPriceQ1                    Float
+  CostPriceQ2                    Float
+  CostPriceQ3                    Float
+  CostPriceQ4                    Float
+  CostPriceQ5                    Float
+  CostPriceQ6                    Float
+  CostPriceP1                    Float
+  CostPriceP2                    Float
+  CostPriceP3                    Float
+  CostPriceP4                    Float
+  CostPriceP5                    Float
+  CostPriceP6                    Float
+  price_startingPriceDK          String?                @db.NVarChar(Max)
+  price_startingPriceEU          String?                @db.NVarChar(Max)
+  price_startingPriceFI          String?                @db.NVarChar(Max)
+  price_validUntill              String?                @db.NVarChar(Max)
+  ExpiryDate                     DateTime
+  CreationDate                   DateTime
+  ModifiedDate                   DateTime
+  tempParentProductId            Int?
+  B2BCountry                     B2BCountry?            @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProductPrices_B2BCountry_fk_country")
+  B2BParrentProducts             B2BParrentProducts?    @relation(fields: [ParentProductparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProductPrices_B2BParrentProducts_ParentProductparrentProduct_id")
+  TempB2BParentProducts          TempB2BParentProducts? @relation(fields: [tempParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProductPrices_TempB2BParentProducts_tempParentProductId")
+
+  @@index([fk_country], map: "IX_TempB2BProductPrices_fk_country")
+  @@index([ParentProductparrentProduct_id], map: "IX_TempB2BProductPrices_ParentProductparrentProduct_id")
+  @@index([tempParentProductId], map: "IX_TempB2BProductPrices_tempParentProductId")
+}
+
+model TempB2BProducts {
+  Id                            Int                    @id(map: "PK_TempB2BProducts") @default(autoincrement())
+  fk_country                    Int?
+  product_sku                   String?                @db.NVarChar(Max)
+  fk_parentSKU                  Int?
+  product_ColorNameId           Int?
+  product_brandNames            String?                @db.NVarChar(Max)
+  product_shortDescription      String?                @db.NVarChar(Max)
+  product_shortDescriptionEN    String?                @db.NVarChar(Max)
+  product_shortDescriptionFI    String?                @db.NVarChar(Max)
+  product_longDescriptionDK     String?                @db.NVarChar(Max)
+  product_longDescriptionEN     String?                @db.NVarChar(Max)
+  product_longDescriptionFI     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T1     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T2     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T3     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T4     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T5     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_T6     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN     String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN2    String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN3    String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN4    String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN5    String?                @db.NVarChar(Max)
+  product_PriceClass_IL1_CN6    String?                @db.NVarChar(Max)
+  product_IntraCode             String?                @db.NVarChar(Max)
+  product_CountryOfOrigin       String?                @db.NVarChar(Max)
+  product_CommercialItemLength  String?                @db.NVarChar(Max)
+  product_CommercialItemWidth   String?                @db.NVarChar(Max)
+  product_CommercialItemHeight  String?                @db.NVarChar(Max)
+  product_CommercialItemWeight  String?                @db.NVarChar(Max)
+  product_Flavours              String?                @db.NVarChar(Max)
+  product_Sizes                 String?                @db.NVarChar(Max)
+  product_WritingColor          String?                @db.NVarChar(Max)
+  product_OrderUnit             Int
+  product_BatteryType           String?                @db.NVarChar(Max)
+  product_NumberOfBatteries     Int
+  product_ProductImageURL       String?                @db.NVarChar(Max)
+  product_DeliveryTimeMT_IL1_T1 DateTime
+  product_SearchTerms           String?                @db.NVarChar(Max)
+  product_Q_OnPallet            String?                @db.NVarChar(Max)
+  product_color                 String?                @db.NVarChar(Max)
+  product_stock                 Int
+  ProductTypeId                 Int?
+  ExpiryDate                    DateTime
+  CreationDate                  DateTime
+  ModifiedDate                  DateTime
+  tempParentProductId           Int?
+  Alerts                        Alerts[]
+  SupplierChildSkus             SupplierChildSkus[]
+  TempB2BProductImages          TempB2BProductImages[]
+  B2BCountry                    B2BCountry?            @relation(fields: [fk_country], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProducts_B2BCountry_fk_country")
+  B2BParrentProducts            B2BParrentProducts?    @relation(fields: [fk_parentSKU], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProducts_B2BParrentProducts_fk_parentSKU")
+  B2BProductTypes               B2BProductTypes?       @relation(fields: [ProductTypeId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProducts_B2BProductTypes_ProductTypeId")
+  Colours                       Colours?               @relation(fields: [product_ColorNameId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProducts_Colours_product_ColorNameId")
+  TempB2BParentProducts         TempB2BParentProducts? @relation(fields: [tempParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempB2BProducts_TempB2BParentProducts_tempParentProductId")
+
+  @@index([fk_country], map: "IX_TempB2BProducts_fk_country")
+  @@index([fk_parentSKU], map: "IX_TempB2BProducts_fk_parentSKU")
+  @@index([product_ColorNameId], map: "IX_TempB2BProducts_product_ColorNameId")
+  @@index([ProductTypeId], map: "IX_TempB2BProducts_ProductTypeId")
+  @@index([tempParentProductId], map: "IX_TempB2BProducts_tempParentProductId")
+}
+
+model TempParentProductB2BProductTextileSizes {
+  Id                             Int                    @id(map: "PK_TempParentProductB2BProductTextileSizes") @default(autoincrement())
+  B2BProductTextileSizeId        Int
+  ParentProductparrentProduct_id Int?
+  TempB2BParentProductId         Int?
+  Quantity                       Int
+  ExpiryDate                     DateTime
+  CreationDate                   DateTime
+  ModifiedDate                   DateTime
+  B2BParrentProducts             B2BParrentProducts?    @relation(fields: [ParentProductparrentProduct_id], references: [parrentProduct_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempParentProductB2BProductTextileSizes_B2BParrentProducts_ParentProductparrentProduct_id")
+  B2BProductTextileSizes         B2BProductTextileSizes @relation(fields: [B2BProductTextileSizeId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_TempParentProductB2BProductTextileSizes_B2BProductTextileSizes_B2BProductTextileSizeId")
+  TempB2BParentProducts          TempB2BParentProducts? @relation(fields: [TempB2BParentProductId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_TempParentProductB2BProductTextileSizes_TempB2BParentProducts_TempB2BParentProductId")
+
+  @@index([B2BProductTextileSizeId], map: "IX_TempParentProductB2BProductTextileSizes_B2BProductTextileSizeId")
+  @@index([ParentProductparrentProduct_id], map: "IX_TempParentProductB2BProductTextileSizes_ParentProductparrentProduct_id")
+  @@index([TempB2BParentProductId], map: "IX_TempParentProductB2BProductTextileSizes_TempB2BParentProductId")
+}
+
+model VatZones {
+  Id                 Int         @id(map: "PK_VatZones") @default(autoincrement())
+  Name               String?     @db.NVarChar(Max)
+  VatZoneNumber      Int
+  EnabledForCustomer Boolean
+  EnabledForSupplier Boolean
+  EconomicLink       String?     @db.NVarChar(Max)
+  Customers          Customers[]
+}
+
+model ZipCodes {
+  Id                                           Int         @id(map: "PK_ZipCodes") @default(autoincrement())
+  Country                                      Int?
+  Amts                                         Int
+  Region                                       String?     @db.NVarChar(Max)
+  MunicipalityNumber                           Int
+  Municipality                                 String?     @db.NVarChar(Max)
+  Zip                                          String?     @db.NVarChar(Max)
+  City                                         String?     @db.NVarChar(Max)
+  CreationDate                                 DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ZipCodes__Creati__40E497F3")
+  ModifiedDate                                 DateTime    @default(dbgenerated("0001-01-01T00:00:00.0000000"), map: "DF__ZipCodes__Modifi__41D8BC2C")
+  Customers_Customers_InvoicingZipIdToZipCodes Customers[] @relation("Customers_InvoicingZipIdToZipCodes")
+  Customers_Customers_ZipCodeIdToZipCodes      Customers[] @relation("Customers_ZipCodeIdToZipCodes")
+  Requests                                     Requests[]
+}

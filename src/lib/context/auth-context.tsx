@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       const data = await response.json();
-      
+
       if (data.success) {
         setUser(data.user);
         localStorage.setItem('user', JSON.stringify(data.user));
@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Clear the cookie
     document.cookie = 'user=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     // Redirect to login page
-    router.push('/login');
+    router.push('/club-login');
   };
 
   return (

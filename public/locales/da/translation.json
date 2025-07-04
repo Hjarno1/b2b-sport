@@ -1,0 +1,769 @@
+{
+  "settings": {
+    "account_security_desc": "Opdater din adgangskode og administrer sikkerhedsindstillinger for din konto.",
+    "settings": "Indstillinger",
+    "preferences": "Præferencer",
+    "language": "Sprog",
+    "dark_mode": "Mørk tilstand",
+    "enable_dark_mode": "Aktivér mørk tilstand for grænsefladen",
+    "save_preferences": "Gem præferencer",
+    "profile": "Profil",
+    "account": "Konto",
+    "notifications": "Notifikationer",
+    "profile_info": "Profilinformation",
+    "update_profile_desc": "Opdater din kontos profilinformation og e-mailadresse.",
+    "change_avatar": "Skift avatar",
+    "name": "Navn",
+    "email": "E-mail",
+    "role": "Rolle",
+    "cannot_change_role": "Din rolle kan ikke ændres.",
+    "save_changes": "Gem ændringer",
+    "account_security": "Kontosikkerhed",
+    "update_password": "Opdater adgangskode",
+    "account_protection": "Kontobeskyttelse",
+    "account_protection_desc": "Din konto er beskyttet med to-faktor-autentificering.",
+    "current_password": "Nuværende adgangskode",
+    "new_password": "Ny adgangskode",
+    "confirm_password": "Bekræft adgangskode",
+    "auth_app": "Autentificeringsapp",
+    "auth_app_desc": "Brug en autentificeringsapp til at få bekræftelseskoder",
+    "enabled": "Aktiveret",
+    "manage": "Administrer",
+    "2fa_desc": "To-faktor-autentificering tilføjer et ekstra sikkerhedslag til din konto",
+    "sessions": "Sessioner",
+    "current_session": "Nuværende session",
+    "session_started": "Startet den 16. april 2025 fra Chrome på Windows",
+    "notification_settings": "Notifikationsindstillinger",
+    "notification_desc": "Konfigurer hvordan og hvornår du modtager notifikationer.",
+    "new_agreements": "Nye aftaler",
+    "new_agreements_desc": "Få besked når en ny aftale oprettes",
+    "order_updates": "Ordreopdateringer",
+    "order_updates_desc": "Modtag notifikationer når ordrer ændrer status",
+    "system_updates": "Systemopdateringer",
+    "system_updates_desc": "Få besked om opdateringer og vedligeholdelse af platformen",
+    "staff_changes": "Personaleændringer",
+    "staff_changes_desc": "Bliv informeret når personale tilføjes eller fjernes",
+    "notification_channels": "Notifikationskanaler",
+    "email_notifications": "E-mail notifikationer",
+    "push_notifications": "Push-notifikationer",
+    "digest_frequency": "Hyppighed for e-mailoversigt",
+    "daily": "Dagligt",
+    "daily_desc": "Få et dagligt sammendrag",
+    "weekly": "Ugentligt",
+    "weekly_desc": "Få et ugentligt sammendrag",
+    "off": "Fra",
+    "off_desc": "Send ikke e-mailoversigter",
+    "landing_page": "Startside",
+    "landing_dashboard": "Overblik",
+    "landing_dashboard_desc": "Start på overblikket",
+    "landing_clubs": "Klubadministration",
+    "landing_clubs_desc": "Start i klubadministration",
+    "landing_agreements": "Aftaler",
+    "landing_agreements_desc": "Start ved aftaler"
+  },
+  "sidebar": {
+    "dashboard": "Overblik",
+    "club_agreements": "Klubaftaler",
+    "invoices": "Fakturaer",
+    "settings": "Indstillinger",
+    "staff_management": "Personale",
+    "agreements": "Aftaler",
+    "products": "Produkter",
+    "orders": "Ordrer",
+    "player_management": "Spilleroversigt",
+    "kit_details": "Spillesæt",
+    "teams_setup": "Holdopsætning",
+    "order_tracking": "Ordresporing"
+  },
+  "login": {
+    "welcome": "Velkommen tilbage",
+    "description": "Log ind på din konto for at fortsætte",
+    "error": "Login mislykkedes. Prøv igen.",
+    "select_role": "Vælg rolle",
+    "demo_note": "Til demoformål – vælg hvilken rolle du vil logge ind som.",
+    "demo_credentials": "Demokonto-oplysninger",
+    "demo_email": "E-mail: demo@b2bsports.com",
+    "demo_password": "Adgangskode: demo123 (valideres ikke)",
+    "sign_in": "Log ind",
+    "signing_in": "Logger ind...",
+    "copyright": "B2B Sport © {{year}}"
+  },
+  "active_agreements": {
+    "title": "Aktive Aftaler",
+    "create_new": "Opret ny aftale",
+    "search_placeholder": "Søg i aftaler...",
+    "filter_all_clubs": "Alle klubber",
+    "filter_all_statuses": "Alle statusser",
+    "table": {
+      "agreement_id": "Aftale ID",
+      "club": "Klub",
+      "template": "Skabelon",
+      "status": "Status",
+      "valid_until": "Gyldig til",
+      "actions": "Handlinger"
+    },
+    "no_results": "Ingen aftaler matcher dine kriterier",
+    "view": "Se",
+    "status": {
+      "pending": "Afventer",
+      "active": "Aktiv",
+      "in_progress": "I gang",
+      "completed": "Fuldført",
+      "canceled": "Annulleret"
+    }
+  },
+  "agreement_templates": {
+    "title": "Aftaleskabeloner",
+    "create_button": "Opret ny skabelon",
+    "search_placeholder": "Søg i skabeloner...",
+    "all_categories": "Alle kategorier",
+    "created": "Oprettet",
+    "edit": "Rediger"
+  },
+  "agreements": {
+    "title": "Aftaler",
+    "description": "Administrér dine aftaler for {{club}}",
+    "search_placeholder": "Søg i aftaler...",
+    "filter_all_statuses": "Alle statusser",
+    "your_club": "Din klub",
+    "manage_for": "Administrér dine aftaler for {{club}}",
+    "no_results_title": "Ingen aftaler fundet",
+    "no_results_filtered": "Prøv at ændre dine søge- eller filterkriterier",
+    "no_results_empty": "Du har ingen aktive aftaler i øjeblikket",
+    "priority": "Prioritet",
+    "empty": {
+      "title": "Ingen aftaler fundet",
+      "filtered": "Prøv at justere dine søge- eller filterkriterier",
+      "default": "Du har ingen aktive aftaler i øjeblikket"
+    },
+    "created": "Oprettet",
+    "valid_until": "Gyldig til",
+    "priority": {
+      "high": "Høj prioritet",
+      "normal": "Normal prioritet",
+      "low": "Lav prioritet"
+    },
+    "status": {
+      "pending": "Afventer",
+      "active": "Aktiv",
+      "in_progress": "I gang",
+      "completed": "Fuldført",
+      "canceled": "Annulleret"
+    }
+  },
+  "club_agreements": {
+    "title": "Klubaftaler",
+    "description": "Se og administrer kontrakter og aftaler relateret til din klub.",
+    "search_placeholder": "Søg i aftaler...",
+    "filter_all_statuses": "Alle statusser",
+    "empty_title": "Ingen aftaler fundet",
+    "empty_description": "Prøv at justere din søgning eller filtre",
+    "start": "Start",
+    "end": "Slut",
+    "status": {
+      "pending": "Afventer",
+      "active": "Aktiv",
+      "in_progress": "I gang",
+      "completed": "Fuldført",
+      "canceled": "Annulleret"
+    }
+  },
+  "club_management": {
+    "title": "Klubadministration",
+    "description": "Administrer dine sportsklubber og deres administratorer",
+    "add_button": "Tilføj klub",
+    "search_placeholder": "Søg klubber efter navn...",
+    "filter_button": "Filtrer",
+    "no_results": {
+      "title": "Ingen klubber fundet",
+      "description": "Prøv at ændre din søgning eller filter for at finde det, du leder efter."
+    },
+    "created": "Oprettet",
+    "club_admin": "Klubadministrator",
+    "assigned": "Tildelt",
+    "pending": "Afventer",
+    "active_agreements": "Aktive aftaler",
+    "staff": "Personale",
+    "manage": "Administrer",
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "setup": "Opsætning"
+    }
+  },
+  "dashboard": {
+    "welcome": "Velkommen til {{club}}-dashboardet",
+    "finance_welcome": "Velkommen til {{club}} Økonomi-dashboard",
+    "finance_description": "Overvåg aftaler, følg ordrer og se økonomiske aktiviteter",
+    "staff_welcome": "Velkommen, {{name}}",
+    "staff_description": "Administrer dine holds tøjinformation og spor ordrer",
+    "default_club": "Din Klub",
+    "your_tasks": "Dine Opgaver",
+    "no_tasks": "Du har ingen opgaver i øjeblikket",
+    "description": "Administrer klubbens personale, aftaler og ordrer ét sted",
+    "view_all_tasks": "Se alle {{taskLength}} opgaver",
+    "stats": {
+      "active_agreements": "Aktive aftaler",
+      "pending_orders": "Afventende ordrer",
+      "staff_members": "Personale",
+      "upcoming_deliveries": "Kommende leverancer",
+      "active_club_agreements": "Aktive klubaftaler",
+      "unpaid_invoices": "Ubetalte fakturaer",
+      "overdue_invoices": "Forfaldne fakturaer",
+      "tasks": "Opgaver",
+      "completed": "Afsluttet",
+      "pending": "Afventer",
+      "orders": "Ordrer"
+    },
+    "recent_activity": "Seneste aktivitet",
+    "no_activity": "Ingen nylige aktiviteter fundet",
+    "view_all": "Se alle",
+    "view_tasks": "Se Opgaver",
+    "quick_actions": "Hurtige handlinger",
+    "attention": "Handling Påkrævet",
+    "priority_alert": "Du har {{count}} høj prioritet eller forfaldne opgaver, der kræver din opmærksomhed",
+    "upcoming_deadlines": "Kommende Deadlines",
+    "due": "Forfalder: ",
+    "team": "Hold: ",
+    "progress": "Fremgang",
+    "teamdue": "Hold: {{teamName}} | Deadline: {{dueDate}}",
+    "actions": {
+      "add_staff": "Tilføj personale",
+      "add_staff_desc": "Tilføj nyt personale til din klub",
+      "view_agreements": "Se aftaler",
+      "view_agreements_desc": "Tjek dine aktive aftaler",
+      "track_orders": "Spor ordrer",
+      "track_orders_desc": "Tjek status på dine ordrer",
+      "view_club_agreements": "Se klubaftaler",
+      "view_club_agreements_desc": "Se dine aktive klubaftaler",
+      "view_invoices": "Se fakturaer",
+      "view_invoices_desc": "Se dine fakturaer og betalinger",
+      "update_roster": "Opdater Spillertrup",
+      "update_roster_desc": "Tilføj eller rediger spillerinformation",
+      "setup_kits": "Opsæt Holdtøj",
+      "setup_kits_desc": "Udfyld spilleres tøjoplysninger"
+    },
+    "deadlines": {
+      "in_progress": "I gang",
+      "complete": "Fuldført",
+      "pending": "Afventer",
+      "overdue": "Forfalden"
+    }
+  },
+  "invoices": {
+    "title": "Fakturaer",
+    "search_placeholder": "Søg fakturaer...",
+    "columns": {
+      "id": "Faktura nr.",
+      "date": "Dato",
+      "amount": "Beløb",
+      "status": "Status",
+      "action": "Handling"
+    },
+    "status": {
+      "paid": "Betalt",
+      "unpaid": "Ubetalt",
+      "overdue": "Forfalden"
+    },
+    "no_results": "Ingen fakturaer fundet."
+  },
+  "kit_setup": {
+    "title": "Spillersæt detaljer",
+    "subtitle": "Udfyld detaljer om spillerudstyr for {{club}}",
+    "overall_progress": "Samlet Fremdrift",
+    "overall_subtitle_complete": "Alle spilleroplysninger er udfyldt!",
+    "overall_subtitle_incomplete": "Udfyld oplysninger for alle dine hold.",
+    "complete": "Fuldført",
+    "search_placeholder": "Søg i kits...",
+    "no_requests": {
+      "title": "Ingen Kit Forespørgsler Fundet",
+      "desc_with_search": "Prøv at ændre din søgning",
+      "desc_without_search": "Der er ingen kit-forespørgsler, der kræver din opmærksomhed."
+    },
+    "status": {
+      "pending": "Ikke påbegyndt",
+      "active": "Klar til start",
+      "in_progress": "I gang",
+      "completed": "Fuldført",
+      "canceled": "Annulleret"
+    },
+    "required_label": "Påkrævet",
+    "progress_label": "Fremdrift",
+    "players_completed": "{{completed}} ud af {{total}} spillere fuldført",
+    "due": "Frist: {{date}}",
+    "not_started": "Ikke startet endnu",
+    "overdue": "Forfalden",
+    "ready_to_start": "Klar til start",
+    "view_details": "Se detaljer",
+    "complete_kit_details": "Udfyld spillerdetaljer",
+    "how_it_works": "Sådan fungerer Kit Setup",
+    "step1_title": "Opdater din spillerliste",
+    "step1_desc": "Sørg for, at spillerlisten er komplet og opdateret før opsætning af kitdetaljer.",
+    "step2_title": "Vælg spillere til kitopsætning",
+    "step2_desc": "Vælg hvilke spillere der skal have udstyr og udfyld deres oplysninger.",
+    "step3_title": "Indsend og følg op",
+    "step3_desc": "Når alle oplysninger er udfyldt, kan du indsende anmodningen og følge status."
+  },
+  "order_tracking": {
+    "title": "Ordrebooking",
+    "subtitle": "Spor og administrer dine holdordrer for {{club}}",
+    "complete": "fremgang",
+    "status_cards": {
+      "all_orders": "Alle Ordrer",
+      "pending": "Under Forberedelse",
+      "processing": "I Produktion",
+      "shipped": "Afsendt",
+      "delivered": "Leveret"
+    },
+    "search_placeholder": "Søg ordrer...",
+    "filter": {
+      "all_statuses": "Alle Statusser"
+    },
+    "no_orders": {
+      "title": "Ingen Ordrer Fundet",
+      "filtered": "Prøv at justere din søgning eller filtrering",
+      "empty": "Du har ingen ordrer i øjeblikket."
+    },
+    "back": "← Tilbage til alle ordrer",
+    "view_details": "Se Detaljer",
+    "buttons": {
+      "track_package": "Spor Pakke",
+      "download_order_details": "Download Ordredetaljer",
+      "download_kit_list": "Download Fuldt Kit-Overblik",
+      "view_all_items": "Se Alle Varer"
+    },
+    "detail": {
+      "heading": "Ordredetaljer: {{id}}",
+      "subheading": "{{kitName}} – {{teamName}}",
+      "status_section": "Ordrestatus",
+      "summary_section": "Ordreoversigt",
+      "kit_details_section": "Kit Detaljer"
+    },
+    "timeline": {
+      "submitted": {
+        "title": "Ordre Modtaget",
+        "desc": "Din ordre er modtaget og behandles."
+      },
+      "production": {
+        "title": "I Produktion",
+        "desc": "Dine kit-genstande produceres og tilpasses."
+      },
+      "shipping": {
+        "title": "Forsendelse",
+        "desc_shipped": "Din ordre er afsendt. Sporingsnummer: {{trackingNumber}}",
+        "desc_upcoming": "Din ordre vil blive afsendt snart."
+      },
+      "delivery": {
+        "title": "Levering",
+        "desc_delivered": "Din ordre er leveret med succes.",
+        "desc_upcoming": "Forventet leveringsdato: {{date}}"
+      }
+    },
+    "summary": {
+      "order_id": "Ordre ID:",
+      "kit_name": "Kit-navn:",
+      "team": "Hold:",
+      "date_ordered": "Bestilt Dato:",
+      "total_items": "Antal Varer:",
+      "player_count": "Antal Spillere:",
+      "status": "Status:",
+      "estimated_delivery": "Forventet Levering:",
+      "tracking_number": "Sporingsnummer:"
+    },
+    "table": {
+      "player": "Spiller",
+      "jersey_number": "Trøje #",
+      "name_on_jersey": "Navn på Trøje",
+      "sizes": "Størrelser"
+    },
+    "status_badge": {
+      "pending": "Under Forberedelse",
+      "processing": "I Produktion",
+      "shipped": "Afsendt",
+      "delivered": "Leveret",
+      "canceled": "Annulleret"
+    },
+    "status_desc": {
+      "pending": "Din ordre er under forberedelse",
+      "processing": "Din ordre er i produktion",
+      "shipped": "Din ordre er på vej",
+      "delivered": "Din ordre er leveret",
+      "canceled": "Din ordre er annulleret"
+    }
+  },
+  "orders": {
+    "title": "Ordrer",
+    "subtitle": "Administrer dine ordrer for {{club}}",
+    "stats": {
+      "total_orders": "Totale Ordrer",
+      "total_orders_desc": "Gennem tiden",
+      "pending": "Afventer",
+      "pending_desc": "Afventer behandling",
+      "in_transit": "Under Forsendelse",
+      "in_transit_desc": "Er på vej",
+      "delivered": "Leveret",
+      "delivered_desc": "Fuldført"
+    },
+    "search_placeholder": "Søg efter ordre-ID...",
+    "filter": {
+      "all_statuses": "Alle Statusser",
+      "pending": "Afventer",
+      "processing": "Behandler",
+      "shipped": "Afsendt",
+      "delivered": "Leveret",
+      "canceled": "Annulleret"
+    },
+    "no_orders": {
+      "title": "Ingen ordrer fundet",
+      "filtered": "Prøv at justere din søgning eller filtrering",
+      "empty": "Du har ingen ordrer i øjeblikket"
+    },
+    "table": {
+      "order_id": "Ordre-ID",
+      "date": "Dato",
+      "items": "Varer",
+      "total": "Total",
+      "status": "Status",
+      "actions": "Handlinger"
+    },
+    "modal": {
+      "view": "Se"
+    }
+  },
+  "player_kit_details": {
+    "back": "Tilbage til Kit-opsætning",
+    "title": "Spiller Kit-detaljer: {{name}}",
+    "subtitle": "Kortlæg spillere fra dit roster til denne aftale for {{club}}",
+    "due": "Forfald: {{date}}",
+    "completion": "{{pct}} % færdig",
+    "agreement_not_found": {
+      "title": "Aftale ikke fundet",
+      "desc": "Den aftale, du leder efter, findes ikke, eller du har ikke adgang.",
+      "back": "Tilbage til Kit-opsætning"
+    },
+    "agreement_summary": {
+      "heading": "Aftaledetaljer",
+      "id": "Aftale-ID",
+      "team": "Hold",
+      "status": "Status",
+      "valid_until": "Gyldig til"
+    },
+    "select_players": {
+      "heading": "Vælg Spillere",
+      "search_placeholder": "Søg spillere...",
+      "selected": "Valgt: {{count}} spiller{{count, plural, one{} other{s}}"
+    },
+    "no_players_selected": {
+      "title": "Ingen Spillere Valgt",
+      "desc": "Vælg spillere fra rosteret for at udfylde deres kit-detaljer."
+    },
+    "player_details": {
+      "heading": "Spiller Kit-detaljer",
+      "desc": "Udfyld de krævede oplysninger for hver valgt spiller.",
+      "complete": "Færdig",
+      "incomplete": "Ufuldstændig"
+    },
+    "kit_details_summary": {
+      "heading": "Kit-detaljeoversigt",
+      "all_complete": "Alle spillerdetaljer er udfyldt!",
+      "still_need": "{{count}} spiller(e) mangler stadig detaljer."
+    },
+    "buttons": {
+      "save_progress": "Gem fremdrift",
+      "saving": "Gemmer…",
+      "saved": "Gemt",
+      "error": "Fejl",
+      "submit": "Indsend og Opret Ordre",
+      "invite": "Inviter Spiller"
+    },
+    "instructions": {
+      "heading": "Instruktioner",
+      "step1": "Vælg spillere fra rosteret, som har brug for kit-varer fra denne aftale.",
+      "step2": "Udfyld alle påkrævede oplysninger for hver spiller (nummer, størrelser osv.).",
+      "step3": "Brug “Gem fremdrift” til at gemme uden at indsende.",
+      "step4": "Når alle detaljer er udfyldt, klik på “Indsend og Opret Ordre” for at generere en ordre."
+    },
+    "invite_alert": "📨 Inviteringslink kopieret til udklipsholder:\n{{url}}",
+    "confirm_submit": "Ikke alle spillerdetaljer er udfyldt. Indsend alligevel?",
+    "search_placeholder": "Søg spillere..."
+  },
+  "invite": {
+    "invalid_invite": "Ugyldig eller udløbet invitation 😢",
+    "fill_title": "👤 Udfyld dine spilleroplysninger",
+    "select_placeholder": "Vælg {{name}}",
+    "submit": "Indsend"
+  },
+  "player_roster": {
+    "default_club": "Dit Klub",
+    "pageTitle": "Spilleroversigt",
+    "pageSubtitle": "Administrer din spilleliste for {{club}}",
+    "addButton": "Tilføj Spiller",
+    "searchPlaceholder": "Søg spillere...",
+    "positionFilterAll": "Alle Positioner",
+    "addFormTitle": "Tilføj Ny Spiller",
+    "labelName": "Navn",
+    "labelDOB": "Fødselsdato",
+    "labelEmail": "Email",
+    "labelPhone": "Telefon",
+    "labelPosition": "Position",
+    "positionPlaceholder": "Vælg position",
+    "labelJoinedDate": "Indmeldelsesdato",
+    "labelNotes": "Noter",
+    "labelActive": "Aktiv spiller (kan vælges til kits)",
+    "buttonCancel": "Annuller",
+    "buttonAddPlayer": "Tilføj Spiller",
+    "buttonSave": "Gem Ændringer",
+    "please_fill_required": "Udfyld alle påkrævede felter",
+    "rosterCount": "{{count}} spiller{{count, plural, one{} other{s}}}",
+    "noPlayersFoundTitle": "Ingen spillere fundet",
+    "noPlayersFoundDescFiltered": "Prøv at justere dine filtre.",
+    "noPlayersFoundDescEmpty": "Tilføj spillere til din roster.",
+    "addFirstPlayer": "Tilføj Din Første Spiller",
+    "confirm_delete": "Er du sikker på, at du vil fjerne denne spiller fra rosteret?",
+    "editAria": "Rediger spiller",
+    "deleteAria": "Slet spiller",
+    "viewBirth": "Født: {{date}}",
+    "viewJoined": "Indmeldt: {{date}}",
+    "notesLabel": "Noter",
+    "tipsHeading": "Tips til at administrere din roster",
+    "tip1": "Hold din spilleliste opdateret for at gøre kit-opsætning lettere.",
+    "tip2": "Sæt inaktive spillere, som ikke længere er i klubben, for at undgå at vælge dem til kits.",
+    "tip3": "Inkluder kontaktoplysninger for spillere for at hjælpe med kit-leveringsbekræftelse."
+  },
+  "product": {
+    "not_found": "🚫 Product not found",
+    "price": "{{price}} DKK",
+    "customizable": "🎨 This product is customizable!"
+  },
+  "staff_management": {
+    "defaultClub": "Din Klub",
+    "pageTitle": "Personaladministration",
+    "pageSubtitle": "Administrer dine medarbejdere på {{club}}",
+    "addButton": "Tilføj medarbejder",
+    "searchPlaceholder": "Søg medarbejdere på navn eller email...",
+    "noResultsTitle": "Ingen medarbejdere fundet",
+    "noResultsDescFiltered": "Prøv at justere din søgning",
+    "noResultsDescEmpty": "Du har endnu ikke tilføjet medarbejdere",
+    "addFirst": "Tilføj din første medarbejder",
+    "colStaff": "Medarbejder",
+    "colContact": "Kontakt",
+    "colStatus": "Status",
+    "colLastLogin": "Sidste login",
+    "colActions": "Handlinger",
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "pending": "Afventer"
+    },
+    "never": "Aldrig",
+    "aria": {
+      "edit": "Rediger medarbejder",
+      "deactivate": "Deaktiver medarbejder",
+      "activate": "Aktiver medarbejder"
+    },
+    "modalTitle": "Tilføj ny medarbejder",
+    "labelName": "Fulde navn",
+    "labelEmail": "Emailadresse",
+    "labelPhone": "Telefonnummer",
+    "labelTeam": "Tildel til hold",
+    "teamPlaceholder": "Vælg et hold",
+    "team1": "Førstehold",
+    "team2": "Ungdomshold",
+    "team3": "Damehold",
+    "buttonCancel": "Annuller",
+    "buttonAdd": "Tilføj medarbejder"
+  },
+  "team_setup": {
+    "pageTitle": "Holdopsætning",
+    "pageSubtitle": "Se og administrer udstyrsanmodninger pr. hold",
+    "searchPlaceholder": "Søg hold...",
+    "noTeamsTitle": "Ingen hold fundet",
+    "noTeamsDescFiltered": "Prøv at justere din søgning",
+    "noTeamsDescEmpty": "Der er ingen hold at vise.",
+    "playersCount": "{{count}} spillere",
+    "activeKitRequests": "Aktive udstyrsanmodninger:",
+    "pendingTasks": "Afventende opgaver:",
+    "tasksPending": "{{count}} afventende {{count, plural, one {opgave} other {opgaver}}}",
+    "allTasksComplete": "Alle opgaver fuldført",
+    "viewPlayers": "Se spillere"
+  },
+  "user_management": {
+    "pageTitle": "Brugeradministration",
+    "tabs": {
+      "admins": "Klubadministratorer",
+      "staff": "Klubpersonale",
+      "finance": "Klubøkonomi"
+    },
+    "placeholders": {
+      "search": "Søg brugere...",
+      "allClubs": "Alle klubber"
+    },
+    "buttons": {
+      "addAdmin": "Tilføj klubadministrator",
+      "addStaff": "Tilføj klubpersonale",
+      "addFinance": "Tilføj klubøkonomi",
+      "addUser": "Tilføj bruger"
+    },
+    "table": {
+      "name": "Navn",
+      "email": "Email",
+      "club": "Klub",
+      "status": "Status",
+      "actions": "Handlinger"
+    },
+    "status": {
+      "active": "Aktiv",
+      "inactive": "Inaktiv",
+      "pending": "Afventer"
+    },
+    "roles": {
+      "ClubAdmin": "Klubadministrator",
+      "ClubStaff": "Klubpersonale",
+      "ClubFinance": "Klubøkonomi"
+    },
+    "actions": {
+      "edit": "Rediger"
+    },
+    "noResults": "Ingen brugere fundet",
+    "loading": "Indlæser..."
+  },
+  "validate_order": {
+    "pageTitle": "Bekræft bestillingsforespørgsel",
+    "delivery": {
+      "selectTitle": "Vælg leveringsadresse",
+      "default": "Standardadresse",
+      "custom": "Alternativ adresse",
+      "defaultName": "Ribe Fritidscenter",
+      "defaultContact": "Gitte Langmach Jacobsen",
+      "staffContact": "Chris Sawaguchi",
+      "defaultStreet": "Sportsvej 8",
+      "defaultCity": "6760 Ribe",
+      "placeholders": {
+        "recipient": "Modtagers navn",
+        "street": "Gade og nummer",
+        "zip": "Postnummer",
+        "city": "By"
+      }
+    },
+    "order": {
+      "yourOrder": "Din ordre",
+      "size": "Størrelse",
+      "quantity": "Antal",
+      "numbers": "Spillernumre",
+      "price": "Pris",
+      "subtotal": "Subtotal",
+      "total": "Total"
+    },
+    "buttons": {
+      "back": "Tilbage",
+      "send": "Send bestilling"
+    },
+    "thanksTitle": "Tak for din bestillingsforespørgsel!",
+    "thanksSubtitle": "Du modtager en ordrebekræftelse inden for 48 timer."
+  },
+  "cart": {
+    "add_to_cart": "Tilføj til kurv"
+  },
+  "shopping_cart": {
+    "title": "Din Kurv",
+    "empty": "Ingen varer i kurven.",
+    "size": "Størrelse: {{size}}",
+    "numbers": "Numre: {{numbers}}",
+    "total": "I alt",
+    "buttons": {
+      "close": "Luk kurv",
+      "remove": "Fjern vare",
+      "quantity": "Antal",
+      "edit": "Rediger ordre",
+      "confirm": "Bekræft & Valider"
+    }
+  },
+  "manual_request": {
+    "title": "Manuel Forespørgsel",
+    "description": "Beskriv venligst, hvad du har brug for. Vores team kontakter dig inden for 48 timer.",
+    "requestDetailsLabel": "Forespørgselsdetaljer",
+    "requestPlaceholder": "Hvad leder du efter?",
+    "deadlineLabel": "Deadline – Hvornår har du brug for det?",
+    "back": "Tilbage",
+    "sendRequest": "Send Forespørgsel",
+    "thankYou": "Tak for din forespørgsel – Du hører fra os inden for 48 timer.",
+    "close": "Luk",
+    "alertEnterRequest": "Indtast venligst din forespørgsel før afsendelse.",
+    "alertSelectDeadline": "Vælg venligst en deadline."
+  },
+  "manage_order": {
+    "title": "Administrer Ordre",
+    "selectSizes": "Vælg Størrelser",
+    "modalTitle": "Vælg Størrelser",
+    "cancel": "Annuller",
+    "confirm": "Bekræft",
+    "total": "Total",
+    "withPlayerNumber": "med spillernummer"
+  },
+  "manage_order_staff": {
+    "title": "Administrer Ordre",
+    "inSize": "i størrelse",
+    "withPlayerNumber": "med spillernummer"
+  },
+  "order_overview": {
+    "title": "Ordreoversigt",
+    "quantity": "Antal:",
+    "size": "Størrelse:",
+    "numbers": "Numre:",
+    "totalSuffix": "DKK"
+  },
+  "player_number_modal": {
+    "title": "Indtast spillernumre",
+    "placeholder": "#{{index}}",
+    "cancel": "Annuller",
+    "confirm": "Bekræft"
+  },
+  "product_card": {
+    "price": "Pris: {{amount}} DKK",
+    "select_size": "Vælg størrelse",
+    "quantity_placeholder": "Antal",
+    "selectSizesNumbers": "Vælg størrelser og numre",
+    "add_to_order": "Tilføj til ordre",
+    "select_numbers": "Vælg spillernumre"
+  },
+  "order_sidebar": {
+    "title": "Ordreoversigt",
+    "quantity": "Antal: {{count}}",
+    "size": "Størrelse: {{size}}",
+    "numbers": "Numre: {{numbers}}"
+  },
+  "order_details": {
+    "title": "📦 Ordre #{{id}}",
+    "status": "Status: {{status}}",
+    "created": "Oprettet: {{date}}",
+    "updated": "Opdateret: {{date}}",
+    "items": "Varer: {{count}}",
+    "playerCount": "Antal spillere: {{count}}",
+    "progress": "Fremdrift: {{percent}}%",
+    "estimatedDelivery": "Forventet levering: {{date}}",
+    "trackingNumber": "Tracking-nr.: {{number}}",
+    "orderedProducts": "🛍️ Bestilte varer",
+    "downloadInvoice": "Download faktura",
+    "downloadConfirmation": "Download ordrebekræftelse",
+    "close": "Luk",
+    "price": "Pris: {{price}} DKK",
+    "quantity": "Antal: {{count}}",
+    "sizes": "Størrelser: {{list}}",
+    "playerNumbers": "Spillernumre: {{list}}"
+  },
+  "search": {
+    "placeholder": "Søg..."
+  },
+  "order_create_admin": {
+    "createManualOrder": "Opret manuel ordre",
+    "validateOrder": "Valider ordre",
+    "distributeAcrossSizes": "Fordel {{count}} på størrelser",
+    "totalAssigned": "Total: {{assigned}} / {{requested}}",
+    "next": "Næste"
+  },
+  "club_roles": {
+    "club_admin": "Klub Administrator",
+    "club_staff": "Klub Personale",
+    "club_finance": "Klub Kasserer"
+  }
+}

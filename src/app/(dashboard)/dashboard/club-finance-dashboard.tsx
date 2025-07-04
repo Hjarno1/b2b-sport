@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/lib/context/auth-context';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,6 +32,7 @@ interface Activity {
 }
 
 export default function ClubFinanceDashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [stats, setStats] = useState<ClubDashboardStats>({
     activeAgreements: 0,
@@ -86,7 +88,6 @@ export default function ClubFinanceDashboard() {
 
   return (
     <div>
-      {/* Club Info Card */}
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div className="flex items-center">
           <div className="w-16 h-16 flex-shrink-0 rounded-full overflow-hidden mr-4 bg-gray-100">
@@ -103,33 +104,30 @@ export default function ClubFinanceDashboard() {
 
           <div>
             <h1 className="text-xl font-semibold text-gray-800">
-              Welcome to {club?.name || 'Your Club'} Finance Dashboard
+              {t('dashboard.finance_welcome', { club: club?.name || t('dashboard.default_club') })}
             </h1>
-            <p className="text-gray-500 text-sm mt-1">
-              Monitor agreements, track orders, and view financial activity
-            </p>
+            <p className="text-gray-500 text-sm mt-1">{t('dashboard.finance_description')}</p>
           </div>
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <StatsCard
-          title="Active Club Agreements"
+          title={t('dashboard.stats.active_club_agreements')}
           value={stats.activeAgreements}
           icon={<FileText className="h-5 w-5 text-primary" />}
           color="bg-primary/10"
           href="/club-agreements"
         />
         <StatsCard
-          title="Unpaid invoices"
+          title={t('dashboard.stats.unpaid_invoices')}
           value={stats.upcomingDeliveries}
           icon={<ShoppingBag className="h-5 w-5 text-orange-500" />}
           color="bg-orange-100"
           href="/invoices"
         />
         <StatsCard
-          title="Overdue invoices"
+          title={t('dashboard.stats.overdue_invoices')}
           value={stats.upcomingDeliveries}
           icon={<Calendar className="h-5 w-5 text-red-600" />}
           color="bg-red-100"
@@ -138,15 +136,18 @@ export default function ClubFinanceDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activity Section */}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-sm overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-800">Recent Activity</h2>
-            <button className="text-sm text-primary hover:underline">View all</button>
+            <h2 className="text-lg font-semibold text-gray-800">
+              {t('dashboard.recent_activity')}
+            </h2>
+            <button className="text-sm text-primary hover:underline">
+              {t('dashboard.view_all')}
+            </button>
           </div>
           <div className="divide-y divide-gray-100">
             {activities.length === 0 ? (
-              <div className="p-6 text-center text-gray-500">No recent activity found</div>
+              <div className="p-6 text-center text-gray-500">{t('dashboard.no_activity')}</div>
             ) : (
               activities.map((activity) => (
                 <div
@@ -166,21 +167,20 @@ export default function ClubFinanceDashboard() {
           </div>
         </div>
 
-        {/* Quick Actions Panel */}
         <div className="bg-white rounded-lg shadow-sm">
           <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="text-lg font-semibold text-gray-800">Quick Actions</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('dashboard.quick_actions')}</h2>
           </div>
           <div className="p-6 space-y-4">
             <QuickActionCard
-              title="View club agreements"
-              description="Check your active club agreements"
+              title={t('dashboard.actions.view_club_agreements')}
+              description={t('dashboard.actions.view_club_agreements_desc')}
               icon={<FileText className="h-5 w-5 text-primary" />}
               href="/club-agreements"
             />
             <QuickActionCard
-              title="View invoices"
-              description="Check your invoices and payments"
+              title={t('dashboard.actions.view_invoices')}
+              description={t('dashboard.actions.view_invoices_desc')}
               icon={<ShoppingBag className="h-5 w-5 text-primary" />}
               href="/invoices"
             />

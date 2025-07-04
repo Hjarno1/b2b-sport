@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function ManualRequestModal({
   isOpen,
@@ -9,18 +10,19 @@ export default function ManualRequestModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  const { t } = useTranslation('manualRequest');
   const [request, setRequest] = useState('');
   const [deadline, setDeadline] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
     if (!request.trim()) {
-      alert('Please enter your request before submitting.');
+      alert(t('alertEnterRequest'));
       return;
     }
 
     if (!deadline) {
-      alert('Please select a deadline.');
+      alert(t('alertSelectDeadline'));
       return;
     }
 
@@ -37,21 +39,21 @@ export default function ManualRequestModal({
       <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
         {!submitted ? (
           <>
-            <h2 className="text-xl font-semibold mb-2">Manual Request</h2>
-            <p className="mb-4 text-sm text-gray-600">
-              Please describe what you need. Our team will contact you within 48 hours.
-            </p>
+            <h2 className="text-xl font-semibold mb-2">{t('manual_request.title')}</h2>
+            <p className="mb-4 text-sm text-gray-600">{t('manual_request.description')}</p>
 
-            <label className="block text-sm font-medium text-gray-700 mb-1">Request Details</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t('manual_request.requestDetailsLabel')}
+            </label>
             <textarea
               className="w-full h-32 p-2 border rounded mb-4"
-              placeholder="What are you looking for?"
+              placeholder={t('manual_request.requestPlaceholder')}
               value={request}
               onChange={(e) => setRequest(e.target.value)}
             />
 
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Deadline - When do you need it?
+              {t('manual_request.deadlineLabel')}
             </label>
             <input
               type="date"
@@ -65,27 +67,25 @@ export default function ManualRequestModal({
                 onClick={onClose}
                 className="px-4 py-2 bg-gray-300 text-sm rounded hover:bg-gray-400"
               >
-                Back
+                {t('manual_request.back')}
               </button>
               <button
                 onClick={handleSubmit}
                 className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
               >
-                Send Request
+                {t('manual_request.sendRequest')}
               </button>
             </div>
           </>
         ) : (
           <>
-            <p className="text-green-600 font-medium">
-              Thank you for your request – You will hear from us within 48 hours.
-            </p>
+            <p className="text-green-600 font-medium">{t('manual_request.thankYou')}</p>
             <div className="mt-4 text-right">
               <button
                 onClick={onClose}
                 className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
               >
-                Close
+                {t('manual_request.close')}
               </button>
             </div>
           </>

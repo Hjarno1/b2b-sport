@@ -1,4 +1,3 @@
-// src/app/(auth)/login/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { LogIn } from 'lucide-react';
 import { UserRole } from '@/lib/data/mock-data';
 import { useAuth } from '@/lib/context/auth-context';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const [role, setRole] = useState<UserRole>(UserRole.ClubAdmin);
@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
-      setError('Failed to login. Please try again.');
+      setError(t('login.error'));
     } finally {
       setIsLoading(false);
     }
@@ -44,8 +45,8 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-              <p className="mt-2 text-gray-500 text-sm">Sign in to your account to continue</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t('login.welcome')}</h1>
+              <p className="mt-2 text-gray-500 text-sm">{t('login.description')}</p>
             </div>
 
             {error && (
@@ -57,7 +58,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-                  Select Role
+                  {t('login.select_role')}
                 </label>
                 <div className="relative">
                   <select
@@ -66,9 +67,9 @@ export default function LoginPage() {
                     onChange={(e) => setRole(e.target.value as UserRole)}
                     className="w-full text-gray-900 bg-white border border-gray-300 rounded-md py-2.5 pl-3 pr-10 appearance-none focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
                   >
-                    <option value={UserRole.ClubAdmin}>Club Admin</option>
-                    <option value={UserRole.ClubStaff}>Club Staff</option>
-                    <option value={UserRole.ClubFinance}>Club Finance</option>
+                    <option value={UserRole.ClubAdmin}>{t('club_roles.club_admin')}</option>
+                    <option value={UserRole.ClubStaff}>{t('club_roles.club_staff')}</option>
+                    <option value={UserRole.ClubFinance}>{t('club_roles.club_finance')}</option>
                   </select>
                   <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                     <svg
@@ -86,18 +87,16 @@ export default function LoginPage() {
                     </svg>
                   </div>
                 </div>
-                <p className="mt-2 text-xs text-gray-500">
-                  For demo purposes, select which role you want to login as.
-                </p>
+                <p className="mt-2 text-xs text-gray-500">{t('login.demo_note')}</p>
               </div>
 
               {/* Demo credentials field */}
               <div className="rounded-md bg-gray-50 p-4 border border-gray-100">
-                <h3 className="text-sm font-medium text-gray-700">Demo Credentials</h3>
+                <h3 className="text-sm font-medium text-gray-700">{t('login.demo_credentials')}</h3>
                 <p className="mt-1 text-xs text-gray-500">
-                  Email: demo@b2bsports.com
+                  {t('login.demo_email')}
                   <br />
-                  Password: demo123 (not actually checked)
+                  {t('login.demo_password')}
                 </p>
               </div>
 
@@ -131,12 +130,12 @@ export default function LoginPage() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      Signing in...
+                      {t('login.signing_in')}
                     </span>
                   ) : (
                     <>
                       <LogIn className="w-5 h-5 mr-2" />
-                      <span className="text-white">Sign in</span>
+                      <span className="text-white">{t('login.sign_in')}</span>
                     </>
                   )}
                 </button>
@@ -144,7 +143,9 @@ export default function LoginPage() {
             </form>
           </div>
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-500">B2B Sport © {new Date().getFullYear()}</p>
+            <p className="text-sm text-gray-500">
+              {t('login.copyright', { year: new Date().getFullYear() })}
+            </p>
           </div>
         </div>
       </div>

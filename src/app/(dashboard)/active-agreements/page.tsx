@@ -1,23 +1,17 @@
-// src/app/(dashboard)/active-agreements/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Eye,
-  Calendar,
-  Building2
-} from 'lucide-react';
-import { 
-  Agreement, 
-  AgreementStatus, 
-  mockClubs, 
-  mockAgreementTemplates 
+import { Plus, Search, Filter, Eye, Calendar, Building2 } from 'lucide-react';
+import {
+  Agreement,
+  AgreementStatus,
+  mockClubs,
+  mockAgreementTemplates,
 } from '@/lib/data/mock-data';
+import { useTranslation } from 'react-i18next';
 
 export default function ActiveAgreementsPage() {
+  const { t } = useTranslation('active_agreements');
   const [agreements, setAgreements] = useState<Agreement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -40,62 +34,42 @@ export default function ActiveAgreementsPage() {
     fetchAgreements();
   }, []);
 
-  // Filter agreements
-  const filteredAgreements = agreements.filter(agreement => {
-    const matchesSearch = agreement.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         agreement.name.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredAgreements = agreements.filter((agreement) => {
+    const matchesSearch =
+      agreement.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      agreement.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'All' || agreement.status === statusFilter;
     const matchesClub = clubFilter === 'All' || agreement.clubId === clubFilter;
-    
     return matchesSearch && matchesStatus && matchesClub;
   });
 
   const getStatusBadge = (status: AgreementStatus) => {
+    const label = t(`status.${status.toLowerCase()}`);
+    const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
+
     switch (status) {
       case AgreementStatus.Pending:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-            Pending
-          </span>
-        );
+        return <span className={`${baseClasses} bg-yellow-100 text-yellow-800`}>{label}</span>;
       case AgreementStatus.Active:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            Active
-          </span>
-        );
+        return <span className={`${baseClasses} bg-green-100 text-green-800`}>{label}</span>;
       case AgreementStatus.InProgress:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-            In Progress
-          </span>
-        );
+        return <span className={`${baseClasses} bg-blue-100 text-blue-800`}>{label}</span>;
       case AgreementStatus.Completed:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-            Completed
-          </span>
-        );
+        return <span className={`${baseClasses} bg-indigo-100 text-indigo-800`}>{label}</span>;
       case AgreementStatus.Canceled:
-        return (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-            Canceled
-          </span>
-        );
+        return <span className={`${baseClasses} bg-gray-100 text-gray-800`}>{label}</span>;
       default:
         return null;
     }
   };
 
-  // Helper to get club name
   const getClubName = (clubId: string) => {
-    const club = mockClubs.find(c => c.id === clubId);
+    const club = mockClubs.find((c) => c.id === clubId);
     return club ? club.name : 'Unknown Club';
   };
 
-  // Helper to get template name
   const getTemplateName = (templateId: string) => {
-    const template = mockAgreementTemplates.find(t => t.id === templateId);
+    const template = mockAgreementTemplates.find((t) => t.id === templateId);
     return template ? template.name : 'Unknown Template';
   };
 
@@ -110,9 +84,9 @@ export default function ActiveAgreementsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-800">Active Agreements</h1>
+        <h1 className="text-2xl font-semibold text-gray-800">{t('title')}</h1>
         <button className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md flex items-center">
-          <Plus size={18} className="mr-2" /> Create New Agreement
+          <Plus size={18} className="mr-2" /> {t('create_new')}
         </button>
       </div>
 
@@ -123,7 +97,7 @@ export default function ActiveAgreementsPage() {
           </div>
           <input
             type="text"
-            placeholder="Search agreements..."
+            placeholder={t('search_placeholder')}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-indigo-500 focus:border-indigo-500"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -135,7 +109,7 @@ export default function ActiveAgreementsPage() {
             value={clubFilter}
             onChange={(e) => setClubFilter(e.target.value)}
           >
-            <option value="All">All Clubs</option>
+            <option value="All">{t('filter_all_clubs')}</option>
             {mockClubs.map((club) => (
               <option key={club.id} value={club.id}>
                 {club.name}
@@ -152,10 +126,10 @@ export default function ActiveAgreementsPage() {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as AgreementStatus | 'All')}
           >
-            <option value="All">All Statuses</option>
+            <option value="All">{t('filter_all_statuses')}</option>
             {Object.values(AgreementStatus).map((status) => (
               <option key={status} value={status}>
-                {status}
+                {t(`status.${status.toLowerCase()}`)}
               </option>
             ))}
           </select>
@@ -169,23 +143,23 @@ export default function ActiveAgreementsPage() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Agreement ID
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.agreement_id')}
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Club
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.club')}
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Template
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.template')}
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.status')}
               </th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Valid Until
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.valid_until')}
               </th>
-              <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {t('table.actions')}
               </th>
             </tr>
           </thead>
@@ -193,7 +167,7 @@ export default function ActiveAgreementsPage() {
             {filteredAgreements.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
-                  No agreements found matching your criteria
+                  {t('no_results')}
                 </td>
               </tr>
             ) : (
@@ -219,7 +193,7 @@ export default function ActiveAgreementsPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button className="text-indigo-600 hover:text-indigo-900 flex items-center ml-auto">
-                      <Eye size={16} className="mr-1" /> View
+                      <Eye size={16} className="mr-1" /> {t('view')}
                     </button>
                   </td>
                 </tr>
