@@ -92,7 +92,9 @@
     "invalidCredentials": "Invalid email or password.",
     "signIn": "Sign In",
     "signingIn": "Signing In...",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "showPassword": "Show Password",
+    "hidePassword": "Hide Password"
   },
   "forgotPassword": {
     "title": "Forgot Password",
