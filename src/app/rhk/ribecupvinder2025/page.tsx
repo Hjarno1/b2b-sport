@@ -1,12 +1,8 @@
-import React, { Suspense } from 'react';
+import React from 'react';
+import CodeEntryPage from './CodeEntryPage';
+
 export const dynamic = 'force-dynamic';
 
-import ClientWinnerPage from './ClientWinnerPage';
-
 export default function Page() {
-  return (
-    <Suspense fallback={<p className="text-center mt-16">Loading...</p>}>
-      <ClientWinnerPage />
-    </Suspense>
-  );
+  return <CodeEntryPage />;
 }
