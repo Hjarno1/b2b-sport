@@ -46,7 +46,6 @@ export default function ClubLoginPage() {
               alt={`${club.name} Logo`}
               width={160}
               height={160}
-              className="rounded-full"
               priority
             />
           </div>

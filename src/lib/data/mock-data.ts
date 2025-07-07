@@ -328,14 +328,14 @@ export const mockUsers: User[] = [
   },
   {
     id: 'user-004',
-    name: 'Finance Ribe HK',
-    email: 'finance@rhk.dk',
+    name: 'Kasserer Ribe HK',
+    email: 'v.andersen@stofanet.dk',
     password: 'password123',
     phone: '+45 30 12 34 56',
     role: UserRole.ClubFinance,
     clubId: 'club-001',
     status: UserStatus.Active,
-    avatar: '/clubs/ribehk.jpg',
+    avatar: '/clubs/ribehk.png',
     lastLogin: 'May 1, 2025, 6:15 PM',
   },
 ];
@@ -352,7 +352,7 @@ export const mockClubs: Club[] = [
     status: ClubStatus.Active,
     abbreviation: 'RHK',
     color: '#4a86e8',
-    logo: '/clubs/ribehk.jpg',
+    logo: '/clubs/ribehk.png',
   },
 ];
 

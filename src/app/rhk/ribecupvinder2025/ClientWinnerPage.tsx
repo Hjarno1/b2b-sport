@@ -26,7 +26,7 @@ const groupOptions = [
 const products = [
   {
     id: 'LT91195',
-    name: 'Blade Powerbank 5000mAh',
+    name: 'Powerbank 5000mAh med dit eget navn',
     image: '/products/powerbank.png',
     details: {
       images: ['/products/powerbank.png', '/products/powerbank-1.png'],
@@ -36,17 +36,17 @@ const products = [
   },
   {
     id: 'LT98826',
-    name: 'R-Swing Soft Touch 500ml',
+    name: 'Flaske 500ml med dit eget navn',
     image: '/products/rswing.png',
     details: {
       images: ['/products/rswing.png'],
       description:
-        'Swing flaske i genanvendt rustfrit stål og med en buttery soft touch-finish. Den dobbeltvægget vakuumisolerede flaske holder drikkevarer kolde eller varme i længere tid og er lækagesikker til brug på farten.',
+        'Flaske i genanvendt rustfrit stål og med en buttery soft touch-finish. Den dobbeltvægget vakuumisolerede flaske holder drikkevarer kolde eller varme i længere tid og er lækagesikker til brug på farten.',
     },
   },
   {
     id: 'LT45805',
-    name: 'M307 Muse 5W Bluetooth Speaker',
+    name: 'Højtaler 5W med dit eget navn',
     image: '/products/muse-speaker.png',
     details: {
       images: [
@@ -132,12 +132,14 @@ export default function ClientWinnerPage() {
           alt="Logo"
           width={120}
           height={120}
-          className="mx-auto rounded-full ring-4 ring-white"
+          className="mx-auto "
         />
         <h1 className="mt-6 text-4xl font-extrabold text-white drop-shadow-lg">
-          🏆 TILLYKKE RIBE CUP 2025 🏆
+          TILLYKKE RIBE CUP 2025
         </h1>
-        <p className="mt-2 text-yellow-900 text-lg font-medium">Vælg din præmie og fejre sejren!</p>
+        <p className="mt-2 text-yellow-900 text-lg font-medium">
+          Vælg din personlige præmie herunder
+        </p>
       </header>
 
       <main className="max-w-5xl mx-auto mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
@@ -225,25 +227,7 @@ export default function ClientWinnerPage() {
           >
             <h2 className="text-2xl font-bold text-gray-800">Din præmie: {selectedProduct.name}</h2>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Gruppe</label>
-              <select
-                value={group}
-                onChange={(e) => setGroup(e.target.value)}
-                required
-                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:border-yellow-500 focus:outline-none"
-              >
-                <option value="" disabled>
-                  Vælg gruppe...
-                </option>
-                {groupOptions.map((o) => (
-                  <option key={o} value={o}>
-                    {o}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Klubnavn</label>
+              <label className="block text-sm font-medium text-gray-700">Klubbens navn</label>
               <input
                 type="text"
                 value={clubName}
@@ -251,6 +235,24 @@ export default function ClientWinnerPage() {
                 required
                 className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:border-yellow-500 focus:outline-none"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Vælg række</label>
+              <select
+                value={group}
+                onChange={(e) => setGroup(e.target.value)}
+                required
+                className="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:border-yellow-500 focus:outline-none"
+              >
+                <option value="" disabled>
+                  Vælg række...
+                </option>
+                {groupOptions.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -275,7 +277,9 @@ export default function ClientWinnerPage() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Navn til tryk</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Ønsket navnetryk på min valgte præmie
+              </label>
               <input
                 type="text"
                 value={printName}
