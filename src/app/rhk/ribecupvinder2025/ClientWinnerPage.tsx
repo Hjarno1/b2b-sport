@@ -78,6 +78,7 @@ export default function ClientWinnerPage({ code }: { code: string }) {
     confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
   }, []);
   useEffect(() => {
+    console.log('Validating code:', token);
     fetch(`/api/ribecup/validate?code=${token}`)
       .then((res) => res.json())
       .then(({ valid, used }) => {
