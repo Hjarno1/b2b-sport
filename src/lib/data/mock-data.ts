@@ -1134,6 +1134,9 @@ export const winnerCodes: Record<string, WinnerCodeEntry> = {
   ABC123TOKEN: { used: false },
   DEF456TOKEN: { used: false },
   GHI789TOKEN: { used: false },
+  2222333344445555: { used: false },
+  1111222233334444: { used: false },
+  1234123412341234: { used: true },
 };
 
 export const mockKitRequests: KitRequestViewModel[] = [
