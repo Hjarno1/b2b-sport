@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/context/auth-context';
 import { UserRole } from '@/lib/data/mock-data';
 import { useTranslation } from 'react-i18next';
+import { getClubById } from '@/lib/data/mock-data';
 import {
   LayoutDashboard,
   Users,
@@ -142,6 +143,8 @@ export function Sidebar({
     navItems = clubFinanceItems;
   }
 
+  const club = user?.clubId ? getClubById(user.clubId) : null;
+
   return (
     <div
       className={`h-full fixed bg-white border-r border-gray-200 transition-all duration-300 ${
@@ -149,16 +152,35 @@ export function Sidebar({
       }`}
     >
       {/* Header: Logo and Collapse Button */}
-      <div className="flex h-16 items-center justify-between border-b px-3">
-        <Link href="/" className="flex items-center">
-          {isCollapsed ? (
-            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-full">
-              <span className="text-white font-bold">B2B</span>
-            </div>
-          ) : (
-            <Image src="/logo.png" alt="Logo" width={143} height={40} />
-          )}
-        </Link>
+      <div className="flex h-16 items-center border-b px-3">
+        {/* 1️⃣ This flex-1 box takes up all the space to the left of the button… */}
+        <div className="flex-1 flex justify-center">
+          <Link href="/" className="flex items-center flex-shrink-0">
+            {isCollapsed ? (
+              <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden">
+                <Image
+                  src={club?.logo || '/default-club-logo.png'}
+                  alt={club?.name || 'Club Logo'}
+                  fill // absolutely fill the 40×40 box
+                  style={{ objectFit: 'cover' }}
+                  priority
+                />
+              </div>
+            ) : (
+              <div className="relative w-[143px] h-[40px] overflow-hidden">
+                <Image
+                  src={club?.logo || '/default-club-logo.png'}
+                  alt={club?.name || 'Club Logo'}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  priority
+                />
+              </div>
+            )}
+          </Link>
+        </div>
+
+        {/* 2️⃣ …and this pushes the toggle all the way to the right */}
         <button onClick={() => toggle(!isCollapsed)} className="text-gray-500 hover:text-primary">
           <ChevronLeft
             className={`h-5 w-5 transition-transform ${isCollapsed ? 'rotate-180' : ''}`}

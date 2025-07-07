@@ -9,13 +9,15 @@ export default function CodeEntryPage() {
   const router = useRouter();
   const [segments, setSegments] = useState(['', '', '', '']);
   const [error, setError] = useState('');
-  const inputs = [useRef<HTMLInputElement>(null), useRef(null), useRef(null), useRef(null)];
+  const inputs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
 
   const handleSegmentChange = (i: number, val: string) => {
-    const cleaned = val
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '')
-      .slice(0, 4);
+    const cleaned = val.replace(/\D/g, '').slice(0, 4);
     const newSegments = [...segments];
     newSegments[i] = cleaned;
     setSegments(newSegments);
@@ -33,14 +35,15 @@ export default function CodeEntryPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const code = segments.join('-');
 
     if (segments.some((s) => s.length < 4)) {
       setError('Alle felter skal udfyldes');
       return;
     }
 
+    const code = segments.join('');
     const entry = winnerCodes[code];
+
     if (!entry || entry.used) {
       setError('Ugyldig eller allerede brugt kode');
       return;
@@ -77,7 +80,9 @@ export default function CodeEntryPage() {
                 maxLength={4}
                 className="w-16 sm:w-20 p-3 border border-gray-300 rounded text-center text-lg tracking-widest"
               />
-              {i < 3 && <span className="mx-2 text-xl font-semibold text-gray-500">-</span>}
+              {i < segments.length - 1 && (
+                <span className="mx-2 text-xl font-semibold text-gray-500">-</span>
+              )}
             </div>
           ))}
         </div>

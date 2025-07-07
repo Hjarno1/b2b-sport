@@ -192,7 +192,7 @@ export default function ClubStaffDashboard() {
       {/* Club Info Card */}
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div className="flex items-center">
-          <div className="w-16 h-16 flex-shrink-0 rounded-full overflow-hidden mr-4 bg-gray-100">
+          <div className="w-16 h-16 flex-shrink-0 overflow-hidden mr-4">
             {club?.logo ? (
               <div className="relative w-full h-full">
                 <Image src={club.logo} alt={club.name} layout="fill" objectFit="cover" />
