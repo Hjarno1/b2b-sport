@@ -74,11 +74,13 @@ export default function CodeEntryPage() {
               <input
                 ref={inputs[i]}
                 type="text"
+                inputMode="numeric"
+                pattern="\d*"
                 value={seg}
                 onChange={(e) => handleSegmentChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e, i)}
                 maxLength={4}
-                className="w-16 sm:w-20 p-3 border border-gray-300 rounded text-center text-lg tracking-widest"
+                className="w-24 p-3 border border-gray-300 rounded text-center text-lg font-mono"
               />
               {i < segments.length - 1 && (
                 <span className="mx-2 text-xl font-semibold text-gray-500">-</span>
