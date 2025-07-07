@@ -1366,7 +1366,6 @@ model RequestProducts {
   @@index([PrintPosition5Id], map: "IX_RequestProducts_PrintPosition5Id")
   @@index([PrintPosition6Id], map: "IX_RequestProducts_PrintPosition6Id")
   @@index([ProductSizeId], map: "IX_RequestProducts_ProductSizeId")
-  @@index([RequestId], map: "IX_RequestProducts_RequestId")
   @@index([SKUparrentProduct_id], map: "IX_RequestProducts_SKUparrentProduct_id")
   @@index([SupplierId], map: "IX_RequestProducts_SupplierId")
 }

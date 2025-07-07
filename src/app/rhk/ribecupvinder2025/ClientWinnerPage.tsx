@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { mockClubs } from '@/lib/data/mock-data';
 import CollapsibleText from '@/components/collapsibleText';
@@ -60,10 +59,9 @@ const products = [
     },
   },
 ];
-export default function ClientWinnerPage() {
+export default function ClientWinnerPage({ code }: { code: string }) {
   const club = mockClubs[0];
-  const params = useSearchParams();
-  const token = params.get('code') ?? '';
+  const token = code;
 
   const [status, setStatus] = useState<'checking' | 'invalid' | 'used' | 'ready'>('checking');
   const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null);
@@ -80,6 +78,7 @@ export default function ClientWinnerPage() {
     confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
   }, []);
   useEffect(() => {
+    console.log('Validating code:', token);
     fetch(`/api/ribecup/validate?code=${token}`)
       .then((res) => res.json())
       .then(({ valid, used }) => {
