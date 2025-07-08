@@ -26,9 +26,13 @@ const products = [
   {
     id: 'LT91195',
     name: 'Powerbank 5000mAh med dit eget navn',
-    image: '/products/powerbank.png',
+    image: '/products/powerbank-main.png',
     details: {
-      images: ['/products/powerbank.png', '/products/powerbank-1.png'],
+      images: [
+        '/products/powerbank-main.png',
+        '/products/powerbank-1.png',
+        '/products/powerbank-2.png',
+      ],
       description:
         'Ultratynd powerbank (5000mAh) med et stilfuldt design og flot mat finish. Denne powerbank er en god tilføjelse til dit mobile tilbehør.',
     },
@@ -36,9 +40,9 @@ const products = [
   {
     id: 'LT98826',
     name: 'Flaske 500ml med dit eget navn',
-    image: '/products/rswing.png',
+    image: '/products/rswing-main.png',
     details: {
-      images: ['/products/rswing.png'],
+      images: ['/products/rswing-main.png', '/products/rswing-1.png'],
       description:
         'Flaske i genanvendt rustfrit stål og med en buttery soft touch-finish. Den dobbeltvægget vakuumisolerede flaske holder drikkevarer kolde eller varme i længere tid og er lækagesikker til brug på farten.',
     },
@@ -46,10 +50,10 @@ const products = [
   {
     id: 'LT45805',
     name: 'Højtaler 5W med dit eget navn',
-    image: '/products/muse-speaker.png',
+    image: '/products/muse-speaker-main.png',
     details: {
       images: [
-        '/products/muse-speaker.png',
+        '/products/muse-speaker-main.png',
         '/products/muse-speaker-1.png',
         '/products/muse-speaker-2.png',
         '/products/muse-speaker-3.png',
